@@ -1,6 +1,6 @@
 {
-  "liblabVersion": "2.25.34",
-  "date": "2025-07-01T08:23:38.576Z",
+  "liblabVersion": "2.25.37",
+  "date": "2025-07-22T12:36:18.094Z",
   "config": {
     "apiId": 2427,
     "sdkName": "Celitech",
@@ -100,7 +100,7 @@
       "integrations": {
         "enhancedApiSpec": {
           "provider": "redocly",
-          "githubRepoName": "CelitechCoreAPIReference",
+          "githubRepoName": "CelitechAPIReference",
           "redocly": {
             "openapiPath": "swagger.yaml"
           }
@@ -189,7 +189,7 @@
     },
     "integrations": {
       "enhancedApiSpec": {
-        "githubRepoName": "CelitechCoreAPIReference",
+        "githubRepoName": "CelitechAPIReference",
         "targetBranch": "main",
         "provider": "redocly",
         "redocly": {
