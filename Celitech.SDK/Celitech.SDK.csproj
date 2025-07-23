@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Celitech.SDK</RootNamespace>
-    <Version>1.3.45</Version>
+    <Version>1.3.46</Version>
     <PackageId>Celitech.SDK</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
