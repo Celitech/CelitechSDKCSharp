@@ -29,12 +29,10 @@ This endpoint was added by liblab
 using Celitech.SDK;
 using Celitech.SDK.Config;
 using Celitech.SDK.Models;
-using Environment = Celitech.SDK.Http.Environment;
 
 var config = new CelitechConfig{
-    Environment = Environment.Default,
-	ClientId = "CLIENTID",
-	ClientSecret = "CLIENTSECRET"
+    ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);

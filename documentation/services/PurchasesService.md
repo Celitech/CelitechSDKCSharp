@@ -33,12 +33,10 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 using Celitech.SDK;
 using Celitech.SDK.Config;
 using Celitech.SDK.Models;
-using Environment = Celitech.SDK.Http.Environment;
 
 var config = new CelitechConfig{
-    Environment = Environment.Default,
-	ClientId = "CLIENTID",
-	ClientSecret = "CLIENTSECRET"
+    ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);
@@ -79,12 +77,10 @@ This endpoint can be used to list all the successful purchases made between a gi
 ```csharp
 using Celitech.SDK;
 using Celitech.SDK.Config;
-using Environment = Celitech.SDK.Http.Environment;
 
 var config = new CelitechConfig{
-    Environment = Environment.Default,
-	ClientId = "CLIENTID",
-	ClientSecret = "CLIENTSECRET"
+    ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);
@@ -117,12 +113,10 @@ This endpoint is used to top-up an eSIM with the previously associated destinati
 using Celitech.SDK;
 using Celitech.SDK.Config;
 using Celitech.SDK.Models;
-using Environment = Celitech.SDK.Http.Environment;
 
 var config = new CelitechConfig{
-    Environment = Environment.Default,
-	ClientId = "CLIENTID",
-	ClientSecret = "CLIENTSECRET"
+    ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);
@@ -157,12 +151,10 @@ This endpoint allows you to modify the dates of an existing package with a futur
 using Celitech.SDK;
 using Celitech.SDK.Config;
 using Celitech.SDK.Models;
-using Environment = Celitech.SDK.Http.Environment;
 
 var config = new CelitechConfig{
-    Environment = Environment.Default,
-	ClientId = "CLIENTID",
-	ClientSecret = "CLIENTSECRET"
+    ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);
@@ -196,12 +188,10 @@ This endpoint can be called for consumption notifications (e.g. every 1 hour or 
 ```csharp
 using Celitech.SDK;
 using Celitech.SDK.Config;
-using Environment = Celitech.SDK.Http.Environment;
 
 var config = new CelitechConfig{
-    Environment = Environment.Default,
-	ClientId = "CLIENTID",
-	ClientSecret = "CLIENTSECRET"
+    ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);

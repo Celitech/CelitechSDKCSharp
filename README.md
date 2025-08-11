@@ -1,4 +1,4 @@
-# Celitech C# SDK 1.3.46
+# Celitech C# SDK 1.3.49
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
@@ -6,8 +6,8 @@ Welcome to the Celitech SDK documentation. This guide will help you get started 
 
 ## Versions
 
-- API version: `1.3.46`
-- SDK version: `1.3.46`
+- API version: `1.3.49`
+- SDK version: `1.3.49`
 
 ## About the API
 
@@ -56,8 +56,8 @@ using Celitech.SDK.Config;
 
 var config = new Celitech.SDKConfig()
 {
-	ClientId = "CLIENTID",
-	ClientSecret = "CLIENTSECRET"
+	ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);
@@ -66,8 +66,8 @@ var client = new CelitechClient(config);
 If you need to set or update the OAuth parameters after the SDK initialization, you can use:
 
 ```cs
-sdk.SetClientId("CLIENTID")
-sdk.SetClientSecret("CLIENTSECRET")
+sdk.SetClientId("CLIENT_ID")
+sdk.SetClientSecret("CLIENT_SECRET")
 ```
 
 ## Environment Variables
@@ -94,9 +94,8 @@ using Environment = Celitech.SDK.Http.Environment;
 
 var config = new CelitechConfig
 {
-  Environment = Environment.Default,
-  ClientId = "CLIENTID",
-  ClientSecret = "CLIENTSECRET"
+  ClientId = "CLIENT_ID",
+  ClientSecret = "CLIENT_SECRET"
 };
 
 var client = new CelitechClient(config);
@@ -113,14 +112,14 @@ The SDK provides various services to interact with the API.
 
 Below is a list of all available services:
 
-| Name                |
-| :------------------ |
-| OAuthService        |
-| DestinationsService |
-| PackagesService     |
-| PurchasesService    |
-| ESimService         |
-| IFrameService       |
+| Name                                                                 |
+| :------------------------------------------------------------------- |
+| [OAuthService](documentation/services/OAuthService.md)               |
+| [DestinationsService](documentation/services/DestinationsService.md) |
+| [PackagesService](documentation/services/PackagesService.md)         |
+| [PurchasesService](documentation/services/PurchasesService.md)       |
+| [ESimService](documentation/services/ESimService.md)                 |
+| [IFrameService](documentation/services/IFrameService.md)             |
 
 ## Models
 
@@ -128,44 +127,44 @@ The SDK includes several models that represent the data structures used in API r
 
 Below is a list of all available models:
 
-| Name                               | Description |
-| :--------------------------------- | :---------- |
-| GetAccessTokenRequest              |             |
-| GetAccessTokenOkResponse           |             |
-| ListDestinationsOkResponse         |             |
-| ListPackagesOkResponse             |             |
-| CreatePurchaseV2Request            |             |
-| CreatePurchaseV2OkResponse         |             |
-| ListPurchasesOkResponse            |             |
-| CreatePurchaseRequest              |             |
-| CreatePurchaseOkResponse           |             |
-| TopUpEsimRequest                   |             |
-| TopUpEsimOkResponse                |             |
-| EditPurchaseRequest                |             |
-| EditPurchaseOkResponse             |             |
-| GetPurchaseConsumptionOkResponse   |             |
-| GetEsimOkResponse                  |             |
-| GetEsimDeviceOkResponse            |             |
-| GetEsimHistoryOkResponse           |             |
-| GetEsimMacOkResponse               |             |
-| TokenOkResponse                    |             |
-| GrantType                          |             |
-| Destinations                       |             |
-| Packages                           |             |
-| CreatePurchaseV2OkResponsePurchase |             |
-| CreatePurchaseV2OkResponseProfile  |             |
-| Purchases                          |             |
-| Package                            |             |
-| PurchasesEsim                      |             |
-| CreatePurchaseOkResponsePurchase   |             |
-| CreatePurchaseOkResponseProfile    |             |
-| TopUpEsimOkResponsePurchase        |             |
-| TopUpEsimOkResponseProfile         |             |
-| GetEsimOkResponseEsim              |             |
-| Device                             |             |
-| GetEsimHistoryOkResponseEsim       |             |
-| History                            |             |
-| GetEsimMacOkResponseEsim           |             |
+| Name                                                                                             | Description |
+| :----------------------------------------------------------------------------------------------- | :---------- |
+| [GetAccessTokenRequest](documentation/models/GetAccessTokenRequest.md)                           |             |
+| [GetAccessTokenOkResponse](documentation/models/GetAccessTokenOkResponse.md)                     |             |
+| [ListDestinationsOkResponse](documentation/models/ListDestinationsOkResponse.md)                 |             |
+| [ListPackagesOkResponse](documentation/models/ListPackagesOkResponse.md)                         |             |
+| [CreatePurchaseV2Request](documentation/models/CreatePurchaseV2Request.md)                       |             |
+| [CreatePurchaseV2OkResponse](documentation/models/CreatePurchaseV2OkResponse.md)                 |             |
+| [ListPurchasesOkResponse](documentation/models/ListPurchasesOkResponse.md)                       |             |
+| [CreatePurchaseRequest](documentation/models/CreatePurchaseRequest.md)                           |             |
+| [CreatePurchaseOkResponse](documentation/models/CreatePurchaseOkResponse.md)                     |             |
+| [TopUpEsimRequest](documentation/models/TopUpEsimRequest.md)                                     |             |
+| [TopUpEsimOkResponse](documentation/models/TopUpEsimOkResponse.md)                               |             |
+| [EditPurchaseRequest](documentation/models/EditPurchaseRequest.md)                               |             |
+| [EditPurchaseOkResponse](documentation/models/EditPurchaseOkResponse.md)                         |             |
+| [GetPurchaseConsumptionOkResponse](documentation/models/GetPurchaseConsumptionOkResponse.md)     |             |
+| [GetEsimOkResponse](documentation/models/GetEsimOkResponse.md)                                   |             |
+| [GetEsimDeviceOkResponse](documentation/models/GetEsimDeviceOkResponse.md)                       |             |
+| [GetEsimHistoryOkResponse](documentation/models/GetEsimHistoryOkResponse.md)                     |             |
+| [GetEsimMacOkResponse](documentation/models/GetEsimMacOkResponse.md)                             |             |
+| [TokenOkResponse](documentation/models/TokenOkResponse.md)                                       |             |
+| [GrantType](documentation/models/GrantType.md)                                                   |             |
+| [Destinations](documentation/models/Destinations.md)                                             |             |
+| [Packages](documentation/models/Packages.md)                                                     |             |
+| [CreatePurchaseV2OkResponsePurchase](documentation/models/CreatePurchaseV2OkResponsePurchase.md) |             |
+| [CreatePurchaseV2OkResponseProfile](documentation/models/CreatePurchaseV2OkResponseProfile.md)   |             |
+| [Purchases](documentation/models/Purchases.md)                                                   |             |
+| [Package](documentation/models/Package.md)                                                       |             |
+| [PurchasesEsim](documentation/models/PurchasesEsim.md)                                           |             |
+| [CreatePurchaseOkResponsePurchase](documentation/models/CreatePurchaseOkResponsePurchase.md)     |             |
+| [CreatePurchaseOkResponseProfile](documentation/models/CreatePurchaseOkResponseProfile.md)       |             |
+| [TopUpEsimOkResponsePurchase](documentation/models/TopUpEsimOkResponsePurchase.md)               |             |
+| [TopUpEsimOkResponseProfile](documentation/models/TopUpEsimOkResponseProfile.md)                 |             |
+| [GetEsimOkResponseEsim](documentation/models/GetEsimOkResponseEsim.md)                           |             |
+| [Device](documentation/models/Device.md)                                                         |             |
+| [GetEsimHistoryOkResponseEsim](documentation/models/GetEsimHistoryOkResponseEsim.md)             |             |
+| [History](documentation/models/History.md)                                                       |             |
+| [GetEsimMacOkResponseEsim](documentation/models/GetEsimMacOkResponseEsim.md)                     |             |
 
 ## License
 
