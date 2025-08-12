@@ -12,12 +12,18 @@ public record Package(
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
         double? DataLimitInBytes = null,
-    /// <value>ISO representation of the package's destination.</value>
+    /// <value>ISO3 representation of the package's destination.</value>
     [property:
         JsonPropertyName("destination"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
         string? Destination = null,
+    /// <value>ISO2 representation of the package's destination.</value>
+    [property:
+        JsonPropertyName("destinationISO2"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        string? DestinationIso2 = null,
     /// <value>Name of the package's destination</value>
     [property:
         JsonPropertyName("destinationName"),
