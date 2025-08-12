@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Celitech.SDK.Models;
 
 public record CreatePurchaseV2Request(
-    /// <value>ISO representation of the package's destination.</value>
+    /// <value>ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.</value>
     [property: JsonPropertyName("destination")]
         string Destination,
     /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20GB</value>
