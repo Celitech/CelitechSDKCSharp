@@ -12,7 +12,6 @@ public class CelitechClient : IDisposable
     private readonly HttpClient _httpClient;
     private readonly TokenManager _tokenManager;
 
-    public OAuthService OAuth { get; private set; }
     public DestinationsService Destinations { get; private set; }
     public PackagesService Packages { get; private set; }
     public PurchasesService Purchases { get; private set; }
@@ -30,7 +29,6 @@ public class CelitechClient : IDisposable
             DefaultRequestHeaders = { { "user-agent", "dotnet/7.0" } },
         };
 
-        OAuth = new OAuthService(_httpClient);
         Destinations = new DestinationsService(_httpClient);
         Packages = new PackagesService(_httpClient);
         Purchases = new PurchasesService(_httpClient);
@@ -60,6 +58,24 @@ public class CelitechClient : IDisposable
     public void SetBaseUrl(Uri uri)
     {
         _httpClient.BaseAddress = uri.EnsureTrailingSlash();
+    }
+
+    /// <summary>
+    /// Sets the timeout for the entire SDK.
+    /// </summary>
+    /// <param name="timeout">The timeout value. Must be a positive TimeSpan or Timeout.InfiniteTimeSpan.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the timeout is not valid.</exception>
+    public void SetTimeout(TimeSpan timeout)
+    {
+        if (timeout <= TimeSpan.Zero && timeout != Timeout.InfiniteTimeSpan)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(timeout),
+                "Timeout must be a positive value or Timeout.InfiniteTimeSpan."
+            );
+        }
+
+        _httpClient.Timeout = timeout;
     }
 
     /// <summary>

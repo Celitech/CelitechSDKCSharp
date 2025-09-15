@@ -22,7 +22,16 @@ public class TokenManager
 
     public async Task<OauthToken> GetTokenAsync(HashSet<string> scopes)
     {
-        if (_token != null && _token.Scopes.IsSupersetOf(scopes))
+        var hasAllScopes = _token != null && _token.Scopes.IsSupersetOf(scopes);
+
+        var validToken =
+            _token != null
+            && (
+                _token.ExpiresAt == null
+                || (_token.ExpiresAt.Value - DateTimeOffset.Now.ToUnixTimeSeconds()) > 5000
+            );
+
+        if (_token != null && hasAllScopes && validToken)
         {
             return _token;
         }
