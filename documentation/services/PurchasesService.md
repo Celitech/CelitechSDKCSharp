@@ -6,6 +6,7 @@ A list of all methods in the `PurchasesService` service. Click on the method nam
 | :---------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [CreatePurchaseV2Async](#createpurchasev2async)             | This endpoint is used to purchase a new eSIM by providing the package details.                                                                                                                                                                                                                                         |
 | [ListPurchasesAsync](#listpurchasesasync)                   | This endpoint can be used to list all the successful purchases made between a given interval.                                                                                                                                                                                                                          |
+| [CreatePurchaseAsync](#createpurchaseasync)                 | This endpoint is used to purchase a new eSIM by providing the package details.                                                                                                                                                                                                                                         |
 | [TopUpEsimAsync](#topupesimasync)                           | This endpoint is used to top-up an eSIM with the previously associated destination by providing an existing ICCID and the package details. The top-up is only feasible for eSIMs in "ENABLED" or "INSTALLED" state. You can check this state using the Get eSIM Status endpoint.                                       |
 | [EditPurchaseAsync](#editpurchaseasync)                     | This endpoint allows you to modify the dates of an existing package with a future activation start time. Editing can only be performed for packages that have not been activated, and it cannot change the package size. The modification must not change the package duration category to ensure pricing consistency. |
 | [GetPurchaseConsumptionAsync](#getpurchaseconsumptionasync) | This endpoint can be called for consumption notifications (e.g. every 1 hour or when the user clicks a button). It returns the data balance (consumption) of purchased packages.                                                                                                                                       |
@@ -86,6 +87,44 @@ var config = new CelitechConfig{
 var client = new CelitechClient(config);
 
 var response = await client.Purchases.ListPurchasesAsync();
+
+Console.WriteLine(response);
+```
+
+## CreatePurchaseAsync
+
+This endpoint is used to purchase a new eSIM by providing the package details.
+
+- HTTP Method: `POST`
+- Endpoint: `/purchases`
+
+**Parameters**
+
+| Name  | Type                  | Required | Description       |
+| :---- | :-------------------- | :------- | :---------------- |
+| input | CreatePurchaseRequest | ✅       | The request body. |
+
+**Return Type**
+
+`CreatePurchaseOkResponse`
+
+**Example Usage Code Snippet**
+
+```csharp
+using Celitech.SDK;
+using Celitech.SDK.Config;
+using Celitech.SDK.Models;
+
+var config = new CelitechConfig{
+    ClientId = "CLIENT_ID",
+	ClientSecret = "CLIENT_SECRET"
+};
+
+var client = new CelitechClient(config);
+
+var input = new CreatePurchaseRequest("FRA", 1, "2023-11-01", "2023-11-20");
+
+var response = await client.Purchases.CreatePurchaseAsync(input);
 
 Console.WriteLine(response);
 ```
