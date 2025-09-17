@@ -23,6 +23,9 @@ public class OAuthService : BaseService
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
         var validationResults = new List<FluentValidation.Results.ValidationResult> { };
+        var validator = new GetAccessTokenRequestValidator();
+        var validationResult = validator.Validate(input);
+        validationResults.Add(validationResult);
 
         var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
         if (combinedFailures.Any())
@@ -38,12 +41,16 @@ public class OAuthService : BaseService
             .SendAsync(request, cancellationToken)
             .ConfigureAwait(false);
 
-        return await response
+        // Standard deserialization
+        var result =
+            await response
                 .EnsureSuccessfulResponse()
                 .Content.ReadFromJsonAsync<GetAccessTokenOkResponse>(
                     _jsonSerializerOptions,
                     cancellationToken
                 )
                 .ConfigureAwait(false) ?? throw new Exception("Failed to deserialize response.");
+
+        return result;
     }
 }

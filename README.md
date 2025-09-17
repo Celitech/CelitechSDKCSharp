@@ -1,4 +1,4 @@
-# Celitech C# SDK 1.3.53
+# Celitech C# SDK 1.3.54
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
@@ -6,8 +6,8 @@ Welcome to the Celitech SDK documentation. This guide will help you get started 
 
 ## Versions
 
-- API version: `1.3.53`
-- SDK version: `1.3.53`
+- API version: `1.3.54`
+- SDK version: `1.3.54`
 
 ## About the API
 
@@ -123,7 +123,6 @@ Below is a list of all available services:
 
 | Name                                                                 |
 | :------------------------------------------------------------------- |
-| [OAuthService](documentation/services/OAuthService.md)               |
 | [DestinationsService](documentation/services/DestinationsService.md) |
 | [PackagesService](documentation/services/PackagesService.md)         |
 | [PurchasesService](documentation/services/PurchasesService.md)       |
@@ -138,8 +137,6 @@ Below is a list of all available models:
 
 | Name                                                                                             | Description |
 | :----------------------------------------------------------------------------------------------- | :---------- |
-| [GetAccessTokenRequest](documentation/models/GetAccessTokenRequest.md)                           |             |
-| [GetAccessTokenOkResponse](documentation/models/GetAccessTokenOkResponse.md)                     |             |
 | [ListDestinationsOkResponse](documentation/models/ListDestinationsOkResponse.md)                 |             |
 | [ListPackagesOkResponse](documentation/models/ListPackagesOkResponse.md)                         |             |
 | [CreatePurchaseV2Request](documentation/models/CreatePurchaseV2Request.md)                       |             |

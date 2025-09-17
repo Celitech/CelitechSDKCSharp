@@ -10,15 +10,15 @@ public class CreatePurchaseRequestValidator : AbstractValidator<CreatePurchaseRe
     {
         RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.Destination)
             .NotNull()
-            .WithMessage("Field destination is required.");
+            .WithMessage("Field destination is required and cannot be null.");
         RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.DataLimitInGb)
             .NotNull()
-            .WithMessage("Field dataLimitInGB is required.");
+            .WithMessage("Field dataLimitInGB is required and cannot be null.");
         RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.StartDate)
             .NotNull()
-            .WithMessage("Field startDate is required.");
+            .WithMessage("Field startDate is required and cannot be null.");
         RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.EndDate)
             .NotNull()
-            .WithMessage("Field endDate is required.");
+            .WithMessage("Field endDate is required and cannot be null.");
     }
 }
