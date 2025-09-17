@@ -47,13 +47,17 @@ public class ESimService : BaseService
             .SendAsync(request, cancellationToken)
             .ConfigureAwait(false);
 
-        return await response
+        // Standard deserialization
+        var result =
+            await response
                 .EnsureSuccessfulResponse()
                 .Content.ReadFromJsonAsync<GetEsimOkResponse>(
                     _jsonSerializerOptions,
                     cancellationToken
                 )
                 .ConfigureAwait(false) ?? throw new Exception("Failed to deserialize response.");
+
+        return result;
     }
 
     /// <summary>Get eSIM Device</summary>
@@ -89,13 +93,17 @@ public class ESimService : BaseService
             .SendAsync(request, cancellationToken)
             .ConfigureAwait(false);
 
-        return await response
+        // Standard deserialization
+        var result =
+            await response
                 .EnsureSuccessfulResponse()
                 .Content.ReadFromJsonAsync<GetEsimDeviceOkResponse>(
                     _jsonSerializerOptions,
                     cancellationToken
                 )
                 .ConfigureAwait(false) ?? throw new Exception("Failed to deserialize response.");
+
+        return result;
     }
 
     /// <summary>Get eSIM History</summary>
@@ -131,13 +139,17 @@ public class ESimService : BaseService
             .SendAsync(request, cancellationToken)
             .ConfigureAwait(false);
 
-        return await response
+        // Standard deserialization
+        var result =
+            await response
                 .EnsureSuccessfulResponse()
                 .Content.ReadFromJsonAsync<GetEsimHistoryOkResponse>(
                     _jsonSerializerOptions,
                     cancellationToken
                 )
                 .ConfigureAwait(false) ?? throw new Exception("Failed to deserialize response.");
+
+        return result;
     }
 
     /// <summary>Get eSIM MAC</summary>
@@ -173,12 +185,16 @@ public class ESimService : BaseService
             .SendAsync(request, cancellationToken)
             .ConfigureAwait(false);
 
-        return await response
+        // Standard deserialization
+        var result =
+            await response
                 .EnsureSuccessfulResponse()
                 .Content.ReadFromJsonAsync<GetEsimMacOkResponse>(
                     _jsonSerializerOptions,
                     cancellationToken
                 )
                 .ConfigureAwait(false) ?? throw new Exception("Failed to deserialize response.");
+
+        return result;
     }
 }

@@ -10,12 +10,12 @@ public class EditPurchaseRequestValidator : AbstractValidator<EditPurchaseReques
     {
         RuleFor(EditPurchaseRequest => EditPurchaseRequest.PurchaseId)
             .NotNull()
-            .WithMessage("Field purchaseId is required.");
+            .WithMessage("Field purchaseId is required and cannot be null.");
         RuleFor(EditPurchaseRequest => EditPurchaseRequest.StartDate)
             .NotNull()
-            .WithMessage("Field startDate is required.");
+            .WithMessage("Field startDate is required and cannot be null.");
         RuleFor(EditPurchaseRequest => EditPurchaseRequest.EndDate)
             .NotNull()
-            .WithMessage("Field endDate is required.");
+            .WithMessage("Field endDate is required and cannot be null.");
     }
 }

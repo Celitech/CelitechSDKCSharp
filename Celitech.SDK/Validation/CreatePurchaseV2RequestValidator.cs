@@ -10,22 +10,22 @@ public class CreatePurchaseV2RequestValidator : AbstractValidator<CreatePurchase
     {
         RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.Destination)
             .NotNull()
-            .WithMessage("Field destination is required.");
+            .WithMessage("Field destination is required and cannot be null.");
         RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.DataLimitInGb)
             .NotNull()
-            .WithMessage("Field dataLimitInGB is required.");
+            .WithMessage("Field dataLimitInGB is required and cannot be null.");
         RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.StartDate)
             .NotNull()
-            .WithMessage("Field startDate is required.");
+            .WithMessage("Field startDate is required and cannot be null.");
         RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.EndDate)
             .NotNull()
-            .WithMessage("Field endDate is required.");
+            .WithMessage("Field endDate is required and cannot be null.");
         RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.Quantity)
             .GreaterThanOrEqualTo(1)
             .WithMessage("Minimum for quantity is 1.")
             .LessThanOrEqualTo(5)
             .WithMessage("Minimum for quantity is 5.")
             .NotNull()
-            .WithMessage("Field quantity is required.");
+            .WithMessage("Field quantity is required and cannot be null.");
     }
 }
