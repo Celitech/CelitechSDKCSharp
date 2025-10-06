@@ -12,6 +12,20 @@ public class GetEsimOkResponseEsimValidator : AbstractValidator<GetEsimOkRespons
             .MinimumLength(18)
             .WithMessage("Minimum length for iccid is 18.")
             .MaximumLength(22)
-            .WithMessage("Minimum length for iccid is 18.");
+            .WithMessage("Minimum length for iccid is 18.")
+            .NotNull()
+            .WithMessage("Field iccid is required and cannot be null.");
+        RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.SmdpAddress)
+            .NotNull()
+            .WithMessage("Field smdpAddress is required and cannot be null.");
+        RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.ManualActivationCode)
+            .NotNull()
+            .WithMessage("Field manualActivationCode is required and cannot be null.");
+        RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.Status)
+            .NotNull()
+            .WithMessage("Field status is required and cannot be null.");
+        RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.IsTopUpAllowed)
+            .NotNull()
+            .WithMessage("Field isTopUpAllowed is required and cannot be null.");
     }
 }

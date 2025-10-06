@@ -6,5 +6,10 @@ using FluentValidation.Results;
 
 public class ListDestinationsOkResponseValidator : AbstractValidator<ListDestinationsOkResponse?>
 {
-    public ListDestinationsOkResponseValidator() { }
+    public ListDestinationsOkResponseValidator()
+    {
+        RuleFor(ListDestinationsOkResponse => ListDestinationsOkResponse.Destinations1)
+            .NotNull()
+            .WithMessage("Field destinations is required and cannot be null.");
+    }
 }
