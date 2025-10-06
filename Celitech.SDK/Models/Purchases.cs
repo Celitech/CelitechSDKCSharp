@@ -65,9 +65,6 @@ public record Purchases(
     ]
         string? PurchaseType = null,
     /// <value>The `referenceId` that was provided by the partner during the purchase or top-up flow. This identifier can be used for analytics and debugging purposes.</value>
-    [property:
-        JsonPropertyName("referenceId"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
+    [property: JsonPropertyName("referenceId")]
         string? ReferenceId = null
 );

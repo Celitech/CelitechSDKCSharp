@@ -1,4 +1,4 @@
-# Celitech C# SDK 1.3.55
+# Celitech C# SDK 1.3.56
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
@@ -6,8 +6,8 @@ Welcome to the Celitech SDK documentation. This guide will help you get started 
 
 ## Versions
 
-- API version: `1.3.55`
-- SDK version: `1.3.55`
+- API version: `1.3.56`
+- SDK version: `1.3.56`
 
 ## About the API
 
