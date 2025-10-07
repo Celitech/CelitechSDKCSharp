@@ -4,7 +4,7 @@
 
 | Name | Type                     | Required | Description |
 | :--- | :----------------------- | :------- | :---------- |
-| Esim | GetEsimMacOkResponseEsim | ❌       |             |
+| Esim | GetEsimMacOkResponseEsim | ✅       |             |
 
 # GetEsimMacOkResponseEsim
 
@@ -12,6 +12,6 @@
 
 | Name                 | Type   | Required | Description                |
 | :------------------- | :----- | :------- | :------------------------- |
-| Iccid                | string | ❌       | ID of the eSIM             |
-| SmdpAddress          | string | ❌       | SM-DP+ Address             |
-| ManualActivationCode | string | ❌       | The manual activation code |
+| Iccid                | string | ✅       | ID of the eSIM             |
+| SmdpAddress          | string | ✅       | SM-DP+ Address             |
+| ManualActivationCode | string | ✅       | The manual activation code |
