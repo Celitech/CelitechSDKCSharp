@@ -25,6 +25,8 @@ public class GetEsimMacOkResponseValidator : AbstractValidator<GetEsimMacOkRespo
                         }
                     }
                 }
-            );
+            )
+            .NotNull()
+            .WithMessage("Field esim is required and cannot be null.");
     }
 }
