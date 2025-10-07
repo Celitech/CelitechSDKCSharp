@@ -7,5 +7,15 @@ using FluentValidation.Results;
 public class GetPurchaseConsumptionOkResponseValidator
     : AbstractValidator<GetPurchaseConsumptionOkResponse?>
 {
-    public GetPurchaseConsumptionOkResponseValidator() { }
+    public GetPurchaseConsumptionOkResponseValidator()
+    {
+        RuleFor(GetPurchaseConsumptionOkResponse =>
+                GetPurchaseConsumptionOkResponse.DataUsageRemainingInBytes
+            )
+            .NotNull()
+            .WithMessage("Field dataUsageRemainingInBytes is required and cannot be null.");
+        RuleFor(GetPurchaseConsumptionOkResponse => GetPurchaseConsumptionOkResponse.Status)
+            .NotNull()
+            .WithMessage("Field status is required and cannot be null.");
+    }
 }
