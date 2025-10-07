@@ -25,6 +25,8 @@ public class GetEsimHistoryOkResponseValidator : AbstractValidator<GetEsimHistor
                         }
                     }
                 }
-            );
+            )
+            .NotNull()
+            .WithMessage("Field esim is required and cannot be null.");
     }
 }

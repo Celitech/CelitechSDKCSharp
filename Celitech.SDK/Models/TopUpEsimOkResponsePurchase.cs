@@ -4,32 +4,20 @@ namespace Celitech.SDK.Models;
 
 public record TopUpEsimOkResponsePurchase(
     /// <value>ID of the purchase</value>
-    [property: JsonPropertyName("id"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        string? Id = null,
+    [property: JsonPropertyName("id")]
+        string Id,
     /// <value>ID of the package</value>
-    [property:
-        JsonPropertyName("packageId"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        string? PackageId = null,
+    [property: JsonPropertyName("packageId")]
+        string PackageId,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property:
-        JsonPropertyName("startDate"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        string? StartDate = null,
+    [property: JsonPropertyName("startDate")]
+        string StartDate,
     /// <value>End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property:
-        JsonPropertyName("endDate"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        string? EndDate = null,
+    [property: JsonPropertyName("endDate")]
+        string EndDate,
     /// <value>Creation date of the purchase in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property:
-        JsonPropertyName("createdDate"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        string? CreatedDate = null,
+    [property: JsonPropertyName("createdDate")]
+        string CreatedDate,
     /// <value>Epoch value representing the start time of the package's validity</value>
     [property:
         JsonPropertyName("startTime"),
