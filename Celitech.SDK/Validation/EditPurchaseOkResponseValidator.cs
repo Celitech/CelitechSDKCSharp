@@ -6,5 +6,10 @@ using FluentValidation.Results;
 
 public class EditPurchaseOkResponseValidator : AbstractValidator<EditPurchaseOkResponse?>
 {
-    public EditPurchaseOkResponseValidator() { }
+    public EditPurchaseOkResponseValidator()
+    {
+        RuleFor(EditPurchaseOkResponse => EditPurchaseOkResponse.PurchaseId)
+            .NotNull()
+            .WithMessage("Field purchaseId is required and cannot be null.");
+    }
 }
