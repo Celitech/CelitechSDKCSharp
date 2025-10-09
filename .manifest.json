@@ -1,10 +1,10 @@
 {
-  "liblabVersion": "2.25.46",
-  "date": "2025-10-01T16:10:04.949Z",
+  "liblabVersion": "2.25.47",
+  "date": "2025-10-09T15:41:38.796Z",
   "config": {
-    "apiId": 2785,
+    "apiId": 2802,
     "sdkName": "Celitech",
-    "sdkVersion": "1.3.55",
+    "sdkVersion": "1.3.58",
     "languages": ["csharp"],
     "auth": ["oauth"],
     "docs": ["snippets", "enhancedApiSpec"],
@@ -13,7 +13,7 @@
     "rawConfig": {
       "sdkName": "Celitech",
       "apiName": "Celitech",
-      "apiVersion": "1.3.55",
+      "apiVersion": "1.3.58",
       "specFilePath": "swagger.yaml",
       "languages": ["typescript", "python", "php", "java", "go", "csharp"],
       "docs": ["snippets", "enhancedApiSpec"],
@@ -56,25 +56,25 @@
       "languageOptions": {
         "typescript": {
           "githubRepoName": "CelitechSDKTypeScript",
-          "sdkVersion": "1.3.55",
+          "sdkVersion": "1.3.58",
           "liblabVersion": "2",
           "npmName": "celitech-sdk"
         },
         "python": {
           "githubRepoName": "CelitechSDKPython",
-          "sdkVersion": "1.3.55",
+          "sdkVersion": "1.3.58",
           "liblabVersion": "2",
           "pypiPackageName": "celitech-sdk"
         },
         "php": {
           "githubRepoName": "CelitechSDKPHP",
-          "sdkVersion": "1.3.55",
+          "sdkVersion": "1.3.58",
           "liblabVersion": "2",
           "packageName": "celitech-sdk/sdk"
         },
         "java": {
           "githubRepoName": "CelitechSDKJava",
-          "sdkVersion": "1.3.55",
+          "sdkVersion": "1.3.58",
           "liblabVersion": "2",
           "groupId": "io.github.celitech",
           "artifactId": "celitech-sdk",
@@ -90,13 +90,13 @@
         },
         "go": {
           "githubRepoName": "CelitechSDKGo",
-          "sdkVersion": "1.3.55",
+          "sdkVersion": "1.3.58",
           "liblabVersion": "2",
           "goModuleName": "github.com/Celitech/CelitechSDKGo"
         },
         "csharp": {
           "githubRepoName": "CelitechSDKCSharp",
-          "sdkVersion": "1.3.55",
+          "sdkVersion": "1.3.58",
           "liblabVersion": "2",
           "packageId": "Celitech.SDK"
         }
@@ -115,7 +115,7 @@
       }
     },
     "liblabConfigVersion": "1.0.0",
-    "apiVersion": "1.3.55",
+    "apiVersion": "1.3.58",
     "apiName": "Celitech",
     "specFilePath": "swagger.yaml",
     "createDocs": false,
@@ -125,7 +125,7 @@
         "ignoreFiles": [],
         "liblabVersion": "2",
         "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.55",
+        "sdkVersion": "1.3.58",
         "packageId": "Celitech.SDK",
         "useOptionalWrapper": false,
         "validateResponses": false
@@ -135,7 +135,7 @@
         "ignoreFiles": [],
         "liblabVersion": "2",
         "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.55",
+        "sdkVersion": "1.3.58",
         "goModuleName": "github.com/Celitech/CelitechSDKGo"
       },
       "java": {
@@ -144,7 +144,7 @@
         "ignoreFiles": [],
         "liblabVersion": "2",
         "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.55",
+        "sdkVersion": "1.3.58",
         "groupId": "io.github.celitech",
         "artifactId": "celitech-sdk",
         "includeKotlinSnippets": false,
@@ -162,7 +162,7 @@
         "ignoreFiles": [],
         "liblabVersion": "2",
         "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.55",
+        "sdkVersion": "1.3.58",
         "alwaysInitializeOptionals": true,
         "pypiPackageName": "celitech-sdk"
       },
@@ -171,7 +171,7 @@
         "ignoreFiles": [],
         "liblabVersion": "2",
         "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.55",
+        "sdkVersion": "1.3.58",
         "packageName": "celitech-sdk/sdk"
       },
       "typescript": {
@@ -179,7 +179,7 @@
         "ignoreFiles": [],
         "liblabVersion": "2",
         "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.55",
+        "sdkVersion": "1.3.58",
         "bundle": true,
         "denoteCommon": false,
         "exportClassDefault": false,
@@ -268,7 +268,7 @@
     "httpLibrary": {
       "name": "axios",
       "packages": {
-        "axios": "^1.9.0"
+        "axios": "^1.12.2"
       },
       "languages": ["typescript"]
     },
@@ -319,7 +319,6 @@
     "documentation/snippets/esim-get.md",
     "documentation/snippets/esim-{iccid}-device-get.md",
     "documentation/snippets/esim-{iccid}-history-get.md",
-    "documentation/snippets/esim-{iccid}-mac-get.md",
     "documentation/snippets/iframe-token-post.md",
     "documentation/models/CreatePurchaseV2Request.md",
     "documentation/models/CreatePurchaseRequest.md",
@@ -342,7 +341,6 @@
     "documentation/models/GetEsimOkResponseEsim.md",
     "documentation/models/Device.md",
     "documentation/models/History.md",
-    "documentation/models/GetEsimMacOkResponseEsim.md",
     ".devcontainer/devcontainer.json",
     "Celitech.SDK/Http/ApiException.cs",
     "Celitech.SDK/Http/Extensions/HttpResponseMessageExtensions.cs",
@@ -364,7 +362,6 @@
     "Celitech.SDK/Validation/GetEsimOkResponseValidator.cs",
     "Celitech.SDK/Validation/GetEsimDeviceOkResponseValidator.cs",
     "Celitech.SDK/Validation/GetEsimHistoryOkResponseValidator.cs",
-    "Celitech.SDK/Validation/GetEsimMacOkResponseValidator.cs",
     "Celitech.SDK/Validation/TokenOkResponseValidator.cs",
     "Celitech.SDK/Validation/GrantTypeValidator.cs",
     "Celitech.SDK/Validation/DestinationsValidator.cs",
@@ -382,7 +379,6 @@
     "Celitech.SDK/Validation/DeviceValidator.cs",
     "Celitech.SDK/Validation/GetEsimHistoryOkResponseEsimValidator.cs",
     "Celitech.SDK/Validation/HistoryValidator.cs",
-    "Celitech.SDK/Validation/GetEsimMacOkResponseEsimValidator.cs",
     "Celitech.SDK/Http/Extensions/HttpRequestMessageExtensions.cs",
     "Celitech.SDK/Http/ValidationException.cs",
     "Celitech.SDK/Validation/FloatValidator.cs",
@@ -410,7 +406,6 @@
     "Celitech.SDK/Models/GetEsimOkResponse.cs",
     "Celitech.SDK/Models/GetEsimDeviceOkResponse.cs",
     "Celitech.SDK/Models/GetEsimHistoryOkResponse.cs",
-    "Celitech.SDK/Models/GetEsimMacOkResponse.cs",
     "Celitech.SDK/Models/TokenOkResponse.cs",
     "Celitech.SDK/Models/GrantType.cs",
     "Celitech.SDK/Models/Destinations.cs",
@@ -428,13 +423,12 @@
     "Celitech.SDK/Models/Device.cs",
     "Celitech.SDK/Models/GetEsimHistoryOkResponseEsim.cs",
     "Celitech.SDK/Models/History.cs",
-    "Celitech.SDK/Models/GetEsimMacOkResponseEsim.cs",
     "documentation/models/ListDestinationsOkResponse.md",
     "documentation/models/ListPackagesOkResponse.md",
     "documentation/models/GetEsimOkResponse.md",
     "documentation/models/GetEsimDeviceOkResponse.md",
-    "documentation/models/GetEsimMacOkResponse.md",
     "documentation/models/GetEsimHistoryOkResponseEsim.md",
+    "Celitech.SDK/Services/ESimService.cs",
     "documentation/services/DestinationsService.md",
     "documentation/services/PackagesService.md",
     "documentation/services/IFrameService.md",
@@ -443,10 +437,9 @@
     "documentation/models/TopUpEsimOkResponse.md",
     "documentation/models/GetEsimHistoryOkResponse.md",
     "documentation/models/Purchases.md",
-    "Celitech.SDK/Services/ESimService.cs",
     "documentation/models/ListPurchasesOkResponse.md",
-    "Celitech.SDK/Services/PurchasesService.cs",
     "documentation/services/ESimService.md",
+    "Celitech.SDK/Services/PurchasesService.cs",
     "documentation/services/PurchasesService.md",
     "README.md"
   ]

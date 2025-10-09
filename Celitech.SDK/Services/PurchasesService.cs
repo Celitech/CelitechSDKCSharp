@@ -58,6 +58,7 @@ public class PurchasesService : BaseService
     /// <param name="iccid">ID of the eSIM</param>
     /// <param name="afterDate">Start date of the interval for filtering purchases in the format 'yyyy-MM-dd'</param>
     /// <param name="beforeDate">End date of the interval for filtering purchases in the format 'yyyy-MM-dd'</param>
+    /// <param name="email">Email associated to the purchase.</param>
     /// <param name="referenceId">The referenceId that was provided by the partner during the purchase or topup flow.</param>
     /// <param name="afterCursor">To get the next batch of results, use this parameter. It tells the API where to start fetching data after the last item you received. It helps you avoid repeats and efficiently browse through large sets of data.</param>
     /// <param name="limit">Maximum number of purchases to be returned in the response. The value must be greater than 0 and less than or equal to 100. If not provided, the default value is 20</param>
@@ -67,6 +68,7 @@ public class PurchasesService : BaseService
         string? iccid = null,
         string? afterDate = null,
         string? beforeDate = null,
+        string? email = null,
         string? referenceId = null,
         string? afterCursor = null,
         double? limit = null,
@@ -95,6 +97,7 @@ public class PurchasesService : BaseService
             .SetOptionalQueryParameter("iccid", iccid)
             .SetOptionalQueryParameter("afterDate", afterDate)
             .SetOptionalQueryParameter("beforeDate", beforeDate)
+            .SetOptionalQueryParameter("email", email)
             .SetOptionalQueryParameter("referenceId", referenceId)
             .SetOptionalQueryParameter("afterCursor", afterCursor)
             .SetOptionalQueryParameter("limit", limit)
@@ -200,7 +203,16 @@ public class PurchasesService : BaseService
         return result;
     }
 
-    /// <summary>This endpoint allows you to modify the dates of an existing package with a future activation start time. Editing can only be performed for packages that have not been activated, and it cannot change the package size. The modification must not change the package duration category to ensure pricing consistency.</summary>
+    /// <summary>
+    /// This endpoint allows you to modify the validity dates of an existing purchase.
+    ///
+    /// **Behavior:**
+    /// - If the purchase has **not yet been activated**, both the start and end dates can be updated.
+    /// - If the purchase is **already active**, only the **end date** can be updated, while the **start date must remain unchanged** (and should be passed as originally set).
+    /// - Updates must comply with the same pricing structure; the modification cannot alter the package size or change its duration category.
+    ///
+    /// The end date can be extended or shortened as long as it adheres to the same pricing category and does not exceed the allowed duration limits.
+    /// </summary>
     public async Task<EditPurchaseOkResponse> EditPurchaseAsync(
         EditPurchaseRequest input,
         CancellationToken cancellationToken = default
