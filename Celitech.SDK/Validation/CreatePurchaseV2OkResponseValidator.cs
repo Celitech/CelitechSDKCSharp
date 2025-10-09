@@ -8,6 +8,26 @@ public class CreatePurchaseV2OkResponseValidator : AbstractValidator<CreatePurch
 {
     public CreatePurchaseV2OkResponseValidator()
     {
+        RuleFor(CreatePurchaseV2OkResponse => CreatePurchaseV2OkResponse.Purchase)
+            .Custom(
+                (createPurchaseV2OkResponsePurchase, context) =>
+                {
+                    if (createPurchaseV2OkResponsePurchase != null)
+                    {
+                        var validator = new CreatePurchaseV2OkResponsePurchaseValidator();
+                        var result = validator.Validate(createPurchaseV2OkResponsePurchase);
+                        if (!result.IsValid)
+                        {
+                            foreach (var failure in result.Errors)
+                            {
+                                context.AddFailure(failure.PropertyName, failure.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            )
+            .NotNull()
+            .WithMessage("Field purchase is required and cannot be null.");
         RuleFor(CreatePurchaseV2OkResponse => CreatePurchaseV2OkResponse.Profile)
             .Custom(
                 (createPurchaseV2OkResponseProfile, context) =>
@@ -25,6 +45,8 @@ public class CreatePurchaseV2OkResponseValidator : AbstractValidator<CreatePurch
                         }
                     }
                 }
-            );
+            )
+            .NotNull()
+            .WithMessage("Field profile is required and cannot be null.");
     }
 }

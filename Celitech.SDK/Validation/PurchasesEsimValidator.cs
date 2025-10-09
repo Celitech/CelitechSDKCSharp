@@ -12,6 +12,8 @@ public class PurchasesEsimValidator : AbstractValidator<PurchasesEsim?>
             .MinimumLength(18)
             .WithMessage("Minimum length for iccid is 18.")
             .MaximumLength(22)
-            .WithMessage("Minimum length for iccid is 18.");
+            .WithMessage("Minimum length for iccid is 18.")
+            .NotNull()
+            .WithMessage("Field iccid is required and cannot be null.");
     }
 }

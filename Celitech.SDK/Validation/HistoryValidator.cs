@@ -6,5 +6,13 @@ using FluentValidation.Results;
 
 public class HistoryValidator : AbstractValidator<History?>
 {
-    public HistoryValidator() { }
+    public HistoryValidator()
+    {
+        RuleFor(History => History.Status)
+            .NotNull()
+            .WithMessage("Field status is required and cannot be null.");
+        RuleFor(History => History.StatusDate)
+            .NotNull()
+            .WithMessage("Field statusDate is required and cannot be null.");
+    }
 }
