@@ -6,5 +6,10 @@ using FluentValidation.Results;
 
 public class ListPurchasesOkResponseValidator : AbstractValidator<ListPurchasesOkResponse?>
 {
-    public ListPurchasesOkResponseValidator() { }
+    public ListPurchasesOkResponseValidator()
+    {
+        RuleFor(ListPurchasesOkResponse => ListPurchasesOkResponse.Purchases1)
+            .NotNull()
+            .WithMessage("Field purchases is required and cannot be null.");
+    }
 }
