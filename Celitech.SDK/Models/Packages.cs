@@ -4,42 +4,24 @@ namespace Celitech.SDK.Models;
 
 public record Packages(
     /// <value>ID of the package</value>
-    [property: JsonPropertyName("id"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        string? Id = null,
+    [property: JsonPropertyName("id")]
+        string Id,
     /// <value>ISO3 representation of the package's destination.</value>
-    [property:
-        JsonPropertyName("destination"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        string? Destination = null,
+    [property: JsonPropertyName("destination")]
+        string Destination,
     /// <value>ISO2 representation of the package's destination.</value>
-    [property:
-        JsonPropertyName("destinationISO2"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        string? DestinationIso2 = null,
+    [property: JsonPropertyName("destinationISO2")]
+        string DestinationIso2,
     /// <value>Size of the package in Bytes</value>
-    [property:
-        JsonPropertyName("dataLimitInBytes"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        double? DataLimitInBytes = null,
+    [property: JsonPropertyName("dataLimitInBytes")]
+        double DataLimitInBytes,
     /// <value>Min number of days for the package</value>
-    [property:
-        JsonPropertyName("minDays"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        double? MinDays = null,
+    [property: JsonPropertyName("minDays")]
+        double MinDays,
     /// <value>Max number of days for the package</value>
-    [property:
-        JsonPropertyName("maxDays"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        double? MaxDays = null,
+    [property: JsonPropertyName("maxDays")]
+        double MaxDays,
     /// <value>Price of the package in cents</value>
-    [property:
-        JsonPropertyName("priceInCents"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        double? PriceInCents = null
+    [property: JsonPropertyName("priceInCents")]
+        double PriceInCents
 );
