@@ -14,7 +14,7 @@ public class ESimService : BaseService
     internal ESimService(HttpClient httpClient)
         : base(httpClient) { }
 
-    /// <summary>Get eSIM Status</summary>
+    /// <summary>Get eSIM</summary>
     /// <param name="iccid">ID of the eSIM</param>
     public async Task<GetEsimOkResponse> GetEsimAsync(
         string iccid,
@@ -144,52 +144,6 @@ public class ESimService : BaseService
             await response
                 .EnsureSuccessfulResponse()
                 .Content.ReadFromJsonAsync<GetEsimHistoryOkResponse>(
-                    _jsonSerializerOptions,
-                    cancellationToken
-                )
-                .ConfigureAwait(false) ?? throw new Exception("Failed to deserialize response.");
-
-        return result;
-    }
-
-    /// <summary>Get eSIM MAC</summary>
-    /// <param name="iccid">ID of the eSIM</param>
-    public async Task<GetEsimMacOkResponse> GetEsimMacAsync(
-        string iccid,
-        CancellationToken cancellationToken = default
-    )
-    {
-        ArgumentNullException.ThrowIfNull(iccid, nameof(iccid));
-        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-        var iccidValidationResult = new StringValidator()
-            .WithMaximumLength(22)
-            .WithMinimumLength(18)
-            .ValidateRequired<string?>((string?)iccid);
-        if (iccidValidationResult != null)
-        {
-            validationResults.Add(iccidValidationResult);
-        }
-
-        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
-        if (combinedFailures.Any())
-        {
-            throw new Http.Exceptions.ValidationException(combinedFailures);
-        }
-
-        var request = new RequestBuilder(HttpMethod.Get, "esim/{iccid}/mac")
-            .SetPathParameter("iccid", iccid)
-            .SetScopes(new HashSet<string> { })
-            .Build();
-
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
-            .ConfigureAwait(false);
-
-        // Standard deserialization
-        var result =
-            await response
-                .EnsureSuccessfulResponse()
-                .Content.ReadFromJsonAsync<GetEsimMacOkResponse>(
                     _jsonSerializerOptions,
                     cancellationToken
                 )

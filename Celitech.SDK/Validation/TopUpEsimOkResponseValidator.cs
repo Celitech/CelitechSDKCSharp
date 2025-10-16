@@ -8,6 +8,26 @@ public class TopUpEsimOkResponseValidator : AbstractValidator<TopUpEsimOkRespons
 {
     public TopUpEsimOkResponseValidator()
     {
+        RuleFor(TopUpEsimOkResponse => TopUpEsimOkResponse.Purchase)
+            .Custom(
+                (topUpEsimOkResponsePurchase, context) =>
+                {
+                    if (topUpEsimOkResponsePurchase != null)
+                    {
+                        var validator = new TopUpEsimOkResponsePurchaseValidator();
+                        var result = validator.Validate(topUpEsimOkResponsePurchase);
+                        if (!result.IsValid)
+                        {
+                            foreach (var failure in result.Errors)
+                            {
+                                context.AddFailure(failure.PropertyName, failure.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            )
+            .NotNull()
+            .WithMessage("Field purchase is required and cannot be null.");
         RuleFor(TopUpEsimOkResponse => TopUpEsimOkResponse.Profile)
             .Custom(
                 (topUpEsimOkResponseProfile, context) =>
@@ -25,6 +45,8 @@ public class TopUpEsimOkResponseValidator : AbstractValidator<TopUpEsimOkRespons
                         }
                     }
                 }
-            );
+            )
+            .NotNull()
+            .WithMessage("Field profile is required and cannot be null.");
     }
 }
