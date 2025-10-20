@@ -55,6 +55,7 @@ public class PurchasesService : BaseService
     }
 
     /// <summary>This endpoint can be used to list all the successful purchases made between a given interval.</summary>
+    /// <param name="purchaseId">ID of the purchase</param>
     /// <param name="iccid">ID of the eSIM</param>
     /// <param name="afterDate">Start date of the interval for filtering purchases in the format 'yyyy-MM-dd'</param>
     /// <param name="beforeDate">End date of the interval for filtering purchases in the format 'yyyy-MM-dd'</param>
@@ -64,8 +65,8 @@ public class PurchasesService : BaseService
     /// <param name="limit">Maximum number of purchases to be returned in the response. The value must be greater than 0 and less than or equal to 100. If not provided, the default value is 20</param>
     /// <param name="after">Epoch value representing the start of the time interval for filtering purchases</param>
     /// <param name="before">Epoch value representing the end of the time interval for filtering purchases</param>
-    /// <param name="purchaseId">The id of a specific purchase.</param>
     public async Task<ListPurchasesOkResponse> ListPurchasesAsync(
+        string? purchaseId = null,
         string? iccid = null,
         string? afterDate = null,
         string? beforeDate = null,
@@ -75,7 +76,6 @@ public class PurchasesService : BaseService
         double? limit = null,
         double? after = null,
         double? before = null,
-        string? purchaseId = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -96,6 +96,7 @@ public class PurchasesService : BaseService
         }
 
         var request = new RequestBuilder(HttpMethod.Get, "purchases")
+            .SetOptionalQueryParameter("purchaseId", purchaseId)
             .SetOptionalQueryParameter("iccid", iccid)
             .SetOptionalQueryParameter("afterDate", afterDate)
             .SetOptionalQueryParameter("beforeDate", beforeDate)
@@ -105,7 +106,6 @@ public class PurchasesService : BaseService
             .SetOptionalQueryParameter("limit", limit)
             .SetOptionalQueryParameter("after", after)
             .SetOptionalQueryParameter("before", before)
-            .SetOptionalQueryParameter("purchaseId", purchaseId)
             .SetScopes(new HashSet<string> { })
             .Build();
 
