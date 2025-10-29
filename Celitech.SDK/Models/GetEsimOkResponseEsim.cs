@@ -20,5 +20,11 @@ public record GetEsimOkResponseEsim(
         string Status,
     /// <value>Indicates whether the eSIM is currently eligible for a top-up. This flag should be checked before attempting a top-up request.</value>
     [property: JsonPropertyName("isTopUpAllowed")]
-        bool IsTopUpAllowed
+        bool IsTopUpAllowed,
+    /// <value>Status of the eSIM connectivity, possible values are 'ACTIVE' or 'NOT_ACTIVE'</value>
+    [property:
+        JsonPropertyName("connectivityStatus"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        string? ConnectivityStatus = null
 );
