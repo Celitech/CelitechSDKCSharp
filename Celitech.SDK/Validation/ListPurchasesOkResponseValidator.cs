@@ -8,7 +8,7 @@ public class ListPurchasesOkResponseValidator : AbstractValidator<ListPurchasesO
 {
     public ListPurchasesOkResponseValidator()
     {
-        RuleFor(ListPurchasesOkResponse => ListPurchasesOkResponse.Purchases1)
+        RuleFor(ListPurchasesOkResponse => ListPurchasesOkResponse.Purchases)
             .NotNull()
             .WithMessage("Field purchases is required and cannot be null.");
     }
