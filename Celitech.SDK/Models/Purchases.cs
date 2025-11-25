@@ -15,7 +15,7 @@ public record Purchases(
     /// <value>Creation date of the purchase in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
     [property: JsonPropertyName("createdDate")]
         string CreatedDate,
-    [property: JsonPropertyName("package")] Package Package1,
+    [property: JsonPropertyName("package")] Package Package,
     [property: JsonPropertyName("esim")] PurchasesEsim Esim,
     /// <value>The `source` indicates whether the purchase was made from the API, dashboard, landing-page, promo-page or iframe. For purchases made before September 8, 2023, the value will be displayed as 'Not available'.</value>
     [property: JsonPropertyName("source")]
