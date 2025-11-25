@@ -8,7 +8,7 @@ public class GetEsimDeviceOkResponseValidator : AbstractValidator<GetEsimDeviceO
 {
     public GetEsimDeviceOkResponseValidator()
     {
-        RuleFor(GetEsimDeviceOkResponse => GetEsimDeviceOkResponse.Device1)
+        RuleFor(GetEsimDeviceOkResponse => GetEsimDeviceOkResponse.Device)
             .Custom(
                 (device, context) =>
                 {

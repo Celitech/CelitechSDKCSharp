@@ -31,6 +31,9 @@ public class GetEsimOkResponseEsimValidator : AbstractValidator<GetEsimOkRespons
         RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.Status)
             .NotNull()
             .WithMessage("Field status is required and cannot be null.");
+        RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.ConnectivityStatus)
+            .NotNull()
+            .WithMessage("Field connectivityStatus is required and cannot be null.");
         RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.IsTopUpAllowed)
             .NotNull()
             .WithMessage("Field isTopUpAllowed is required and cannot be null.");
