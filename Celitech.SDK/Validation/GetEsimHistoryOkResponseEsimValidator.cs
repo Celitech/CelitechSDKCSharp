@@ -16,7 +16,7 @@ public class GetEsimHistoryOkResponseEsimValidator
             .WithMessage("Minimum length for iccid is 18.")
             .NotNull()
             .WithMessage("Field iccid is required and cannot be null.");
-        RuleFor(GetEsimHistoryOkResponseEsim => GetEsimHistoryOkResponseEsim.History1)
+        RuleFor(GetEsimHistoryOkResponseEsim => GetEsimHistoryOkResponseEsim.History)
             .NotNull()
             .WithMessage("Field history is required and cannot be null.");
     }
