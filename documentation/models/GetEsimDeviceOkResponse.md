@@ -2,9 +2,9 @@
 
 **Properties**
 
-| Name    | Type   | Required | Description |
-| :------ | :----- | :------- | :---------- |
-| Device1 | Device | ✅       |             |
+| Name   | Type   | Required | Description |
+| :----- | :----- | :------- | :---------- |
+| Device | Device | ✅       |             |
 
 # Device
 

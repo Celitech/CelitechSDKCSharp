@@ -8,7 +8,7 @@ public class ListPackagesOkResponseValidator : AbstractValidator<ListPackagesOkR
 {
     public ListPackagesOkResponseValidator()
     {
-        RuleFor(ListPackagesOkResponse => ListPackagesOkResponse.Packages1)
+        RuleFor(ListPackagesOkResponse => ListPackagesOkResponse.Packages)
             .NotNull()
             .WithMessage("Field packages is required and cannot be null.");
     }

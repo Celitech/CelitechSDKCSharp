@@ -8,7 +8,7 @@ public class ListDestinationsOkResponseValidator : AbstractValidator<ListDestina
 {
     public ListDestinationsOkResponseValidator()
     {
-        RuleFor(ListDestinationsOkResponse => ListDestinationsOkResponse.Destinations1)
+        RuleFor(ListDestinationsOkResponse => ListDestinationsOkResponse.Destinations)
             .NotNull()
             .WithMessage("Field destinations is required and cannot be null.");
     }
