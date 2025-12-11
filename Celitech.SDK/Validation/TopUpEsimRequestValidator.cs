@@ -18,11 +18,5 @@ public class TopUpEsimRequestValidator : AbstractValidator<TopUpEsimRequest?>
         RuleFor(TopUpEsimRequest => TopUpEsimRequest.DataLimitInGb)
             .NotNull()
             .WithMessage("Field dataLimitInGB is required and cannot be null.");
-        RuleFor(TopUpEsimRequest => TopUpEsimRequest.StartDate)
-            .NotNull()
-            .WithMessage("Field startDate is required and cannot be null.");
-        RuleFor(TopUpEsimRequest => TopUpEsimRequest.EndDate)
-            .NotNull()
-            .WithMessage("Field endDate is required and cannot be null.");
     }
 }
