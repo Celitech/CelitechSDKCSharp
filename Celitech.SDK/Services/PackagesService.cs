@@ -22,7 +22,6 @@ public class PackagesService : BaseService
     /// <param name="limit">Maximum number of packages to be returned in the response. The value must be greater than 0 and less than or equal to 160. If not provided, the default value is 20</param>
     /// <param name="startTime">Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months</param>
     /// <param name="endTime">Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time</param>
-    /// <param name="duration">Duration in seconds for the package's validity. If this parameter is present, it will override the startTime and endTime parameters. The maximum duration for a package's validity period is 90 days</param>
     public async Task<ListPackagesOkResponse> ListPackagesAsync(
         string? destination = null,
         string? startDate = null,
@@ -31,7 +30,6 @@ public class PackagesService : BaseService
         double? limit = null,
         long? startTime = null,
         long? endTime = null,
-        double? duration = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -51,7 +49,6 @@ public class PackagesService : BaseService
             .SetOptionalQueryParameter("limit", limit)
             .SetOptionalQueryParameter("startTime", startTime)
             .SetOptionalQueryParameter("endTime", endTime)
-            .SetOptionalQueryParameter("duration", duration)
             .SetScopes(new HashSet<string> { })
             .Build();
 

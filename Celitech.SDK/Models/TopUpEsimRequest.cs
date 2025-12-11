@@ -10,11 +10,23 @@ public record TopUpEsimRequest(
     [property: JsonPropertyName("dataLimitInGB")]
         double DataLimitInGb,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.</value>
-    [property: JsonPropertyName("startDate")]
-        string StartDate,
+    [property:
+        JsonPropertyName("startDate"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        string? StartDate = null,
     /// <value>End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.</value>
-    [property: JsonPropertyName("endDate")]
-        string EndDate,
+    [property:
+        JsonPropertyName("endDate"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        string? EndDate = null,
+    /// <value>Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration.</value>
+    [property:
+        JsonPropertyName("duration"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        TopUpEsimRequestDuration? Duration = null,
     /// <value>Email address where the purchase confirmation email will be sent (excluding QR Code & activation steps).</value>
     [property:
         JsonPropertyName("email"),

@@ -69,7 +69,7 @@ public class TokenManager
 
         var response = await service.GetAccessTokenAsync(
             input: new GetAccessTokenRequest(
-                GrantType1: GrantType.ClientCredentials,
+                GrantType: GrantType.ClientCredentials,
                 ClientId: this.ClientId,
                 ClientSecret: this.ClientSecret
             )
