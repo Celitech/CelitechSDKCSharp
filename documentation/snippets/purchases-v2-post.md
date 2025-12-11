@@ -10,7 +10,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var input = new CreatePurchaseV2Request("FRA", 1, "2023-11-01", "2023-11-20", 1);
+var input = new CreatePurchaseV2Request("FRA", 1, 1);
 
 var response = await client.Purchases.CreatePurchaseV2Async(input);
 

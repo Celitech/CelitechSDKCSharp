@@ -15,7 +15,7 @@ public class PurchasesValidator : AbstractValidator<Purchases?>
         RuleFor(Purchases => Purchases.CreatedDate)
             .NotNull()
             .WithMessage("Field createdDate is required and cannot be null.");
-        RuleFor(Purchases => Purchases.Package1)
+        RuleFor(Purchases => Purchases.Package)
             .Custom(
                 (package, context) =>
                 {
