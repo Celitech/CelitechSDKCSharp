@@ -27,7 +27,7 @@ public record CreatePurchaseRequest(
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
         string? ReferenceId = null,
-    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters and numbers. This feature is available to platforms with Diamond tier only.</value>
+    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.</value>
     [property:
         JsonPropertyName("networkBrand"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

@@ -9,15 +9,27 @@ public record CreatePurchaseV2Request(
     /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20GB</value>
     [property: JsonPropertyName("dataLimitInGB")]
         double DataLimitInGb,
-    /// <value>Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.</value>
-    [property: JsonPropertyName("startDate")]
-        string StartDate,
-    /// <value>End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.</value>
-    [property: JsonPropertyName("endDate")]
-        string EndDate,
     /// <value>Number of eSIMs to purchase.</value>
     [property: JsonPropertyName("quantity")]
         double Quantity,
+    /// <value>Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.</value>
+    [property:
+        JsonPropertyName("startDate"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        string? StartDate = null,
+    /// <value>End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.</value>
+    [property:
+        JsonPropertyName("endDate"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        string? EndDate = null,
+    /// <value>Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration.</value>
+    [property:
+        JsonPropertyName("duration"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        double? Duration = null,
     /// <value>Email address where the purchase confirmation email will be sent (including QR Code & activation steps)</value>
     [property:
         JsonPropertyName("email"),
@@ -30,7 +42,7 @@ public record CreatePurchaseV2Request(
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
         string? ReferenceId = null,
-    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters and numbers. This feature is available to platforms with Diamond tier only.</value>
+    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.</value>
     [property:
         JsonPropertyName("networkBrand"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

@@ -4,11 +4,16 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class ListPackagesOkResponseValidator : AbstractValidator<ListPackagesOkResponse?>
+/// <summary>
+/// FluentValidation validator for ListPackagesOkResponse model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class ListPackagesOkResponseValidator : AbstractValidator<ListPackagesOkResponse>
 {
     public ListPackagesOkResponseValidator()
     {
-        RuleFor(ListPackagesOkResponse => ListPackagesOkResponse.Packages1)
+        RuleFor(ListPackagesOkResponse => ListPackagesOkResponse.Packages)
             .NotNull()
             .WithMessage("Field packages is required and cannot be null.");
     }
