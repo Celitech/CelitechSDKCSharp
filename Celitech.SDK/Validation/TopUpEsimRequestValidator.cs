@@ -4,7 +4,12 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class TopUpEsimRequestValidator : AbstractValidator<TopUpEsimRequest?>
+/// <summary>
+/// FluentValidation validator for TopUpEsimRequest model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class TopUpEsimRequestValidator : AbstractValidator<TopUpEsimRequest>
 {
     public TopUpEsimRequestValidator()
     {
@@ -18,11 +23,5 @@ public class TopUpEsimRequestValidator : AbstractValidator<TopUpEsimRequest?>
         RuleFor(TopUpEsimRequest => TopUpEsimRequest.DataLimitInGb)
             .NotNull()
             .WithMessage("Field dataLimitInGB is required and cannot be null.");
-        RuleFor(TopUpEsimRequest => TopUpEsimRequest.StartDate)
-            .NotNull()
-            .WithMessage("Field startDate is required and cannot be null.");
-        RuleFor(TopUpEsimRequest => TopUpEsimRequest.EndDate)
-            .NotNull()
-            .WithMessage("Field endDate is required and cannot be null.");
     }
 }

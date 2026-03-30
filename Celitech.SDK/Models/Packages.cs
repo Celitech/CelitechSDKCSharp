@@ -15,6 +15,9 @@ public record Packages(
     /// <value>Size of the package in Bytes</value>
     [property: JsonPropertyName("dataLimitInBytes")]
         double DataLimitInBytes,
+    /// <value>Size of the package in GB</value>
+    [property: JsonPropertyName("dataLimitInGB")]
+        double DataLimitInGb,
     /// <value>Min number of days for the package</value>
     [property: JsonPropertyName("minDays")]
         double MinDays,

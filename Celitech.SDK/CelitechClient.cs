@@ -7,6 +7,11 @@ using Environment = Celitech.SDK.Http.Environment;
 
 namespace Celitech.SDK;
 
+/// <summary>
+/// The main SDK client that provides access to all service endpoints.
+/// Manages HTTP client lifecycle, authentication handlers, and service instances with centralized configuration.
+/// Implements IDisposable to properly clean up HTTP resources.
+/// </summary>
 public class CelitechClient : IDisposable
 {
     private readonly HttpClient _httpClient;

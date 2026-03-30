@@ -3,6 +3,9 @@ using Celitech.SDK.Json;
 
 namespace Celitech.SDK.Services;
 
+/// <summary>
+/// Base service class providing core HTTP request execution and JSON serialization for all service endpoints.
+/// </summary>
 public class BaseService
 {
     protected readonly HttpClient _httpClient;
