@@ -5,6 +5,11 @@ using Celitech.SDK.Services;
 
 namespace Celitech.SDK.Http.OAuth;
 
+/// <summary>
+/// Manages OAuth access tokens with automatic caching, scope tracking, and refresh logic.
+/// Ensures tokens are valid and contain required scopes before making API requests.
+/// Automatically refreshes tokens when they expire or when additional scopes are needed.
+/// </summary>
 public class TokenManager
 {
     private OauthToken? _token;
@@ -20,6 +25,13 @@ public class TokenManager
         this.ClientSecret = config.ClientSecret;
     }
 
+    /// <summary>
+    /// Retrieves an OAuth token with the specified scopes, fetching a new one if necessary.
+    /// Returns cached token if it's valid and contains all required scopes.
+    /// Otherwise, requests a new token that includes all previously cached scopes plus the new ones.
+    /// </summary>
+    /// <param name="scopes">The OAuth scopes required for the operation.</param>
+    /// <returns>A valid OAuth token containing all required scopes.</returns>
     public async Task<OauthToken> GetTokenAsync(HashSet<string> scopes)
     {
         var hasAllScopes = _token != null && _token.Scopes.IsSupersetOf(scopes);
@@ -53,6 +65,10 @@ public class TokenManager
         return _token;
     }
 
+    /// <summary>
+    /// Clears the cached OAuth token, forcing a fresh token request on the next GetTokenAsync call.
+    /// Typically called after authentication errors or when explicitly logging out.
+    /// </summary>
     public void Clean()
     {
         _token = null;
@@ -69,7 +85,7 @@ public class TokenManager
 
         var response = await service.GetAccessTokenAsync(
             input: new GetAccessTokenRequest(
-                GrantType1: GrantType.ClientCredentials,
+                GrantType: GrantType.ClientCredentials,
                 ClientId: this.ClientId,
                 ClientSecret: this.ClientSecret
             )
