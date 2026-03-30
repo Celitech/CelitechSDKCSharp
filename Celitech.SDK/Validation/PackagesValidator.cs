@@ -4,7 +4,12 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class PackagesValidator : AbstractValidator<Packages?>
+/// <summary>
+/// FluentValidation validator for Packages model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class PackagesValidator : AbstractValidator<Packages>
 {
     public PackagesValidator()
     {
@@ -20,6 +25,9 @@ public class PackagesValidator : AbstractValidator<Packages?>
         RuleFor(Packages => Packages.DataLimitInBytes)
             .NotNull()
             .WithMessage("Field dataLimitInBytes is required and cannot be null.");
+        RuleFor(Packages => Packages.DataLimitInGb)
+            .NotNull()
+            .WithMessage("Field dataLimitInGB is required and cannot be null.");
         RuleFor(Packages => Packages.MinDays)
             .NotNull()
             .WithMessage("Field minDays is required and cannot be null.");

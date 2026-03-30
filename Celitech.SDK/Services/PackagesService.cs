@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using Celitech.SDK.Http;
 using Celitech.SDK.Http.Exceptions;
 using Celitech.SDK.Http.Extensions;
+using Celitech.SDK.Http.Handlers;
 using Celitech.SDK.Http.Serialization;
 using Celitech.SDK.Models;
 using Celitech.SDK.Validation;
@@ -9,6 +10,11 @@ using Celitech.SDK.Validation.Extensions;
 
 namespace Celitech.SDK.Services;
 
+/// <summary>
+/// Service class providing access to API endpoints for PackagesService.
+/// Inherits HTTP client management, JSON serialization, and streaming capabilities from the base service.
+/// Each method corresponds to an API operation and handles request building, execution, and response parsing.
+/// </summary>
 public class PackagesService : BaseService
 {
     internal PackagesService(HttpClient httpClient)
@@ -22,7 +28,6 @@ public class PackagesService : BaseService
     /// <param name="limit">Maximum number of packages to be returned in the response. The value must be greater than 0 and less than or equal to 160. If not provided, the default value is 20</param>
     /// <param name="startTime">Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months</param>
     /// <param name="endTime">Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time</param>
-    /// <param name="duration">Duration in seconds for the package's validity. If this parameter is present, it will override the startTime and endTime parameters. The maximum duration for a package's validity period is 90 days</param>
     public async Task<ListPackagesOkResponse> ListPackagesAsync(
         string? destination = null,
         string? startDate = null,
@@ -31,18 +36,9 @@ public class PackagesService : BaseService
         double? limit = null,
         long? startTime = null,
         long? endTime = null,
-        double? duration = null,
         CancellationToken cancellationToken = default
     )
     {
-        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-
-        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
-        if (combinedFailures.Any())
-        {
-            throw new Http.Exceptions.ValidationException(combinedFailures);
-        }
-
         var request = new RequestBuilder(HttpMethod.Get, "packages")
             .SetOptionalQueryParameter("destination", destination)
             .SetOptionalQueryParameter("startDate", startDate)
@@ -51,7 +47,6 @@ public class PackagesService : BaseService
             .SetOptionalQueryParameter("limit", limit)
             .SetOptionalQueryParameter("startTime", startTime)
             .SetOptionalQueryParameter("endTime", endTime)
-            .SetOptionalQueryParameter("duration", duration)
             .SetScopes(new HashSet<string> { })
             .Build();
 
@@ -60,14 +55,26 @@ public class PackagesService : BaseService
             .ConfigureAwait(false);
 
         // Standard deserialization
-        var result =
-            await response
-                .EnsureSuccessfulResponse()
-                .Content.ReadFromJsonAsync<ListPackagesOkResponse>(
-                    _jsonSerializerOptions,
-                    cancellationToken
-                )
-                .ConfigureAwait(false) ?? throw new Exception("Failed to deserialize response.");
+        var responseContent = response.EnsureSuccessfulResponse().Content;
+        var contentLength = responseContent.Headers.ContentLength;
+
+        ListPackagesOkResponse result;
+        if (contentLength == null || contentLength > 0)
+        {
+            result =
+                await responseContent
+                    .ReadFromJsonAsync<ListPackagesOkResponse>(
+                        _jsonSerializerOptions,
+                        cancellationToken
+                    )
+                    .ConfigureAwait(false)
+                ?? throw new Exception("Failed to deserialize response.");
+        }
+        else
+        {
+            // Empty response body - return default instance
+            result = default!;
+        }
 
         return result;
     }

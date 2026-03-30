@@ -6,7 +6,7 @@ public record CreatePurchaseRequest(
     /// <value>ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.</value>
     [property: JsonPropertyName("destination")]
         string Destination,
-    /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20GB</value>
+    /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB</value>
     [property: JsonPropertyName("dataLimitInGB")]
         double DataLimitInGb,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.</value>
@@ -27,7 +27,7 @@ public record CreatePurchaseRequest(
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
         string? ReferenceId = null,
-    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters and numbers. This feature is available to platforms with Diamond tier only.</value>
+    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.</value>
     [property:
         JsonPropertyName("networkBrand"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

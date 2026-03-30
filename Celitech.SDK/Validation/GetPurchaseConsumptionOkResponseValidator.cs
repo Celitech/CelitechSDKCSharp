@@ -4,8 +4,13 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
+/// <summary>
+/// FluentValidation validator for GetPurchaseConsumptionOkResponse model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
 public class GetPurchaseConsumptionOkResponseValidator
-    : AbstractValidator<GetPurchaseConsumptionOkResponse?>
+    : AbstractValidator<GetPurchaseConsumptionOkResponse>
 {
     public GetPurchaseConsumptionOkResponseValidator()
     {
@@ -14,6 +19,11 @@ public class GetPurchaseConsumptionOkResponseValidator
             )
             .NotNull()
             .WithMessage("Field dataUsageRemainingInBytes is required and cannot be null.");
+        RuleFor(GetPurchaseConsumptionOkResponse =>
+                GetPurchaseConsumptionOkResponse.DataUsageRemainingInGb
+            )
+            .NotNull()
+            .WithMessage("Field dataUsageRemainingInGB is required and cannot be null.");
         RuleFor(GetPurchaseConsumptionOkResponse => GetPurchaseConsumptionOkResponse.Status)
             .NotNull()
             .WithMessage("Field status is required and cannot be null.");

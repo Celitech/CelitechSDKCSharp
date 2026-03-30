@@ -11,5 +11,11 @@ public record CreatePurchaseV2OkResponseProfile(
         string ActivationCode,
     /// <value>Manual Activation Code of the eSIM</value>
     [property: JsonPropertyName("manualActivationCode")]
-        string ManualActivationCode
+        string ManualActivationCode,
+    /// <value>iOS Activation Link of the eSIM</value>
+    [property: JsonPropertyName("iosActivationLink")]
+        string IosActivationLink,
+    /// <value>Android Activation Link of the eSIM</value>
+    [property: JsonPropertyName("androidActivationLink")]
+        string AndroidActivationLink
 );
