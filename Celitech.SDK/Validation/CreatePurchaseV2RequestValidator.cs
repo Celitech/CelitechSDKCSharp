@@ -4,7 +4,12 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class CreatePurchaseV2RequestValidator : AbstractValidator<CreatePurchaseV2Request?>
+/// <summary>
+/// FluentValidation validator for CreatePurchaseV2Request model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class CreatePurchaseV2RequestValidator : AbstractValidator<CreatePurchaseV2Request>
 {
     public CreatePurchaseV2RequestValidator()
     {
@@ -14,12 +19,6 @@ public class CreatePurchaseV2RequestValidator : AbstractValidator<CreatePurchase
         RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.DataLimitInGb)
             .NotNull()
             .WithMessage("Field dataLimitInGB is required and cannot be null.");
-        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.StartDate)
-            .NotNull()
-            .WithMessage("Field startDate is required and cannot be null.");
-        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.EndDate)
-            .NotNull()
-            .WithMessage("Field endDate is required and cannot be null.");
         RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.Quantity)
             .GreaterThanOrEqualTo(1)
             .WithMessage("Minimum for quantity is 1.")

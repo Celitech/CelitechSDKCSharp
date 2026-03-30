@@ -4,11 +4,16 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class GetEsimDeviceOkResponseValidator : AbstractValidator<GetEsimDeviceOkResponse?>
+/// <summary>
+/// FluentValidation validator for GetEsimDeviceOkResponse model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class GetEsimDeviceOkResponseValidator : AbstractValidator<GetEsimDeviceOkResponse>
 {
     public GetEsimDeviceOkResponseValidator()
     {
-        RuleFor(GetEsimDeviceOkResponse => GetEsimDeviceOkResponse.Device1)
+        RuleFor(GetEsimDeviceOkResponse => GetEsimDeviceOkResponse.Device)
             .Custom(
                 (device, context) =>
                 {

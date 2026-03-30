@@ -4,8 +4,13 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
+/// <summary>
+/// FluentValidation validator for CreatePurchaseV2OkResponseProfile model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
 public class CreatePurchaseV2OkResponseProfileValidator
-    : AbstractValidator<CreatePurchaseV2OkResponseProfile?>
+    : AbstractValidator<CreatePurchaseV2OkResponseProfile>
 {
     public CreatePurchaseV2OkResponseProfileValidator()
     {
