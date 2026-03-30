@@ -10,7 +10,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var input = new TopUpEsimRequest("1111222233334444555000", 1, "2023-11-01", "2023-11-20");
+var input = new TopUpEsimRequest("1111222233334444555000", 1);
 
 var response = await client.Purchases.TopUpEsimAsync(input);
 

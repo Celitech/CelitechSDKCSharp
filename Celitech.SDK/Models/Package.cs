@@ -9,6 +9,9 @@ public record Package(
     /// <value>Size of the package in Bytes</value>
     [property: JsonPropertyName("dataLimitInBytes")]
         double DataLimitInBytes,
+    /// <value>Size of the package in GB</value>
+    [property: JsonPropertyName("dataLimitInGB")]
+        double DataLimitInGb,
     /// <value>ISO3 representation of the package's destination.</value>
     [property: JsonPropertyName("destination")]
         string Destination,

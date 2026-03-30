@@ -4,7 +4,12 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class GetEsimOkResponseEsimValidator : AbstractValidator<GetEsimOkResponseEsim?>
+/// <summary>
+/// FluentValidation validator for GetEsimOkResponseEsim model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class GetEsimOkResponseEsimValidator : AbstractValidator<GetEsimOkResponseEsim>
 {
     public GetEsimOkResponseEsimValidator()
     {
@@ -31,6 +36,9 @@ public class GetEsimOkResponseEsimValidator : AbstractValidator<GetEsimOkRespons
         RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.Status)
             .NotNull()
             .WithMessage("Field status is required and cannot be null.");
+        RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.ConnectivityStatus)
+            .NotNull()
+            .WithMessage("Field connectivityStatus is required and cannot be null.");
         RuleFor(GetEsimOkResponseEsim => GetEsimOkResponseEsim.IsTopUpAllowed)
             .NotNull()
             .WithMessage("Field isTopUpAllowed is required and cannot be null.");
