@@ -4,7 +4,12 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class PurchasesValidator : AbstractValidator<Purchases?>
+/// <summary>
+/// FluentValidation validator for Purchases model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class PurchasesValidator : AbstractValidator<Purchases>
 {
     public PurchasesValidator()
     {
@@ -15,7 +20,8 @@ public class PurchasesValidator : AbstractValidator<Purchases?>
         RuleFor(Purchases => Purchases.CreatedDate)
             .NotNull()
             .WithMessage("Field createdDate is required and cannot be null.");
-        RuleFor(Purchases => Purchases.Package1)
+
+        RuleFor(Purchases => Purchases.Package)
             .Custom(
                 (package, context) =>
                 {

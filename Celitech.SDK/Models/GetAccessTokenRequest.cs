@@ -8,7 +8,7 @@ public record GetAccessTokenRequest(
         JsonPropertyName("grant_type"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
-        GrantType? GrantType1 = null,
+        GrantType? GrantType = null,
     [property:
         JsonPropertyName("client_id"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

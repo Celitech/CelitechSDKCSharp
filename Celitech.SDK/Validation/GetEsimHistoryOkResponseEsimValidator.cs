@@ -4,8 +4,12 @@ using Celitech.SDK.Models;
 using FluentValidation;
 using FluentValidation.Results;
 
-public class GetEsimHistoryOkResponseEsimValidator
-    : AbstractValidator<GetEsimHistoryOkResponseEsim?>
+/// <summary>
+/// FluentValidation validator for GetEsimHistoryOkResponseEsim model.
+/// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
+/// Automatically validates instances during request serialization and response deserialization.
+/// </summary>
+public class GetEsimHistoryOkResponseEsimValidator : AbstractValidator<GetEsimHistoryOkResponseEsim>
 {
     public GetEsimHistoryOkResponseEsimValidator()
     {
@@ -16,7 +20,7 @@ public class GetEsimHistoryOkResponseEsimValidator
             .WithMessage("Minimum length for iccid is 18.")
             .NotNull()
             .WithMessage("Field iccid is required and cannot be null.");
-        RuleFor(GetEsimHistoryOkResponseEsim => GetEsimHistoryOkResponseEsim.History1)
+        RuleFor(GetEsimHistoryOkResponseEsim => GetEsimHistoryOkResponseEsim.History)
             .NotNull()
             .WithMessage("Field history is required and cannot be null.");
     }
