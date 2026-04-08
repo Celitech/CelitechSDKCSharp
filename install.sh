@@ -1,3 +1,3 @@
-cd ./Celitech.SDK
+cd ./Celitech
 dotnet restore
 dotnet build

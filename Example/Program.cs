@@ -1,6 +1,6 @@
-using Celitech.SDK;
-using Celitech.SDK.Config;
-using Environment = Celitech.SDK.Http.Environment;
+using Celitech;
+using Celitech.Config;
+using Environment = Celitech.Http.Environment;
 
 var config = new CelitechConfig { ClientId = "CLIENT_ID", ClientSecret = "CLIENT_SECRET" };
 

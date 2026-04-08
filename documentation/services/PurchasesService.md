@@ -31,9 +31,9 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
-using Celitech.SDK.Models;
+using Celitech;
+using Celitech.Config;
+using Celitech.Models;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -42,7 +42,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var input = new CreatePurchaseV2Request("FRA", 1, 1);
+var input = new CreatePurchaseV2Request("FRA", 1, 1, Optional<string>.Of("2023-11-01"), Optional<string>.Of("2023-11-20"), Optional<double>.Of(30), Optional<string>.Of("example@domain.com"), Optional<string>.Of("abc111222333444"), Optional<string>.Of("CELITECH"), Optional<string>.Of("CELITECH"));
 
 var response = await client.Purchases.CreatePurchaseV2Async(input);
 
@@ -78,8 +78,8 @@ This endpoint can be used to list all the successful purchases made between a gi
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
+using Celitech;
+using Celitech.Config;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -88,7 +88,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var response = await client.Purchases.ListPurchasesAsync();
+var response = await client.Purchases.ListPurchasesAsync("4973fa15-6979-4daa-9cf3-672620df819c", "1111222233334444555000", "2023-11-01", "2023-11-20", "example@gmail.com", "abc111222333444", "Y3JlYXRlZEF0OjE1OTk0OTMwOTgsZGVzdGluYXRpb246QVVTLG1pbkRheXM6MCxkYXRhTGltaXRJbkJ5dGVzOjUzNjg3MDkxMjA", 20, 6.84, 1.7);
 
 Console.WriteLine(response);
 ```
@@ -113,9 +113,9 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
-using Celitech.SDK.Models;
+using Celitech;
+using Celitech.Config;
+using Celitech.Models;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -124,7 +124,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var input = new CreatePurchaseRequest("FRA", 1, "2023-11-01", "2023-11-20");
+var input = new CreatePurchaseRequest("FRA", 1, "2023-11-01", "2023-11-20", Optional<string>.Of("example@domain.com"), Optional<string>.Of("abc111222333444"), Optional<string>.Of("CELITECH"), Optional<string>.Of("CELITECH"));
 
 var response = await client.Purchases.CreatePurchaseAsync(input);
 
@@ -151,9 +151,9 @@ This endpoint is used to top-up an existing eSIM with the previously associated 
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
-using Celitech.SDK.Models;
+using Celitech;
+using Celitech.Config;
+using Celitech.Models;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -162,7 +162,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var input = new TopUpEsimRequest("1111222233334444555000", 1);
+var input = new TopUpEsimRequest("1111222233334444555000", 1, Optional<string>.Of("2023-11-01"), Optional<string>.Of("2023-11-20"), Optional<double>.Of(30), Optional<string>.Of("example@domain.com"), Optional<string>.Of("abc111222333444"), Optional<string>.Of("CELITECH"));
 
 var response = await client.Purchases.TopUpEsimAsync(input);
 
@@ -189,9 +189,9 @@ This endpoint allows you to modify the validity dates of an existing purchase. *
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
-using Celitech.SDK.Models;
+using Celitech;
+using Celitech.Config;
+using Celitech.Models;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -227,8 +227,8 @@ This endpoint can be called for consumption notifications (e.g. every 1 hour or 
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
+using Celitech;
+using Celitech.Config;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",

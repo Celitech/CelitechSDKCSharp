@@ -28,8 +28,8 @@ Get eSIM
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
+using Celitech;
+using Celitech.Config;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -63,8 +63,8 @@ Get eSIM Device
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
+using Celitech;
+using Celitech.Config;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -98,8 +98,8 @@ Get eSIM History
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
+using Celitech;
+using Celitech.Config;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
