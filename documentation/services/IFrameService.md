@@ -20,8 +20,8 @@ Generate a new token to be used in the iFrame
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
+using Celitech;
+using Celitech.Config;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",

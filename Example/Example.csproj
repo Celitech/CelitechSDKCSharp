@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
-    <ProjectReference Include="../Celitech.SDK/Celitech.SDK.csproj" />
+    <ProjectReference Include="../Celitech/Celitech.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -10,6 +9,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
 </Project>
-  

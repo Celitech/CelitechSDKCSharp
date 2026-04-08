@@ -32,8 +32,8 @@ List Packages
 **Example Usage Code Snippet**
 
 ```csharp
-using Celitech.SDK;
-using Celitech.SDK.Config;
+using Celitech;
+using Celitech.Config;
 
 var config = new CelitechConfig{
     ClientId = "CLIENT_ID",
@@ -42,7 +42,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var response = await client.Packages.ListPackagesAsync();
+var response = await client.Packages.ListPackagesAsync("FRA", "2023-11-01", "2023-11-20", "Y3JlYXRlZEF0OjE1OTk0OTMwOTgsZGVzdGluYXRpb246QVVTLG1pbkRheXM6MCxkYXRhTGltaXRJbkJ5dGVzOjUzNjg3MDkxMjA", 20, 2, 3);
 
 Console.WriteLine(response);
 ```

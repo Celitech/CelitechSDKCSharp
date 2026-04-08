@@ -1,0 +1,40 @@
+{
+  "endpoints": {
+    "/destinations": {
+      "get": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Destinations.ListDestinationsAsync();\n\nConsole.WriteLine(response);\n"
+    },
+    "/packages": {
+      "get": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Packages.ListPackagesAsync(\"FRA\", \"2023-11-01\", \"2023-11-20\", \"Y3JlYXRlZEF0OjE1OTk0OTMwOTgsZGVzdGluYXRpb246QVVTLG1pbkRheXM6MCxkYXRhTGltaXRJbkJ5dGVzOjUzNjg3MDkxMjA\", 20, 2, 3);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/v2": {
+      "post": "using Celitech;\nusing Celitech.Config;\nusing Celitech.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new CreatePurchaseV2Request(\"FRA\", 1, 1, Optional<string>.Of(\"2023-11-01\"), Optional<string>.Of(\"2023-11-20\"), Optional<double>.Of(30), Optional<string>.Of(\"example@domain.com\"), Optional<string>.Of(\"abc111222333444\"), Optional<string>.Of(\"CELITECH\"), Optional<string>.Of(\"CELITECH\"));\n\nvar response = await client.Purchases.CreatePurchaseV2Async(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases": {
+      "get": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Purchases.ListPurchasesAsync(\"4973fa15-6979-4daa-9cf3-672620df819c\", \"1111222233334444555000\", \"2023-11-01\", \"2023-11-20\", \"example@gmail.com\", \"abc111222333444\", \"Y3JlYXRlZEF0OjE1OTk0OTMwOTgsZGVzdGluYXRpb246QVVTLG1pbkRheXM6MCxkYXRhTGltaXRJbkJ5dGVzOjUzNjg3MDkxMjA\", 20, 6.84, 1.7);\n\nConsole.WriteLine(response);\n",
+      "post": "using Celitech;\nusing Celitech.Config;\nusing Celitech.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new CreatePurchaseRequest(\"FRA\", 1, \"2023-11-01\", \"2023-11-20\", Optional<string>.Of(\"example@domain.com\"), Optional<string>.Of(\"abc111222333444\"), Optional<string>.Of(\"CELITECH\"), Optional<string>.Of(\"CELITECH\"));\n\nvar response = await client.Purchases.CreatePurchaseAsync(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/topup": {
+      "post": "using Celitech;\nusing Celitech.Config;\nusing Celitech.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new TopUpEsimRequest(\"1111222233334444555000\", 1, Optional<string>.Of(\"2023-11-01\"), Optional<string>.Of(\"2023-11-20\"), Optional<double>.Of(30), Optional<string>.Of(\"example@domain.com\"), Optional<string>.Of(\"abc111222333444\"), Optional<string>.Of(\"CELITECH\"));\n\nvar response = await client.Purchases.TopUpEsimAsync(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/edit": {
+      "post": "using Celitech;\nusing Celitech.Config;\nusing Celitech.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new EditPurchaseRequest(\"ae471106-c8b4-42cf-b83a-b061291f2922\", \"2023-11-01\", \"2023-11-20\");\n\nvar response = await client.Purchases.EditPurchaseAsync(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/{purchaseId}/consumption": {
+      "get": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Purchases.GetPurchaseConsumptionAsync(\"4973fa15-6979-4daa-9cf3-672620df819c\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/esim": {
+      "get": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.GetEsimAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/esim/{iccid}/device": {
+      "get": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.GetEsimDeviceAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/esim/{iccid}/history": {
+      "get": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.GetEsimHistoryAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/iframe/token": {
+      "post": "using Celitech;\nusing Celitech.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.IFrame.TokenAsync();\n\nConsole.WriteLine(response);\n"
+    }
+  },
+  "example": "using Celitech;\nusing Celitech.Config;\nusing Environment = Celitech.Http.Environment;\n\nvar config = new CelitechConfig\n{\n  ClientId = \"CLIENT_ID\",\n  ClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Destinations.ListDestinationsAsync();\n\nConsole.WriteLine(response);\n",
+  "authentication": {}
+}
