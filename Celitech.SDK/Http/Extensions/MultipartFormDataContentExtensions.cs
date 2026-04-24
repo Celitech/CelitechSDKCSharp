@@ -32,7 +32,39 @@ public static class MultipartFormDataContentExtensions
             var key = property.Name;
             var mappedKey = GetPropertyName(property);
 
-            if (value is byte[] fileBytes)
+            // Handle Optional<T> wrapper
+            if (value != null && IsOptionalType(property.PropertyType))
+            {
+                var optionalValue = GetOptionalValue(value);
+                if (optionalValue != null)
+                {
+                    if (optionalValue is byte[] fileBytes)
+                    {
+                        var fileContent = new ByteArrayContent(fileBytes);
+                        fileContent.Headers.ContentType = new MediaTypeHeaderValue(
+                            "application/octet-stream"
+                        );
+
+                        formData.Add(fileContent, mappedKey, mappedKey);
+                    }
+                    else if (!IsPrimitive(optionalValue.GetType()))
+                    {
+                        var nestedContent = new MultipartFormDataContent().AddObject(
+                            optionalValue,
+                            options
+                        );
+                        formData.Add(nestedContent, mappedKey);
+                    }
+                    else
+                    {
+                        formData.Add(
+                            new StringContent(optionalValue.ToString() ?? string.Empty),
+                            mappedKey
+                        );
+                    }
+                }
+            }
+            else if (value is byte[] fileBytes)
             {
                 var fileContent = new ByteArrayContent(fileBytes);
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(
@@ -58,6 +90,22 @@ public static class MultipartFormDataContentExtensions
     private static bool IsPrimitive(Type type)
     {
         return type.IsPrimitive || type.IsValueType || type == typeof(string);
+    }
+
+    private static bool IsOptionalType(Type type)
+    {
+        return type.IsGenericType && type.GetGenericTypeDefinition().Name == "Optional`1";
+    }
+
+    private static object? GetOptionalValue(object optional)
+    {
+        var hasValueProperty = optional.GetType().GetProperty("IsProvided");
+        if (hasValueProperty?.GetValue(optional) is true)
+        {
+            var valueProperty = optional.GetType().GetProperty("Value");
+            return valueProperty?.GetValue(optional);
+        }
+        return null;
     }
 
     private static string GetPropertyName(PropertyInfo property)

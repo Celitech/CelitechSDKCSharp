@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Celitech.SDK.Config;
 using Celitech.SDK.Http;
 using Celitech.SDK.Http.Exceptions;
 using Celitech.SDK.Http.Extensions;
@@ -17,37 +18,55 @@ namespace Celitech.SDK.Services;
 /// </summary>
 public class IFrameService : BaseService
 {
-    internal IFrameService(HttpClient httpClient)
+    private RequestConfig? _tokenAsyncConfig;
+
+    internal IFrameService(Client httpClient)
         : base(httpClient) { }
 
-    /// <summary>Generate a new token to be used in the iFrame</summary>
-    public async Task<TokenOkResponse> TokenAsync(CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Sets method-level configuration for <c>TokenAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public IFrameService SetTokenAsyncConfig(RequestConfig config)
     {
+        _tokenAsyncConfig = config;
+        return this;
+    }
+
+    /// <summary>Generate a new token to be used in the iFrame</summary>
+    public async Task<TokenOkResponse> TokenAsync(
+        RequestConfig? requestConfig = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var resolvedConfig = GetResolvedConfig(_tokenAsyncConfig, requestConfig);
+
         var request = new RequestBuilder(HttpMethod.Post, "iframe/token")
             .SetScopes(new HashSet<string> { })
+            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
+            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        TokenOkResponse result;
-        if (contentLength == null || contentLength > 0)
+        var result =
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<TokenOkResponse>(
+                jsonContent,
+                _jsonSerializerOptions
+            );
+
+        // Validate the response
+        var responseValidator = new TokenOkResponseValidator();
+        var responseValidationResult = responseValidator.ValidateRequired(result);
+        if (!responseValidationResult.IsValid)
         {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<TokenOkResponse>(_jsonSerializerOptions, cancellationToken)
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
+            throw new Http.Exceptions.ValidationException(responseValidationResult.Errors);
         }
 
         return result;

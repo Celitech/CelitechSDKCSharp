@@ -5,17 +5,17 @@ namespace Celitech.SDK.Models;
 public record GetAccessTokenOkResponse(
     [property:
         JsonPropertyName("access_token"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
     ]
-        string? AccessToken = null,
+        Optional<string> AccessToken = default,
     [property:
         JsonPropertyName("token_type"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
     ]
-        string? TokenType = null,
+        Optional<string> TokenType = default,
     [property:
         JsonPropertyName("expires_in"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
     ]
-        long? ExpiresIn = null
+        Optional<long> ExpiresIn = default
 );

@@ -22,5 +22,11 @@ public class EditPurchaseRequestValidator : AbstractValidator<EditPurchaseReques
         RuleFor(EditPurchaseRequest => EditPurchaseRequest.EndDate)
             .NotNull()
             .WithMessage("Field endDate is required and cannot be null.");
+        RuleFor(EditPurchaseRequest => EditPurchaseRequest.StartTime)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field StartTime cannot be null when provided.");
+        RuleFor(EditPurchaseRequest => EditPurchaseRequest.EndTime)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EndTime cannot be null when provided.");
     }
 }

@@ -11,5 +11,16 @@ using FluentValidation.Results;
 /// </summary>
 public class GetAccessTokenOkResponseValidator : AbstractValidator<GetAccessTokenOkResponse>
 {
-    public GetAccessTokenOkResponseValidator() { }
+    public GetAccessTokenOkResponseValidator()
+    {
+        RuleFor(GetAccessTokenOkResponse => GetAccessTokenOkResponse.AccessToken)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field AccessToken cannot be null when provided.");
+        RuleFor(GetAccessTokenOkResponse => GetAccessTokenOkResponse.TokenType)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field TokenType cannot be null when provided.");
+        RuleFor(GetAccessTokenOkResponse => GetAccessTokenOkResponse.ExpiresIn)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field ExpiresIn cannot be null when provided.");
+    }
 }

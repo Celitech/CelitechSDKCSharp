@@ -4,27 +4,19 @@ namespace Celitech.SDK.Models;
 
 public record Packages(
     /// <value>ID of the package</value>
-    [property: JsonPropertyName("id")]
-        string Id,
+    [property: JsonPropertyName("id")] string Id,
     /// <value>ISO3 representation of the package's destination.</value>
-    [property: JsonPropertyName("destination")]
-        string Destination,
+    [property: JsonPropertyName("destination")] string Destination,
     /// <value>ISO2 representation of the package's destination.</value>
-    [property: JsonPropertyName("destinationISO2")]
-        string DestinationIso2,
+    [property: JsonPropertyName("destinationISO2")] string DestinationIso2,
     /// <value>Size of the package in Bytes</value>
-    [property: JsonPropertyName("dataLimitInBytes")]
-        double DataLimitInBytes,
+    [property: JsonPropertyName("dataLimitInBytes")] double DataLimitInBytes,
     /// <value>Size of the package in GB</value>
-    [property: JsonPropertyName("dataLimitInGB")]
-        double DataLimitInGb,
+    [property: JsonPropertyName("dataLimitInGB")] double DataLimitInGb,
     /// <value>Min number of days for the package</value>
-    [property: JsonPropertyName("minDays")]
-        double MinDays,
+    [property: JsonPropertyName("minDays")] double MinDays,
     /// <value>Max number of days for the package</value>
-    [property: JsonPropertyName("maxDays")]
-        double MaxDays,
+    [property: JsonPropertyName("maxDays")] double MaxDays,
     /// <value>Price of the package in cents</value>
-    [property: JsonPropertyName("priceInCents")]
-        double PriceInCents
+    [property: JsonPropertyName("priceInCents")] double PriceInCents
 );

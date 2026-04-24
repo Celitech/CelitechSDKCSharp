@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Net;
 using System.Text.Json.Serialization;
 
 namespace Celitech.SDK.Http.Serialization;
@@ -37,7 +36,7 @@ public static class Serializer
         return value switch
             {
                 null => "null",
-                string s => shouldUrlEncode ? WebUtility.UrlEncode(s) : s,
+                string s => shouldUrlEncode ? Uri.EscapeDataString(s) : s,
                 bool b => b.ToString().ToLowerInvariant(),
                 int or long or double => value.ToString(),
                 IEnumerable e => SerializeEnumerable(
@@ -127,6 +126,31 @@ public static class Serializer
                     ? jsonProperty.Name
                     : p.Name;
                 var value = p.GetValue(o);
+
+                // Handle Optional<T> fields - only include if they have a value
+                if (
+                    value != null
+                    && value.GetType().IsGenericType
+                    && value.GetType().GetGenericTypeDefinition().Name == "Optional`1"
+                )
+                {
+                    var isProvidedProperty = value.GetType().GetProperty("IsProvided");
+                    if (isProvidedProperty != null)
+                    {
+                        var isProvided = (bool)isProvidedProperty.GetValue(value);
+                        if (!isProvided)
+                        {
+                            return (name, value: null); // This will be filtered out by Where clause
+                        }
+
+                        // Get the actual value from Optional<T>
+                        var valueProperty = value.GetType().GetProperty("Value");
+                        if (valueProperty != null)
+                        {
+                            value = valueProperty.GetValue(value);
+                        }
+                    }
+                }
 
                 return (name, value);
             })

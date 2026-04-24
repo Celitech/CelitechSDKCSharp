@@ -1,4 +1,5 @@
 using Celitech.SDK.Config;
+using Celitech.SDK.Http;
 using Celitech.SDK.Http.Extensions;
 using Celitech.SDK.Http.Handlers;
 using Celitech.SDK.Http.OAuth;
@@ -14,7 +15,9 @@ namespace Celitech.SDK;
 /// </summary>
 public class CelitechClient : IDisposable
 {
-    private readonly HttpClient _httpClient;
+    private readonly Client _httpClient;
+    private readonly Client _tokenHttpClient;
+
     private readonly TokenManager _tokenManager;
 
     public DestinationsService Destinations { get; private set; }
@@ -23,16 +26,15 @@ public class CelitechClient : IDisposable
     public ESimService ESim { get; private set; }
     public IFrameService IFrame { get; private set; }
 
+    /// <summary>Initializes a new instance of the CelitechClient client.</summary>
+    /// <param name="config">SDK configuration options.</param>
     public CelitechClient(CelitechConfig? config = null)
     {
         var retryHandler = new RetryHandler();
-        _tokenManager = new TokenManager(config);
+        _tokenHttpClient = new Client(config);
+        _tokenManager = new TokenManager(_tokenHttpClient, config);
         var oauthHandler = new OAuthHandler(_tokenManager, retryHandler);
-        _httpClient = new HttpClient(oauthHandler)
-        {
-            BaseAddress = config?.Environment?.Uri ?? Environment.Default.Uri,
-            DefaultRequestHeaders = { { "user-agent", "dotnet/7.0" } },
-        };
+        _httpClient = new Client(config, oauthHandler);
 
         Destinations = new DestinationsService(_httpClient);
         Packages = new PackagesService(_httpClient);
@@ -62,7 +64,7 @@ public class CelitechClient : IDisposable
     /// </summary>
     public void SetBaseUrl(Uri uri)
     {
-        _httpClient.BaseAddress = uri.EnsureTrailingSlash();
+        _httpClient.SetBaseAddress(uri.EnsureTrailingSlash());
     }
 
     /// <summary>
@@ -80,7 +82,8 @@ public class CelitechClient : IDisposable
             );
         }
 
-        _httpClient.Timeout = timeout;
+        _tokenHttpClient.SetTimeout(timeout);
+        _httpClient.SetTimeout(timeout);
     }
 
     /// <summary>
@@ -96,6 +99,7 @@ public class CelitechClient : IDisposable
     /// </summary>
     public void SetOAuthBaseUrl(Uri uri)
     {
+        _tokenHttpClient.SetBaseAddress(uri.EnsureTrailingSlash());
         _tokenManager.BaseOAuthUrl = uri.EnsureTrailingSlash();
         _tokenManager.Clean();
     }

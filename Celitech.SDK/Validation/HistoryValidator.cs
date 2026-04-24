@@ -19,5 +19,8 @@ public class HistoryValidator : AbstractValidator<History>
         RuleFor(History => History.StatusDate)
             .NotNull()
             .WithMessage("Field statusDate is required and cannot be null.");
+        RuleFor(History => History.Date)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field Date cannot be null when provided.");
     }
 }

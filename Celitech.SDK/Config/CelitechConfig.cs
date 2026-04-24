@@ -1,3 +1,4 @@
+using Celitech.SDK.Models;
 using Environment = Celitech.SDK.Http.Environment;
 
 namespace Celitech.SDK.Config;
@@ -11,7 +12,7 @@ public record CelitechConfig(
     /// <value>The base OAuth URL.</value>
     string BaseOAuthUrl = "https://auth.celitech.net",
     /// <value>The ClientId parameter.</value>
-    string? ClientId = null,
+    Optional<string> ClientId = default,
     /// <value>The ClientSecret parameter.</value>
-    string? ClientSecret = null
+    Optional<string> ClientSecret = default
 );

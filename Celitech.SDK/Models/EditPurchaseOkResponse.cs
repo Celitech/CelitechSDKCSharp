@@ -4,18 +4,19 @@ namespace Celitech.SDK.Models;
 
 public record EditPurchaseOkResponse(
     /// <value>ID of the purchase</value>
-    [property: JsonPropertyName("purchaseId")]
-        string PurchaseId,
+    [property: JsonPropertyName("purchaseId")] string PurchaseId,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("newStartDate")]
-        string? NewStartDate,
+    [property: JsonPropertyName("newStartDate")] string? NewStartDate,
     /// <value>End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("newEndDate")]
-        string? NewEndDate,
+    [property: JsonPropertyName("newEndDate")] string? NewEndDate,
     /// <value>Epoch value representing the new start time of the package's validity</value>
-    [property: JsonPropertyName("newStartTime")]
-        double? NewStartTime = null,
+    [property:
+        JsonPropertyName("newStartTime"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
+    ] Optional<double?> NewStartTime = default,
     /// <value>Epoch value representing the new end time of the package's validity</value>
-    [property: JsonPropertyName("newEndTime")]
-        double? NewEndTime = null
+    [property:
+        JsonPropertyName("newEndTime"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
+    ] Optional<double?> NewEndTime = default
 );

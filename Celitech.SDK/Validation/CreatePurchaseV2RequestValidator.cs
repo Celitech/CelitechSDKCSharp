@@ -26,5 +26,26 @@ public class CreatePurchaseV2RequestValidator : AbstractValidator<CreatePurchase
             .WithMessage("Minimum for quantity is 5.")
             .NotNull()
             .WithMessage("Field quantity is required and cannot be null.");
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.StartDate)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field StartDate cannot be null when provided.");
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.EndDate)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EndDate cannot be null when provided.");
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.Duration)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field Duration cannot be null when provided.");
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.Email)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field Email cannot be null when provided.");
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.ReferenceId)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field ReferenceId cannot be null when provided.");
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.NetworkBrand)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field NetworkBrand cannot be null when provided.");
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.EmailBrand)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EmailBrand cannot be null when provided.");
     }
 }

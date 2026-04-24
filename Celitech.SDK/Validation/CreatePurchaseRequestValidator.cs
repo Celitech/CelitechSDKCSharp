@@ -25,5 +25,23 @@ public class CreatePurchaseRequestValidator : AbstractValidator<CreatePurchaseRe
         RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.EndDate)
             .NotNull()
             .WithMessage("Field endDate is required and cannot be null.");
+        RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.Email)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field Email cannot be null when provided.");
+        RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.ReferenceId)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field ReferenceId cannot be null when provided.");
+        RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.NetworkBrand)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field NetworkBrand cannot be null when provided.");
+        RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.EmailBrand)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EmailBrand cannot be null when provided.");
+        RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.StartTime)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field StartTime cannot be null when provided.");
+        RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.EndTime)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EndTime cannot be null when provided.");
     }
 }
