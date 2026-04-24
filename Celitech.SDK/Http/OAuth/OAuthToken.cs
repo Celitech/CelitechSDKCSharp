@@ -7,4 +7,4 @@ namespace Celitech.SDK.Http.OAuth;
 /// <param name="AccessToken">The OAuth 2.0 access token string.</param>
 /// <param name="Scopes">The set of OAuth scopes granted to this token.</param>
 /// <param name="ExpiresAt">Unix timestamp (seconds since epoch) when the token expires, or null if it doesn't expire.</param>
-public record OauthToken(string AccessToken, HashSet<string> Scopes, int? ExpiresAt);
+public record OauthToken(string AccessToken, HashSet<string> Scopes, long? ExpiresAt);

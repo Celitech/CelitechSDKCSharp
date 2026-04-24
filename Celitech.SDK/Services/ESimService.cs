@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Celitech.SDK.Config;
 using Celitech.SDK.Http;
 using Celitech.SDK.Http.Exceptions;
 using Celitech.SDK.Http.Extensions;
@@ -17,13 +18,48 @@ namespace Celitech.SDK.Services;
 /// </summary>
 public class ESimService : BaseService
 {
-    internal ESimService(HttpClient httpClient)
+    private RequestConfig? _getEsimAsyncConfig;
+    private RequestConfig? _getEsimDeviceAsyncConfig;
+    private RequestConfig? _getEsimHistoryAsyncConfig;
+
+    internal ESimService(Client httpClient)
         : base(httpClient) { }
+
+    /// <summary>
+    /// Sets method-level configuration for <c>GetEsimAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public ESimService SetGetEsimAsyncConfig(RequestConfig config)
+    {
+        _getEsimAsyncConfig = config;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets method-level configuration for <c>GetEsimDeviceAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public ESimService SetGetEsimDeviceAsyncConfig(RequestConfig config)
+    {
+        _getEsimDeviceAsyncConfig = config;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets method-level configuration for <c>GetEsimHistoryAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public ESimService SetGetEsimHistoryAsyncConfig(RequestConfig config)
+    {
+        _getEsimHistoryAsyncConfig = config;
+        return this;
+    }
 
     /// <summary>Get eSIM</summary>
     /// <param name="iccid">ID of the eSIM</param>
     public async Task<GetEsimOkResponse> GetEsimAsync(
         string iccid,
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -44,32 +80,35 @@ public class ESimService : BaseService
             throw new Http.Exceptions.ValidationException(combinedFailures);
         }
 
+        var resolvedConfig = GetResolvedConfig(_getEsimAsyncConfig, requestConfig);
+
         var request = new RequestBuilder(HttpMethod.Get, "esim")
             .SetQueryParameter("iccid", iccid)
             .SetScopes(new HashSet<string> { })
+            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
+            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        GetEsimOkResponse result;
-        if (contentLength == null || contentLength > 0)
+        var result =
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetEsimOkResponse>(
+                jsonContent,
+                _jsonSerializerOptions
+            );
+
+        // Validate the response
+        var responseValidator = new GetEsimOkResponseValidator();
+        var responseValidationResult = responseValidator.ValidateRequired(result);
+        if (!responseValidationResult.IsValid)
         {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<GetEsimOkResponse>(_jsonSerializerOptions, cancellationToken)
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
+            throw new Http.Exceptions.ValidationException(responseValidationResult.Errors);
         }
 
         return result;
@@ -79,6 +118,7 @@ public class ESimService : BaseService
     /// <param name="iccid">ID of the eSIM</param>
     public async Task<GetEsimDeviceOkResponse> GetEsimDeviceAsync(
         string iccid,
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -99,35 +139,35 @@ public class ESimService : BaseService
             throw new Http.Exceptions.ValidationException(combinedFailures);
         }
 
+        var resolvedConfig = GetResolvedConfig(_getEsimDeviceAsyncConfig, requestConfig);
+
         var request = new RequestBuilder(HttpMethod.Get, "esim/{iccid}/device")
             .SetPathParameter("iccid", iccid)
             .SetScopes(new HashSet<string> { })
+            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
+            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        GetEsimDeviceOkResponse result;
-        if (contentLength == null || contentLength > 0)
+        var result =
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetEsimDeviceOkResponse>(
+                jsonContent,
+                _jsonSerializerOptions
+            );
+
+        // Validate the response
+        var responseValidator = new GetEsimDeviceOkResponseValidator();
+        var responseValidationResult = responseValidator.ValidateRequired(result);
+        if (!responseValidationResult.IsValid)
         {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<GetEsimDeviceOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
+            throw new Http.Exceptions.ValidationException(responseValidationResult.Errors);
         }
 
         return result;
@@ -137,6 +177,7 @@ public class ESimService : BaseService
     /// <param name="iccid">ID of the eSIM</param>
     public async Task<GetEsimHistoryOkResponse> GetEsimHistoryAsync(
         string iccid,
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -157,35 +198,35 @@ public class ESimService : BaseService
             throw new Http.Exceptions.ValidationException(combinedFailures);
         }
 
+        var resolvedConfig = GetResolvedConfig(_getEsimHistoryAsyncConfig, requestConfig);
+
         var request = new RequestBuilder(HttpMethod.Get, "esim/{iccid}/history")
             .SetPathParameter("iccid", iccid)
             .SetScopes(new HashSet<string> { })
+            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
+            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        GetEsimHistoryOkResponse result;
-        if (contentLength == null || contentLength > 0)
+        var result =
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetEsimHistoryOkResponse>(
+                jsonContent,
+                _jsonSerializerOptions
+            );
+
+        // Validate the response
+        var responseValidator = new GetEsimHistoryOkResponseValidator();
+        var responseValidationResult = responseValidator.ValidateRequired(result);
+        if (!responseValidationResult.IsValid)
         {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<GetEsimHistoryOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
+            throw new Http.Exceptions.ValidationException(responseValidationResult.Errors);
         }
 
         return result;

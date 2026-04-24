@@ -6,17 +6,17 @@ namespace Celitech.SDK.Models;
 public record GetAccessTokenRequest(
     [property:
         JsonPropertyName("grant_type"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
     ]
-        GrantType? GrantType = null,
+        Optional<GrantType> GrantType = default,
     [property:
         JsonPropertyName("client_id"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
     ]
-        string? ClientId = null,
+        Optional<string> ClientId = default,
     [property:
         JsonPropertyName("client_secret"),
-        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)
     ]
-        string? ClientSecret = null
+        Optional<string> ClientSecret = default
 );

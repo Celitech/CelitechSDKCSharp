@@ -21,6 +21,9 @@ public class PurchasesValidator : AbstractValidator<Purchases>
             .NotNull()
             .WithMessage("Field createdDate is required and cannot be null.");
 
+        RuleFor(Purchases => Purchases.CreatedAt)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field CreatedAt cannot be null when provided.");
         RuleFor(Purchases => Purchases.Package)
             .Custom(
                 (package, context) =>

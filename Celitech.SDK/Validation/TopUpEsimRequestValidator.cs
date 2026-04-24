@@ -23,5 +23,29 @@ public class TopUpEsimRequestValidator : AbstractValidator<TopUpEsimRequest>
         RuleFor(TopUpEsimRequest => TopUpEsimRequest.DataLimitInGb)
             .NotNull()
             .WithMessage("Field dataLimitInGB is required and cannot be null.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.StartDate)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field StartDate cannot be null when provided.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.EndDate)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EndDate cannot be null when provided.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.Duration)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field Duration cannot be null when provided.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.Email)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field Email cannot be null when provided.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.ReferenceId)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field ReferenceId cannot be null when provided.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.EmailBrand)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EmailBrand cannot be null when provided.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.StartTime)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field StartTime cannot be null when provided.");
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.EndTime)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field EndTime cannot be null when provided.");
     }
 }

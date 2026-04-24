@@ -4,18 +4,13 @@ namespace Celitech.SDK.Models;
 
 public record CreatePurchaseV2OkResponseProfile(
     /// <value>ID of the eSIM</value>
-    [property: JsonPropertyName("iccid")]
-        string Iccid,
+    [property: JsonPropertyName("iccid")] string Iccid,
     /// <value>QR Code of the eSIM as base64</value>
-    [property: JsonPropertyName("activationCode")]
-        string ActivationCode,
+    [property: JsonPropertyName("activationCode")] string ActivationCode,
     /// <value>Manual Activation Code of the eSIM</value>
-    [property: JsonPropertyName("manualActivationCode")]
-        string ManualActivationCode,
+    [property: JsonPropertyName("manualActivationCode")] string ManualActivationCode,
     /// <value>iOS Activation Link of the eSIM</value>
-    [property: JsonPropertyName("iosActivationLink")]
-        string IosActivationLink,
+    [property: JsonPropertyName("iosActivationLink")] string IosActivationLink,
     /// <value>Android Activation Link of the eSIM</value>
-    [property: JsonPropertyName("androidActivationLink")]
-        string AndroidActivationLink
+    [property: JsonPropertyName("androidActivationLink")] string AndroidActivationLink
 );

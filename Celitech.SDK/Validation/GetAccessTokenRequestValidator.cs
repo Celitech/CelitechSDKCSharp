@@ -11,5 +11,16 @@ using FluentValidation.Results;
 /// </summary>
 public class GetAccessTokenRequestValidator : AbstractValidator<GetAccessTokenRequest>
 {
-    public GetAccessTokenRequestValidator() { }
+    public GetAccessTokenRequestValidator()
+    {
+        RuleFor(GetAccessTokenRequest => GetAccessTokenRequest.GrantType)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field GrantType cannot be null when provided.");
+        RuleFor(GetAccessTokenRequest => GetAccessTokenRequest.ClientId)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field ClientId cannot be null when provided.");
+        RuleFor(GetAccessTokenRequest => GetAccessTokenRequest.ClientSecret)
+            .Must(opt => !opt.IsProvided || opt.Value != null)
+            .WithMessage("Field ClientSecret cannot be null when provided.");
+    }
 }
