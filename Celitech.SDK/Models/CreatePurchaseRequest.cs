@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Celitech.SDK.Json;
 
 namespace Celitech.SDK.Models;
 
@@ -39,6 +40,12 @@ public record CreatePurchaseRequest(
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
         string? EmailBrand = null,
+    /// <value>Language of the confirmation email sent to the customer.</value>
+    [property:
+        JsonPropertyName("language"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        CreatePurchaseRequestLanguage? Language = null,
     /// <value>Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months.</value>
     [property:
         JsonPropertyName("startTime"),
