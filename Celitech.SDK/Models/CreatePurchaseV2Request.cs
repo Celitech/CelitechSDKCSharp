@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Celitech.SDK.Json;
 
 namespace Celitech.SDK.Models;
 
@@ -53,5 +54,11 @@ public record CreatePurchaseV2Request(
         JsonPropertyName("emailBrand"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ]
-        string? EmailBrand = null
+        string? EmailBrand = null,
+    /// <value>Language of the confirmation email sent to the customer.</value>
+    [property:
+        JsonPropertyName("language"),
+        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
+    ]
+        CreatePurchaseV2RequestLanguage? Language = null
 );
