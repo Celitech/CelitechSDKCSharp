@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Celitech.SDK.Config;
 using Celitech.SDK.Http;
 using Celitech.SDK.Http.Exceptions;
 using Celitech.SDK.Http.Extensions;
@@ -17,42 +18,55 @@ namespace Celitech.SDK.Services;
 /// </summary>
 public class DestinationsService : BaseService
 {
-    internal DestinationsService(HttpClient httpClient)
+    private RequestConfig? _listDestinationsAsyncConfig;
+
+    internal DestinationsService(Client httpClient)
         : base(httpClient) { }
+
+    /// <summary>
+    /// Sets method-level configuration for <c>ListDestinationsAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public DestinationsService SetListDestinationsAsyncConfig(RequestConfig config)
+    {
+        _listDestinationsAsyncConfig = config;
+        return this;
+    }
 
     /// <summary>List Destinations</summary>
     public async Task<ListDestinationsOkResponse> ListDestinationsAsync(
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
+        var resolvedConfig = GetResolvedConfig(_listDestinationsAsyncConfig, requestConfig);
+
         var request = new RequestBuilder(HttpMethod.Get, "destinations")
             .SetScopes(new HashSet<string> { })
+            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
+            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        ListDestinationsOkResponse result;
-        if (contentLength == null || contentLength > 0)
+        var result =
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<ListDestinationsOkResponse>(
+                jsonContent,
+                _jsonSerializerOptions
+            );
+
+        // Validate the response
+        var responseValidator = new ListDestinationsOkResponseValidator();
+        var responseValidationResult = responseValidator.ValidateRequired(result);
+        if (!responseValidationResult.IsValid)
         {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<ListDestinationsOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
+            throw new Http.Exceptions.ValidationException(responseValidationResult.Errors);
         }
 
         return result;

@@ -5,12 +5,12 @@ using FluentValidation;
 using FluentValidation.Results;
 
 /// <summary>
-/// FluentValidation validator for CreatePurchaseV2OkResponsePurchase model.
+/// FluentValidation validator for global::Celitech.SDK.Models.CreatePurchaseV2OkResponsePurchase model.
 /// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
 /// Automatically validates instances during request serialization and response deserialization.
 /// </summary>
 public class CreatePurchaseV2OkResponsePurchaseValidator
-    : AbstractValidator<CreatePurchaseV2OkResponsePurchase>
+    : AbstractValidator<global::Celitech.SDK.Models.CreatePurchaseV2OkResponsePurchase>
 {
     public CreatePurchaseV2OkResponsePurchaseValidator()
     {
