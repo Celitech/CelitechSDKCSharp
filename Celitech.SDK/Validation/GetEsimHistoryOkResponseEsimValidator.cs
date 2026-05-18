@@ -5,11 +5,12 @@ using FluentValidation;
 using FluentValidation.Results;
 
 /// <summary>
-/// FluentValidation validator for GetEsimHistoryOkResponseEsim model.
+/// FluentValidation validator for global::Celitech.SDK.Models.GetEsimHistoryOkResponseEsim model.
 /// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
 /// Automatically validates instances during request serialization and response deserialization.
 /// </summary>
-public class GetEsimHistoryOkResponseEsimValidator : AbstractValidator<GetEsimHistoryOkResponseEsim>
+public class GetEsimHistoryOkResponseEsimValidator
+    : AbstractValidator<global::Celitech.SDK.Models.GetEsimHistoryOkResponseEsim>
 {
     public GetEsimHistoryOkResponseEsimValidator()
     {
