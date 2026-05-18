@@ -5,11 +5,11 @@ using FluentValidation;
 using FluentValidation.Results;
 
 /// <summary>
-/// FluentValidation validator for Device model.
+/// FluentValidation validator for global::Celitech.SDK.Models.Device model.
 /// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
 /// Automatically validates instances during request serialization and response deserialization.
 /// </summary>
-public class DeviceValidator : AbstractValidator<Device>
+public class DeviceValidator : AbstractValidator<global::Celitech.SDK.Models.Device>
 {
     public DeviceValidator()
     {

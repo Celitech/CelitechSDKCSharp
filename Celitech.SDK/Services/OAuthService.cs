@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Celitech.SDK.Config;
 using Celitech.SDK.Http;
 using Celitech.SDK.Http.Exceptions;
 using Celitech.SDK.Http.Extensions;
@@ -18,12 +19,25 @@ namespace Celitech.SDK.Services;
 /// </summary>
 public class OAuthService : BaseService
 {
-    internal OAuthService(HttpClient httpClient)
+    private RequestConfig? _getAccessTokenAsyncConfig;
+
+    internal OAuthService(Client httpClient)
         : base(httpClient) { }
+
+    /// <summary>
+    /// Sets method-level configuration for <c>GetAccessTokenAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public OAuthService SetGetAccessTokenAsyncConfig(RequestConfig config)
+    {
+        _getAccessTokenAsyncConfig = config;
+        return this;
+    }
 
     /// <summary>This endpoint was added by liblab</summary>
     public async Task<GetAccessTokenOkResponse> GetAccessTokenAsync(
         GetAccessTokenRequest input,
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -39,34 +53,32 @@ public class OAuthService : BaseService
             throw new Http.Exceptions.ValidationException(combinedFailures);
         }
 
+        var resolvedConfig = GetResolvedConfig(_getAccessTokenAsyncConfig, requestConfig);
+
         var request = new RequestBuilder(HttpMethod.Post, "oauth2/token")
             .SetUrlEncodedContent(input, _jsonSerializerOptions)
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        GetAccessTokenOkResponse result;
-        if (contentLength == null || contentLength > 0)
+        var result =
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetAccessTokenOkResponse>(
+                jsonContent,
+                _jsonSerializerOptions
+            );
+
+        // Validate the response
+        var responseValidator = new GetAccessTokenOkResponseValidator();
+        var responseValidationResult = responseValidator.ValidateRequired(result);
+        if (!responseValidationResult.IsValid)
         {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<GetAccessTokenOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
+            throw new Http.Exceptions.ValidationException(responseValidationResult.Errors);
         }
 
         return result;
