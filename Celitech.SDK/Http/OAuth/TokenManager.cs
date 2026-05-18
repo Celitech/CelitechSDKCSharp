@@ -13,16 +13,19 @@ namespace Celitech.SDK.Http.OAuth;
 public class TokenManager
 {
     private OauthToken? _token;
+    private readonly Client httpClient;
     public Uri BaseOAuthUrl { get; set; }
     public string? ClientId { get; set; }
     public string? ClientSecret { get; set; }
 
-    public TokenManager(CelitechConfig? config = null)
+    public TokenManager(Client httpClient, CelitechConfig? config = null)
     {
+        this.httpClient = httpClient;
         config ??= new CelitechConfig();
         this.BaseOAuthUrl = new Uri(config.BaseOAuthUrl);
         this.ClientId = config.ClientId;
         this.ClientSecret = config.ClientSecret;
+        httpClient.SetBaseAddress(this.BaseOAuthUrl);
     }
 
     /// <summary>
@@ -40,7 +43,7 @@ public class TokenManager
             _token != null
             && (
                 _token.ExpiresAt == null
-                || (_token.ExpiresAt.Value - DateTimeOffset.Now.ToUnixTimeSeconds()) > 5000
+                || (_token.ExpiresAt.Value - DateTimeOffset.UtcNow.ToUnixTimeSeconds()) > 5
             );
 
         if (_token != null && hasAllScopes && validToken)
@@ -60,7 +63,13 @@ public class TokenManager
             throw new InvalidOperationException("AccessToken cannot be null");
         }
 
-        _token = new OauthToken(response.AccessToken, scopes, null);
+        _token = new OauthToken(
+            response.AccessToken,
+            scopes,
+            response.ExpiresIn.HasValue
+                ? (long?)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + response.ExpiresIn.Value)
+                : null
+        );
 
         return _token;
     }
@@ -76,11 +85,6 @@ public class TokenManager
 
     private async Task<GetAccessTokenOkResponse> GetAccessTokenAsync(HashSet<string> scopes)
     {
-        var httpClient = new HttpClient()
-        {
-            BaseAddress = this.BaseOAuthUrl.EnsureTrailingSlash(),
-            DefaultRequestHeaders = { { "user-agent", "dotnet/7.0" } },
-        };
         var service = new OAuthService(httpClient);
 
         var response = await service.GetAccessTokenAsync(

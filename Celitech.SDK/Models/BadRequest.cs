@@ -7,6 +7,5 @@ public record BadRequest(
     [property:
         JsonPropertyName("message"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ]
-        string? Message = null
+    ] string? Message = null
 );
