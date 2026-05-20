@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Celitech.SDK.Config;
 using Celitech.SDK.Http;
 using Celitech.SDK.Http.Exceptions;
 using Celitech.SDK.Http.Extensions;
@@ -17,18 +18,48 @@ namespace Celitech.SDK.Services;
 /// </summary>
 public class PurchasesService : BaseService
 {
-    internal PurchasesService(HttpClient httpClient)
+    private RequestConfig? _createPurchaseAsyncConfig;
+    private RequestConfig? _listPurchasesAsyncConfig;
+
+    internal PurchasesService(Client httpClient)
         : base(httpClient) { }
 
+    /// <summary>
+    /// Sets method-level configuration for <c>CreatePurchaseAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public PurchasesService SetCreatePurchaseAsyncConfig(RequestConfig config)
+    {
+        _createPurchaseAsyncConfig = config;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets method-level configuration for <c>ListPurchasesAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public PurchasesService SetListPurchasesAsyncConfig(RequestConfig config)
+    {
+        _listPurchasesAsyncConfig = config;
+        return this;
+    }
+
     /// <summary>This endpoint is used to purchase a new eSIM by providing the package details.</summary>
-    public async Task<List<CreatePurchaseV2OkResponse>> CreatePurchaseV2Async(
-        CreatePurchaseV2Request input,
+    public async Task<object> CreatePurchaseAsync(
+        CreatePurchaseRequest? input,
+        string? accept,
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
-        ArgumentNullException.ThrowIfNull(input, nameof(input));
         var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-        var validator = new CreatePurchaseV2RequestValidator();
+        var acceptValidationResult = new StringValidator().ValidateRequired<string>(accept);
+        if (acceptValidationResult != null)
+        {
+            validationResults.Add(acceptValidationResult);
+        }
+        ;
+        var validator = new CreatePurchaseRequestValidator();
         var validationResult = validator.Validate(input);
         validationResults.Add(validationResult);
 
@@ -38,36 +69,29 @@ public class PurchasesService : BaseService
             throw new Http.Exceptions.ValidationException(combinedFailures);
         }
 
-        var request = new RequestBuilder(HttpMethod.Post, "purchases/v2")
+        var resolvedConfig = GetResolvedConfig(_createPurchaseAsyncConfig, requestConfig);
+
+        var request = new RequestBuilder(HttpMethod.Post, "purchases")
+            .SetHeader("Accept", accept)
             .SetContentAsJson(input, _jsonSerializerOptions)
             .SetScopes(new HashSet<string> { })
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        List<CreatePurchaseV2OkResponse> result;
-        if (contentLength == null || contentLength > 0)
-        {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<List<CreatePurchaseV2OkResponse>>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
-        }
+        var result = DeserializationValidation.DeserializeWithRequiredFieldValidation<object>(
+            jsonContent,
+            _jsonSerializerOptions
+        );
+
+        // Validate the response
+        // Skip validation for primitive types or OneOf types
 
         return result;
     }
@@ -83,7 +107,8 @@ public class PurchasesService : BaseService
     /// <param name="limit">Maximum number of purchases to be returned in the response. The value must be greater than 0 and less than or equal to 100. If not provided, the default value is 20</param>
     /// <param name="after">Epoch value representing the start of the time interval for filtering purchases</param>
     /// <param name="before">Epoch value representing the end of the time interval for filtering purchases</param>
-    public async Task<ListPurchasesOkResponse> ListPurchasesAsync(
+    public async Task<object> ListPurchasesAsync(
+        string? accept,
         string? purchaseId = null,
         string? iccid = null,
         string? afterDate = null,
@@ -91,20 +116,18 @@ public class PurchasesService : BaseService
         string? email = null,
         string? referenceId = null,
         string? afterCursor = null,
-        double? limit = null,
-        double? after = null,
-        double? before = null,
+        string? limit = null,
+        string? after = null,
+        string? before = null,
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
         var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-        var iccidValidationResult = new StringValidator()
-            .WithMaximumLength(22)
-            .WithMinimumLength(18)
-            .ValidateOptional<string?>((string?)iccid);
-        if (iccidValidationResult != null)
+        var acceptValidationResult = new StringValidator().ValidateRequired<string>(accept);
+        if (acceptValidationResult != null)
         {
-            validationResults.Add(iccidValidationResult);
+            validationResults.Add(acceptValidationResult);
         }
 
         var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
@@ -112,266 +135,39 @@ public class PurchasesService : BaseService
         {
             throw new Http.Exceptions.ValidationException(combinedFailures);
         }
+
+        var resolvedConfig = GetResolvedConfig(_listPurchasesAsyncConfig, requestConfig);
 
         var request = new RequestBuilder(HttpMethod.Get, "purchases")
-            .SetOptionalQueryParameter("purchaseId", purchaseId)
-            .SetOptionalQueryParameter("iccid", iccid)
-            .SetOptionalQueryParameter("afterDate", afterDate)
-            .SetOptionalQueryParameter("beforeDate", beforeDate)
-            .SetOptionalQueryParameter("email", email)
-            .SetOptionalQueryParameter("referenceId", referenceId)
-            .SetOptionalQueryParameter("afterCursor", afterCursor)
-            .SetOptionalQueryParameter("limit", limit)
-            .SetOptionalQueryParameter("after", after)
-            .SetOptionalQueryParameter("before", before)
+            .SetHeader("Accept", accept)
+            .SetQueryParameter("purchaseId", purchaseId)
+            .SetQueryParameter("iccid", iccid)
+            .SetQueryParameter("afterDate", afterDate)
+            .SetQueryParameter("beforeDate", beforeDate)
+            .SetQueryParameter("email", email)
+            .SetQueryParameter("referenceId", referenceId)
+            .SetQueryParameter("afterCursor", afterCursor)
+            .SetQueryParameter("limit", limit)
+            .SetQueryParameter("after", after)
+            .SetQueryParameter("before", before)
             .SetScopes(new HashSet<string> { })
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
-
-        ListPurchasesOkResponse result;
-        if (contentLength == null || contentLength > 0)
-        {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<ListPurchasesOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
-        }
-
-        return result;
-    }
-
-    /// <summary>This endpoint is used to purchase a new eSIM by providing the package details.</summary>
-    public async Task<CreatePurchaseOkResponse> CreatePurchaseAsync(
-        CreatePurchaseRequest input,
-        CancellationToken cancellationToken = default
-    )
-    {
-        ArgumentNullException.ThrowIfNull(input, nameof(input));
-        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-        var validator = new CreatePurchaseRequestValidator();
-        var validationResult = validator.Validate(input);
-        validationResults.Add(validationResult);
-
-        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
-        if (combinedFailures.Any())
-        {
-            throw new Http.Exceptions.ValidationException(combinedFailures);
-        }
-
-        var request = new RequestBuilder(HttpMethod.Post, "purchases")
-            .SetContentAsJson(input, _jsonSerializerOptions)
-            .SetScopes(new HashSet<string> { })
-            .Build();
-
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        var result = DeserializationValidation.DeserializeWithRequiredFieldValidation<object>(
+            jsonContent,
+            _jsonSerializerOptions
+        );
 
-        CreatePurchaseOkResponse result;
-        if (contentLength == null || contentLength > 0)
-        {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<CreatePurchaseOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
-        }
-
-        return result;
-    }
-
-    /// <summary>This endpoint is used to top-up an existing eSIM with the previously associated destination by providing its ICCID and package details. To determine if an eSIM can be topped up, use the Get eSIM endpoint, which returns the `isTopUpAllowed` flag.</summary>
-    public async Task<TopUpEsimOkResponse> TopUpEsimAsync(
-        TopUpEsimRequest input,
-        CancellationToken cancellationToken = default
-    )
-    {
-        ArgumentNullException.ThrowIfNull(input, nameof(input));
-        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-        var validator = new TopUpEsimRequestValidator();
-        var validationResult = validator.Validate(input);
-        validationResults.Add(validationResult);
-
-        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
-        if (combinedFailures.Any())
-        {
-            throw new Http.Exceptions.ValidationException(combinedFailures);
-        }
-
-        var request = new RequestBuilder(HttpMethod.Post, "purchases/topup")
-            .SetContentAsJson(input, _jsonSerializerOptions)
-            .SetScopes(new HashSet<string> { })
-            .Build();
-
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
-            .ConfigureAwait(false);
-
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
-
-        TopUpEsimOkResponse result;
-        if (contentLength == null || contentLength > 0)
-        {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<TopUpEsimOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
-        }
-
-        return result;
-    }
-
-    /// <summary>
-    /// This endpoint allows you to modify the validity dates of an existing purchase.
-    ///
-    /// **Behavior:**
-    /// - If the purchase has **not yet been activated**, both the start and end dates can be updated.
-    /// - If the purchase is **already active**, only the **end date** can be updated, while the **start date must remain unchanged** (and should be passed as originally set).
-    /// - Updates must comply with the same pricing structure; the modification cannot alter the package size or change its duration category.
-    ///
-    /// The end date can be extended or shortened as long as it adheres to the same pricing category and does not exceed the allowed duration limits.
-    /// </summary>
-    public async Task<EditPurchaseOkResponse> EditPurchaseAsync(
-        EditPurchaseRequest input,
-        CancellationToken cancellationToken = default
-    )
-    {
-        ArgumentNullException.ThrowIfNull(input, nameof(input));
-        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-        var validator = new EditPurchaseRequestValidator();
-        var validationResult = validator.Validate(input);
-        validationResults.Add(validationResult);
-
-        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
-        if (combinedFailures.Any())
-        {
-            throw new Http.Exceptions.ValidationException(combinedFailures);
-        }
-
-        var request = new RequestBuilder(HttpMethod.Post, "purchases/edit")
-            .SetContentAsJson(input, _jsonSerializerOptions)
-            .SetScopes(new HashSet<string> { })
-            .Build();
-
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
-            .ConfigureAwait(false);
-
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
-
-        EditPurchaseOkResponse result;
-        if (contentLength == null || contentLength > 0)
-        {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<EditPurchaseOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
-        }
-
-        return result;
-    }
-
-    /// <summary>This endpoint can be called for consumption notifications (e.g. every 1 hour or when the user clicks a button). It returns the data balance (consumption) of purchased packages.</summary>
-    /// <param name="purchaseId">ID of the purchase</param>
-    public async Task<GetPurchaseConsumptionOkResponse> GetPurchaseConsumptionAsync(
-        string purchaseId,
-        CancellationToken cancellationToken = default
-    )
-    {
-        ArgumentNullException.ThrowIfNull(purchaseId, nameof(purchaseId));
-        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
-        var purchaseIdValidationResult = new StringValidator().ValidateRequired<string>(purchaseId);
-        if (purchaseIdValidationResult != null)
-        {
-            validationResults.Add(purchaseIdValidationResult);
-        }
-
-        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
-        if (combinedFailures.Any())
-        {
-            throw new Http.Exceptions.ValidationException(combinedFailures);
-        }
-
-        var request = new RequestBuilder(HttpMethod.Get, "purchases/{purchaseId}/consumption")
-            .SetPathParameter("purchaseId", purchaseId)
-            .SetScopes(new HashSet<string> { })
-            .Build();
-
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
-            .ConfigureAwait(false);
-
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
-
-        GetPurchaseConsumptionOkResponse result;
-        if (contentLength == null || contentLength > 0)
-        {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<GetPurchaseConsumptionOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
-        }
+        // Validate the response
+        // Skip validation for primitive types or OneOf types
 
         return result;
     }
