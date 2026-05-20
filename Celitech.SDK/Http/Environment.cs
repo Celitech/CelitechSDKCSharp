@@ -17,4 +17,5 @@ public class Environment
     }
 
     public static Environment Default { get; } = new("https://api.celitech.net/v1/");
+    public static Environment Api { get; } = new("https://api.celitech.net/v1/");
 }
