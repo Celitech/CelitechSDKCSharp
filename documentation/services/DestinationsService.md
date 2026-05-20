@@ -13,9 +13,15 @@ List Destinations
 - HTTP Method: `GET`
 - Endpoint: `/destinations`
 
+**Parameters**
+
+| Name   | Type   | Required | Description |
+| :----- | :----- | :------- | :---------- |
+| accept | string | ✅       |             |
+
 **Return Type**
 
-`ListDestinationsOkResponse`
+`object`
 
 **Example Usage Code Snippet**
 
@@ -30,7 +36,7 @@ var config = new CelitechConfig{
 
 var client = new CelitechClient(config);
 
-var response = await client.Destinations.ListDestinationsAsync();
+var response = await client.Destinations.ListDestinationsAsync("application/json");
 
 Console.WriteLine(response);
 ```

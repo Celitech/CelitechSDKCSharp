@@ -6,6 +6,6 @@ var config = new CelitechConfig { ClientId = "CLIENT_ID", ClientSecret = "CLIENT
 
 var client = new CelitechClient(config);
 
-var response = await client.Destinations.ListDestinationsAsync();
+var response = await client.Destinations.ListDestinationsAsync("application/json");
 
 Console.WriteLine(response);
