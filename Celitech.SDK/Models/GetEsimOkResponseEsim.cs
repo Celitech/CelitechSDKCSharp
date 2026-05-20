@@ -4,24 +4,17 @@ namespace Celitech.SDK.Models;
 
 public record GetEsimOkResponseEsim(
     /// <value>ID of the eSIM</value>
-    [property: JsonPropertyName("iccid")]
-        string Iccid,
+    [property: JsonPropertyName("iccid")] string Iccid,
     /// <value>SM-DP+ Address</value>
-    [property: JsonPropertyName("smdpAddress")]
-        string SmdpAddress,
+    [property: JsonPropertyName("smdpAddress")] string SmdpAddress,
     /// <value>QR Code of the eSIM as base64</value>
-    [property: JsonPropertyName("activationCode")]
-        string ActivationCode,
+    [property: JsonPropertyName("activationCode")] string ActivationCode,
     /// <value>The manual activation code</value>
-    [property: JsonPropertyName("manualActivationCode")]
-        string ManualActivationCode,
+    [property: JsonPropertyName("manualActivationCode")] string ManualActivationCode,
     /// <value>Status of the eSIM, possible values are 'RELEASED', 'DOWNLOADED', 'INSTALLED', 'ENABLED', 'DELETED', or 'ERROR'</value>
-    [property: JsonPropertyName("status")]
-        string Status,
+    [property: JsonPropertyName("status")] string Status,
     /// <value>Status of the eSIM connectivity, possible values are 'ACTIVE' or 'NOT_ACTIVE'</value>
-    [property: JsonPropertyName("connectivityStatus")]
-        string ConnectivityStatus,
+    [property: JsonPropertyName("connectivityStatus")] string ConnectivityStatus,
     /// <value>Indicates whether the eSIM is currently eligible for a top-up. This flag should be checked before attempting a top-up request.</value>
-    [property: JsonPropertyName("isTopUpAllowed")]
-        bool IsTopUpAllowed
+    [property: JsonPropertyName("isTopUpAllowed")] bool IsTopUpAllowed
 );

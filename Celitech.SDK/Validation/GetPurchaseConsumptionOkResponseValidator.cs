@@ -5,12 +5,12 @@ using FluentValidation;
 using FluentValidation.Results;
 
 /// <summary>
-/// FluentValidation validator for GetPurchaseConsumptionOkResponse model.
+/// FluentValidation validator for global::Celitech.SDK.Models.GetPurchaseConsumptionOkResponse model.
 /// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
 /// Automatically validates instances during request serialization and response deserialization.
 /// </summary>
 public class GetPurchaseConsumptionOkResponseValidator
-    : AbstractValidator<GetPurchaseConsumptionOkResponse>
+    : AbstractValidator<global::Celitech.SDK.Models.GetPurchaseConsumptionOkResponse>
 {
     public GetPurchaseConsumptionOkResponseValidator()
     {
