@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
+using Celitech.SDK.Config;
 using Celitech.SDK.Http;
 using Celitech.SDK.Http.Exceptions;
 using Celitech.SDK.Http.Extensions;
 using Celitech.SDK.Http.Handlers;
 using Celitech.SDK.Http.Serialization;
-using Celitech.SDK.Models;
 using Celitech.SDK.Validation;
 using Celitech.SDK.Validation.Extensions;
 
@@ -17,8 +17,20 @@ namespace Celitech.SDK.Services;
 /// </summary>
 public class PackagesService : BaseService
 {
-    internal PackagesService(HttpClient httpClient)
+    private RequestConfig? _listPackagesAsyncConfig;
+
+    internal PackagesService(Client httpClient)
         : base(httpClient) { }
+
+    /// <summary>
+    /// Sets method-level configuration for <c>ListPackagesAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public PackagesService SetListPackagesAsyncConfig(RequestConfig config)
+    {
+        _listPackagesAsyncConfig = config;
+        return this;
+    }
 
     /// <summary>List Packages</summary>
     /// <param name="destination">ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.</param>
@@ -28,53 +40,61 @@ public class PackagesService : BaseService
     /// <param name="limit">Maximum number of packages to be returned in the response. The value must be greater than 0 and less than or equal to 160. If not provided, the default value is 20</param>
     /// <param name="startTime">Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months</param>
     /// <param name="endTime">Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time</param>
-    public async Task<ListPackagesOkResponse> ListPackagesAsync(
+    public async Task<object> ListPackagesAsync(
+        string? accept,
         string? destination = null,
         string? startDate = null,
         string? endDate = null,
         string? afterCursor = null,
-        double? limit = null,
-        long? startTime = null,
-        long? endTime = null,
+        string? limit = null,
+        string? startTime = null,
+        string? endTime = null,
+        RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
+        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
+        var acceptValidationResult = new StringValidator().ValidateRequired<string>(accept);
+        if (acceptValidationResult != null)
+        {
+            validationResults.Add(acceptValidationResult);
+        }
+
+        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
+        if (combinedFailures.Any())
+        {
+            throw new Http.Exceptions.ValidationException(combinedFailures);
+        }
+
+        var resolvedConfig = GetResolvedConfig(_listPackagesAsyncConfig, requestConfig);
+
         var request = new RequestBuilder(HttpMethod.Get, "packages")
-            .SetOptionalQueryParameter("destination", destination)
-            .SetOptionalQueryParameter("startDate", startDate)
-            .SetOptionalQueryParameter("endDate", endDate)
-            .SetOptionalQueryParameter("afterCursor", afterCursor)
-            .SetOptionalQueryParameter("limit", limit)
-            .SetOptionalQueryParameter("startTime", startTime)
-            .SetOptionalQueryParameter("endTime", endTime)
+            .SetHeader("Accept", accept)
+            .SetQueryParameter("destination", destination)
+            .SetQueryParameter("startDate", startDate)
+            .SetQueryParameter("endDate", endDate)
+            .SetQueryParameter("afterCursor", afterCursor)
+            .SetQueryParameter("limit", limit)
+            .SetQueryParameter("startTime", startTime)
+            .SetQueryParameter("endTime", endTime)
             .SetScopes(new HashSet<string> { })
             .Build();
 
-        var response = await _httpClient
-            .SendAsync(request, cancellationToken)
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
             .ConfigureAwait(false);
 
-        // Standard deserialization
-        var responseContent = response.EnsureSuccessfulResponse().Content;
-        var contentLength = responseContent.Headers.ContentLength;
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
 
-        ListPackagesOkResponse result;
-        if (contentLength == null || contentLength > 0)
-        {
-            result =
-                await responseContent
-                    .ReadFromJsonAsync<ListPackagesOkResponse>(
-                        _jsonSerializerOptions,
-                        cancellationToken
-                    )
-                    .ConfigureAwait(false)
-                ?? throw new Exception("Failed to deserialize response.");
-        }
-        else
-        {
-            // Empty response body - return default instance
-            result = default!;
-        }
+        var result = DeserializationValidation.DeserializeWithRequiredFieldValidation<object>(
+            jsonContent,
+            _jsonSerializerOptions
+        );
+
+        // Validate the response
+        // Skip validation for primitive types or OneOf types
 
         return result;
     }

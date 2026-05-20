@@ -1,32 +1,22 @@
 {
-  "liblabVersion": "2.25.53",
-  "date": "2026-05-12T12:42:41.749Z",
+  "sdkGenVersion": "1.1.2",
+  "date": "2026-05-20T10:03:04.501Z",
   "config": {
-    "apiId": 3121,
-    "sdkName": "Celitech",
-    "sdkVersion": "1.3.64",
-    "languages": ["csharp"],
-    "auth": ["oauth"],
-    "docs": ["snippets", "enhancedApiSpec"],
-    "liblabVersion": "2",
-    "deliveryMethods": ["zip"],
-    "rawConfig": {
-      "sdkName": "Celitech",
-      "apiName": "Celitech",
-      "apiVersion": "1.3.64",
-      "specFilePath": "swagger.yaml",
-      "languages": ["typescript", "python", "php", "java", "go", "csharp"],
-      "docs": ["snippets", "enhancedApiSpec"],
-      "auth": ["oauth"],
-      "customizations": {
-        "devContainer": true,
-        "generateEnv": true,
-        "inferServiceNames": false,
-        "includeOptionalSnippetParameters": false,
-        "deprecatedOperations": {
-          "include": true
+    "languages": [
+      "csharp"
+    ],
+    "deliveryMethods": [
+      "zip"
+    ],
+    "languageOptions": {
+      "java": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKJava",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
         },
-        "injectedModels": [],
         "license": {
           "type": "MIT"
         },
@@ -35,12 +25,6 @@
             "enabled": true,
             "refreshBuffer": 5000
           }
-        },
-        "responseHeaders": false,
-        "retry": {
-          "enabled": true,
-          "maxAttempts": 3,
-          "retryDelay": 150
         },
         "environmentVariables": [
           {
@@ -51,103 +35,19 @@
             "name": "CLIENT_SECRET",
             "description": "Client Secret parameter"
           }
-        ]
-      },
-      "languageOptions": {
-        "typescript": {
-          "githubRepoName": "CelitechSDKTypeScript",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "npmName": "celitech-sdk"
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
         },
-        "python": {
-          "githubRepoName": "CelitechSDKPython",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "pypiPackageName": "celitech-sdk"
-        },
-        "php": {
-          "githubRepoName": "CelitechSDKPHP",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "packageName": "celitech-sdk/sdk"
-        },
-        "java": {
-          "githubRepoName": "CelitechSDKJava",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "groupId": "io.github.celitech",
-          "artifactId": "celitech-sdk",
-          "developers": [
-            {
-              "name": "CELITECH",
-              "email": "info@celitech.com",
-              "organization": "Celitech",
-              "organizationUrl": "https://www.celitech.com"
-            }
-          ],
-          "homepage": "https://docs.celitech.com/"
-        },
-        "go": {
-          "githubRepoName": "CelitechSDKGo",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "goModuleName": "github.com/Celitech/CelitechSDKGo"
-        },
-        "csharp": {
-          "githubRepoName": "CelitechSDKCSharp",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "packageId": "Celitech.SDK"
-        }
-      },
-      "integrations": {
-        "enhancedApiSpec": {
-          "provider": "redocly",
-          "githubRepoName": "CelitechAPIReference",
-          "redocly": {
-            "openapiPath": "swagger.yaml"
-          }
-        }
-      },
-      "publishing": {
-        "githubOrg": "Celitech"
-      }
-    },
-    "liblabConfigVersion": "1.0.0",
-    "apiVersion": "1.3.64",
-    "apiName": "Celitech",
-    "specFilePath": "swagger.yaml",
-    "createDocs": false,
-    "languageOptions": {
-      "csharp": {
-        "githubRepoName": "CelitechSDKCSharp",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "packageId": "Celitech.SDK",
-        "useOptionalWrapper": false,
-        "validateResponses": false
-      },
-      "go": {
-        "githubRepoName": "CelitechSDKGo",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "goModuleName": "github.com/Celitech/CelitechSDKGo"
-      },
-      "java": {
-        "githubRepoName": "CelitechSDKJava",
-        "homepage": "https://docs.celitech.com/",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
         "groupId": "io.github.celitech",
         "artifactId": "celitech-sdk",
-        "includeKotlinSnippets": false,
+        "homepage": "https://docs.celitech.com/",
         "developers": [
           {
             "name": "CELITECH",
@@ -157,84 +57,212 @@
           }
         ]
       },
+      "typescript": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKTypeScript",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
+        "npmName": "celitech-sdk"
+      },
       "python": {
+        "sdkVersion": "1.3.63",
         "githubRepoName": "CelitechSDKPython",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "alwaysInitializeOptionals": true,
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
         "pypiPackageName": "celitech-sdk"
       },
+      "go": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKGo",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
+        "goModuleName": "github.com/Celitech/CelitechSDKGo"
+      },
+      "csharp": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKCSharp",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
+        "packageId": "Celitech.SDK",
+        "useOptionalWrapper": false
+      },
       "php": {
+        "sdkVersion": "1.3.63",
         "githubRepoName": "CelitechSDKPHP",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
         "packageName": "celitech-sdk/sdk"
-      },
-      "typescript": {
-        "githubRepoName": "CelitechSDKTypeScript",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "bundle": true,
-        "denoteCommon": false,
-        "exportClassDefault": false,
-        "generateEnumAs": "enum",
-        "httpClient": "fetch",
-        "npmName": "celitech-sdk"
       }
     },
-    "validationsToIgnore": [],
-    "publishing": {
-      "githubOrg": "Celitech",
-      "platform": "github"
-    },
-    "integrations": {
-      "enhancedApiSpec": {
-        "githubRepoName": "CelitechAPIReference",
-        "targetBranch": "main",
-        "provider": "redocly",
-        "redocly": {
-          "openapiPath": "swagger.yaml"
-        }
-      }
-    },
-    "analytics": {
-      "streaming": false,
-      "pagination": false
-    },
-    "authentication": {
-      "oauth": {
-        "enabled": true,
-        "basic": false,
-        "refreshBuffer": 5000
-      }
-    },
-    "devContainer": true,
-    "environmentVariables": [
-      {
-        "description": "Client ID parameter",
-        "name": "CLIENT_ID"
-      },
-      {
-        "description": "Client Secret parameter",
-        "name": "CLIENT_SECRET"
-      }
-    ],
-    "generateEnv": true,
-    "includeOptionalSnippetParameters": false,
-    "license": {
-      "type": "MIT",
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT",
-      "path": "MIT.ejs"
-    },
+    "includeWatermark": false,
     "responseHeaders": false,
-    "buildAllModels": false,
+    "sdkName": "Celitech",
+    "sdkVersion": "1.3.63",
+    "auth": [
+      "oauth"
+    ],
+    "apiVersion": "1.3.63",
+    "publishing": {
+      "githubOrg": "Celitech"
+    },
+    "customCode": {
+      "trackChanges": true
+    },
     "retry": {
       "enabled": true,
       "maxAttempts": 3,
@@ -242,43 +270,73 @@
       "maxDelay": 5000,
       "retryDelayJitter": 50,
       "backOffFactor": 2,
-      "httpCodesToRetry": [408, 429, 500, 502, 503, 504],
-      "httpMethodsToRetry": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
+      "httpMethodsToRetry": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "HEAD",
+        "OPTIONS"
+      ]
     },
+    "license": {
+      "type": "MIT",
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT",
+      "path": "MIT.ejs"
+    },
+    "authentication": {
+      "oauth": {
+        "enabled": true,
+        "refreshBuffer": 5000
+      }
+    },
+    "environmentVariables": [
+      {
+        "name": "CLIENT_ID",
+        "description": "Client ID parameter"
+      },
+      {
+        "name": "CLIENT_SECRET",
+        "description": "Client Secret parameter"
+      }
+    ],
+    "devContainer": true,
+    "generateEnv": true,
+    "includeOptionalSnippetParameters": false,
+    "injectedModels": [],
+    "inferServiceNames": false,
     "deprecatedOperations": {
       "include": true
     },
-    "multiTenant": true,
-    "includeWatermark": false,
     "githubRepoName": "CelitechSDKCSharp",
-    "ignoreFiles": [],
-    "renameIllegalModelProperties": true,
     "packageId": "Celitech.SDK",
     "useOptionalWrapper": false,
-    "validateResponses": false,
     "language": "csharp",
     "deliveryMethod": "zip",
     "hooks": {
       "enabled": false,
       "sourceDir": ""
     },
+    "validateResponses": true,
     "usesFormData": false,
     "fileOutput": "/tmp",
-    "inferServiceNames": false,
     "httpLibrary": {
       "name": "axios",
-      "packages": {
-        "axios": "^1.13.2"
-      },
-      "languages": ["typescript"]
+      "packages": {},
+      "languages": [
+        "typescript"
+      ]
     },
+    "multiTenant": false,
     "customQueries": {
       "paths": [],
       "rawQueries": [],
       "queriesData": []
     },
     "ai": false,
-    "specType": "openapi",
+    "specType": "postman",
     "multipleResponses": {
       "enabled": false
     }
@@ -287,10 +345,18 @@
     "Celitech.SDK/Celitech.SDK.csproj",
     "install.sh",
     "Celitech.SDK/Services/BaseService.cs",
-    "Celitech.SDK/Services/OAuthService.cs",
+    "Celitech.SDK/Validation/DeserializationValidation.cs",
     "Celitech.SDK/Services/DestinationsService.cs",
     "Celitech.SDK/Services/PackagesService.cs",
-    "Celitech.SDK/Services/IFrameService.cs",
+    "Celitech.SDK/Services/V2Service.cs",
+    "Celitech.SDK/Services/TopupService.cs",
+    "Celitech.SDK/Services/EditService.cs",
+    "Celitech.SDK/Services/ConsumptionService.cs",
+    "Celitech.SDK/Services/DeviceService.cs",
+    "Celitech.SDK/Services/HistoryService.cs",
+    "Celitech.SDK/Services/EsimService.cs",
+    "Celitech.SDK/Services/TokenService.cs",
+    "Celitech.SDK/Services/OAuthService.cs",
     "Celitech.SDK/Models/ValueEnum.cs",
     "Celitech.SDK/Json/ValueEnumJsonConverter.cs",
     "Celitech.SDK/Json/ValueEnumJsonConverterFactory.cs",
@@ -303,33 +369,19 @@
     "Celitech.SDK/Http/Serialization/Serializer.cs",
     "Celitech.SDK/Http/RequestBuilder.cs",
     "Celitech.SDK/Config/CelitechConfig.cs",
+    "Celitech.SDK/Config/RequestConfig.cs",
+    "Celitech.SDK/Config/RetryConfig.cs",
     "Celitech.SDK/Http/OAuth/OAuthToken.cs",
     "Celitech.SDK/Http/OAuth/TokenManager.cs",
     "Celitech.SDK/Http/Handlers/OAuthHandler.cs",
     "Celitech.SDK/Http/Environment.cs",
     "Celitech.SDK/CelitechClient.cs",
-    "documentation/snippets/destinations-get.md",
-    "documentation/snippets/packages-get.md",
-    "documentation/snippets/purchases-v2-post.md",
-    "documentation/snippets/purchases-get.md",
-    "documentation/snippets/purchases-post.md",
-    "documentation/snippets/purchases-topup-post.md",
-    "documentation/snippets/purchases-edit-post.md",
-    "documentation/snippets/purchases-{purchaseId}-consumption-get.md",
-    "documentation/snippets/esim-get.md",
-    "documentation/snippets/esim-{iccid}-device-get.md",
-    "documentation/snippets/esim-{iccid}-history-get.md",
-    "documentation/snippets/iframe-token-post.md",
-    "documentation/models/ListDestinationsOkResponse.md",
-    "documentation/models/BadRequest.md",
-    "documentation/models/Unauthorized.md",
-    "documentation/models/ListPackagesOkResponse.md",
-    "documentation/models/ListPurchasesOkResponse.md",
-    "documentation/models/TopUpEsimRequest.md",
+    "documentation/snippets/snippets.json",
+    "documentation/models/CreatePurchaseV2Request.md",
+    "documentation/models/TopUpESimRequest.md",
     "documentation/models/EditPurchaseRequest.md",
-    "documentation/models/EditPurchaseOkResponse.md",
-    "documentation/models/GetPurchaseConsumptionOkResponse.md",
-    "documentation/models/TokenOkResponse.md",
+    "documentation/models/CreatePurchaseRequest.md",
+    "documentation/models/GrantType.md",
     ".devcontainer/devcontainer.json",
     "Example/README.md",
     "Celitech.SDK/Http/ApiException.cs",
@@ -337,107 +389,138 @@
     "Celitech.SDK/Http/Extensions/MultipartFormDataContentExtensions.cs",
     "Celitech.SDK/Http/Extensions/HttpRequestMessageExtensions.cs",
     "Celitech.SDK/Http/Extensions/UriExtensions.cs",
-    "Celitech.SDK/Http/Exceptions/BadRequestException.cs",
-    "Celitech.SDK/Http/Exceptions/UnauthorizedException.cs",
-    "Celitech.SDK/Validation/GetAccessTokenRequestValidator.cs",
-    "Celitech.SDK/Validation/GetAccessTokenOkResponseValidator.cs",
-    "Celitech.SDK/Validation/ListDestinationsOkResponseValidator.cs",
-    "Celitech.SDK/Validation/ListPackagesOkResponseValidator.cs",
+    "Celitech.SDK/Http/ContentTypes.cs",
+    "Celitech.SDK/Http/Client.cs",
+    "Celitech.SDK/Http/Types.cs",
+    "Celitech.SDK/Http/Request.cs",
     "Celitech.SDK/Validation/CreatePurchaseV2RequestValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseV2OkResponseValidator.cs",
-    "Celitech.SDK/Validation/ListPurchasesOkResponseValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseRequestValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseOkResponseValidator.cs",
-    "Celitech.SDK/Validation/TopUpEsimRequestValidator.cs",
-    "Celitech.SDK/Validation/TopUpEsimOkResponseValidator.cs",
+    "Celitech.SDK/Validation/TopUpESimRequestValidator.cs",
     "Celitech.SDK/Validation/EditPurchaseRequestValidator.cs",
-    "Celitech.SDK/Validation/EditPurchaseOkResponseValidator.cs",
-    "Celitech.SDK/Validation/GetPurchaseConsumptionOkResponseValidator.cs",
-    "Celitech.SDK/Validation/GetEsimOkResponseValidator.cs",
-    "Celitech.SDK/Validation/GetEsimDeviceOkResponseValidator.cs",
-    "Celitech.SDK/Validation/GetEsimHistoryOkResponseValidator.cs",
-    "Celitech.SDK/Validation/TokenOkResponseValidator.cs",
+    "Celitech.SDK/Validation/CreatePurchaseRequestValidator.cs",
+    "Celitech.SDK/Validation/OAuthTokenRequestValidator.cs",
+    "Celitech.SDK/Validation/OAuthTokenResponseValidator.cs",
     "Celitech.SDK/Validation/GrantTypeValidator.cs",
-    "Celitech.SDK/Validation/DestinationsValidator.cs",
-    "Celitech.SDK/Validation/PackagesValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseV2RequestLanguageValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseV2OkResponsePurchaseValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseV2OkResponseProfileValidator.cs",
-    "Celitech.SDK/Validation/PurchasesValidator.cs",
-    "Celitech.SDK/Validation/PackageValidator.cs",
-    "Celitech.SDK/Validation/PurchasesEsimValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseRequestLanguageValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseOkResponsePurchaseValidator.cs",
-    "Celitech.SDK/Validation/CreatePurchaseOkResponseProfileValidator.cs",
-    "Celitech.SDK/Validation/TopUpEsimOkResponsePurchaseValidator.cs",
-    "Celitech.SDK/Validation/TopUpEsimOkResponseProfileValidator.cs",
-    "Celitech.SDK/Validation/GetEsimOkResponseEsimValidator.cs",
-    "Celitech.SDK/Validation/DeviceValidator.cs",
-    "Celitech.SDK/Validation/GetEsimHistoryOkResponseEsimValidator.cs",
-    "Celitech.SDK/Validation/HistoryValidator.cs",
     "Celitech.SDK/Http/ValidationException.cs",
     "Celitech.SDK/Validation/FloatValidator.cs",
     "Celitech.SDK/Validation/NumberValidator.cs",
     "Celitech.SDK/Validation/StringValidator.cs",
-    "Celitech.SDK/Validation/ListValidator.cs",
+    "Celitech.SDK/Validation/Collections/ListValidator.cs",
     "Celitech.SDK/Validation/Extensions/ValidationExtensions.cs",
     "Celitech.SDK/Http/Handlers/RetryHandler.cs",
     "Celitech.SDK/.gitignore",
     "LICENSE",
     ".env.example",
-    "Celitech.SDK/Models/GrantType.cs",
-    "Celitech.SDK/Models/GetAccessTokenRequest.cs",
-    "Celitech.SDK/Models/GetAccessTokenOkResponse.cs",
-    "Celitech.SDK/Models/Destinations.cs",
-    "Celitech.SDK/Models/ListDestinationsOkResponse.cs",
-    "Celitech.SDK/Models/BadRequest.cs",
-    "Celitech.SDK/Models/Unauthorized.cs",
-    "Celitech.SDK/Models/Packages.cs",
-    "Celitech.SDK/Models/ListPackagesOkResponse.cs",
-    "Celitech.SDK/Models/CreatePurchaseV2RequestLanguage.cs",
+    "Celitech.SDK/Services/PurchasesService.cs",
     "Celitech.SDK/Models/CreatePurchaseV2Request.cs",
-    "Celitech.SDK/Models/CreatePurchaseV2OkResponsePurchase.cs",
-    "Celitech.SDK/Models/CreatePurchaseV2OkResponseProfile.cs",
-    "Celitech.SDK/Models/CreatePurchaseV2OkResponse.cs",
-    "Celitech.SDK/Models/Package.cs",
-    "Celitech.SDK/Models/PurchasesEsim.cs",
-    "Celitech.SDK/Models/Purchases.cs",
-    "Celitech.SDK/Models/ListPurchasesOkResponse.cs",
-    "Celitech.SDK/Models/CreatePurchaseRequestLanguage.cs",
-    "Celitech.SDK/Models/CreatePurchaseRequest.cs",
-    "Celitech.SDK/Models/CreatePurchaseOkResponsePurchase.cs",
-    "Celitech.SDK/Models/CreatePurchaseOkResponseProfile.cs",
-    "Celitech.SDK/Models/CreatePurchaseOkResponse.cs",
-    "Celitech.SDK/Models/TopUpEsimRequest.cs",
-    "Celitech.SDK/Models/TopUpEsimOkResponsePurchase.cs",
-    "Celitech.SDK/Models/TopUpEsimOkResponseProfile.cs",
-    "Celitech.SDK/Models/TopUpEsimOkResponse.cs",
+    "Celitech.SDK/Models/TopUpESimRequest.cs",
     "Celitech.SDK/Models/EditPurchaseRequest.cs",
-    "Celitech.SDK/Models/EditPurchaseOkResponse.cs",
-    "Celitech.SDK/Models/GetPurchaseConsumptionOkResponse.cs",
-    "Celitech.SDK/Models/GetEsimOkResponseEsim.cs",
-    "Celitech.SDK/Models/GetEsimOkResponse.cs",
-    "Celitech.SDK/Models/Device.cs",
-    "Celitech.SDK/Models/GetEsimDeviceOkResponse.cs",
-    "Celitech.SDK/Models/History.cs",
-    "Celitech.SDK/Models/GetEsimHistoryOkResponseEsim.cs",
-    "Celitech.SDK/Models/GetEsimHistoryOkResponse.cs",
-    "Celitech.SDK/Models/TokenOkResponse.cs",
-    "documentation/models/CreatePurchaseV2Request.md",
-    "documentation/models/CreatePurchaseRequest.md",
-    "documentation/models/GetEsimOkResponse.md",
-    "documentation/models/GetEsimDeviceOkResponse.md",
-    "documentation/models/GetEsimHistoryOkResponse.md",
-    "Celitech.SDK/Services/ESimService.cs",
+    "Celitech.SDK/Models/CreatePurchaseRequest.cs",
+    "Celitech.SDK/Models/GrantType.cs",
+    "Celitech.SDK/Models/OAuthTokenRequest.cs",
+    "Celitech.SDK/Models/OAuthTokenResponse.cs",
     "documentation/services/DestinationsService.md",
     "documentation/services/PackagesService.md",
-    "documentation/services/IFrameService.md",
-    "documentation/models/CreatePurchaseV2OkResponse.md",
-    "documentation/models/CreatePurchaseOkResponse.md",
-    "documentation/models/TopUpEsimOkResponse.md",
-    "documentation/services/ESimService.md",
-    "Celitech.SDK/Services/PurchasesService.cs",
+    "documentation/services/V2Service.md",
+    "documentation/services/TopupService.md",
+    "documentation/services/EditService.md",
+    "documentation/services/ConsumptionService.md",
+    "documentation/services/DeviceService.md",
+    "documentation/services/HistoryService.md",
+    "documentation/services/EsimService.md",
+    "documentation/services/TokenService.md",
     "documentation/services/PurchasesService.md",
     "README.md"
-  ]
+  ],
+  "fileHashes": {
+    ".devcontainer/devcontainer.json": "8821cdaef6209767cfbba6effcb3ace221b6cb67c8379da1804cb20327332952",
+    ".env.example": "69a3ee82f15d8bcc221e9c34c99e5a851d8b318ac2ac7e78f97ef32b743b303e",
+    "CSharpier/.formattingCache": "910f6321baa71fdbbfaed66be1e04be41f958f87d2e8a510352b6f080c97abdd",
+    "Celitech.SDK/.gitignore": "7e518f111757684ca534d62362313d696716ac2580812a6f6a824b966464fa47",
+    "Celitech.SDK/Celitech.SDK.csproj": "6f6d13d508c54cd91feacc8762ae54cac1852fb79ea13179bbe6e2cada9209ac",
+    "Celitech.SDK/CelitechClient.cs": "fd17791eaef8913444a9da32376041714cec0b002a57698b950b5160bb4e57dc",
+    "Celitech.SDK/Config/CelitechConfig.cs": "59ff74b9429060e477432b05e82baf41298dbbc2d3c40c5cba68f71adaafea09",
+    "Celitech.SDK/Config/RequestConfig.cs": "1ac5037414569a9c68633506329d97a17c43ac9b6115d18bc5dc4f9e0930db28",
+    "Celitech.SDK/Config/RetryConfig.cs": "0b33e7d778db48ebbac64c00b15dc37164e7cad5f1745f0444e74a6dc579955b",
+    "Celitech.SDK/Http/ApiException.cs": "bf5f7367c44dc60c056ebb385a9209f57727589ed57894519c40313a80eba25f",
+    "Celitech.SDK/Http/Client.cs": "a12358a91593416c7595bd1f2d58a8318bc34dbb373c3c503189091f1b847c4e",
+    "Celitech.SDK/Http/ContentTypes.cs": "5171c2321353d8c199f1b3da088efe6908b4e1f182ea8daf77c907b10f05e822",
+    "Celitech.SDK/Http/Environment.cs": "5f9acb72034baa97c285ef6106d1c256dd9263f64869f2f494664d91ca9cae7e",
+    "Celitech.SDK/Http/Extensions/HttpRequestMessageExtensions.cs": "082c83d150c3b94dc5e862d2d97e7c8a83935c2acf8fccd66138695d867637a8",
+    "Celitech.SDK/Http/Extensions/HttpResponseMessageExtensions.cs": "66114e0bfe7b33a1b47676e50295f5641b9bf0199690105be608d197ee96b1c2",
+    "Celitech.SDK/Http/Extensions/MultipartFormDataContentExtensions.cs": "8bcfa16f03532135d7337ecf43c579062b2f55773c32f2c3b0b3c136b46efe14",
+    "Celitech.SDK/Http/Extensions/UriExtensions.cs": "249a2ca9c8a75c30210e6e688d0782bb103512dc34afcc583e2acc403196877c",
+    "Celitech.SDK/Http/Handlers/OAuthHandler.cs": "a2fe9b12fefcfe53c5ee44ad2d475a6c8bad77b39b58b0ce0d5f0c3759b133a1",
+    "Celitech.SDK/Http/Handlers/RetryHandler.cs": "b7797fa8543fae950f9ee28b68c77f56e3f599c8cc3724d3d8dd635ab2009b35",
+    "Celitech.SDK/Http/OAuth/OAuthToken.cs": "416b415d000b4ae16402abac408965f0d9c706191d1a4092db5b8254a0f5026e",
+    "Celitech.SDK/Http/OAuth/TokenManager.cs": "38fd9d7b63dbc5a3ef0b5030645cc92914b3115c8a8dfca10b77536748554427",
+    "Celitech.SDK/Http/Request.cs": "ebd4ed00847dbfd4d7c3b707eda49a7ac677ba6a8df96a6e06e31ced740e14c0",
+    "Celitech.SDK/Http/RequestBuilder.cs": "a97c34a8e6f27598fe594ddd90c4a9c513d81e756fdd065aa3c76cd8c63c85c7",
+    "Celitech.SDK/Http/Serialization/PathSerializationStyle.cs": "2d500476752ec5bd6f04f174df3ad1ebb14b9ee5316c5380437a9fa9afb0e3dc",
+    "Celitech.SDK/Http/Serialization/QuerySerializationStyle.cs": "ad86198941b626be2f81645e354783cd27f7e77abc16f9ad348332f81b839c83",
+    "Celitech.SDK/Http/Serialization/SerializationStyle.cs": "5171ad0e275f7c6e348ad662baa0726e8537ec89d74dcaa17479bfce3bcfa431",
+    "Celitech.SDK/Http/Serialization/Serializer.cs": "137232c399d36074be8d8b8a92cc9b1d2d1f3c18ad1ac59517fa81dfbb79aba5",
+    "Celitech.SDK/Http/Types.cs": "94f0fcb86a5cc5e587e5222627c1a5ea660c1ae0c1e2a96bca9059a85a962423",
+    "Celitech.SDK/Http/ValidationException.cs": "eafa15dfd96664e76548cbbaf87bedf8ecc95fc0b69222b53189c029f46b820b",
+    "Celitech.SDK/Json/ValueEnumJsonConverter.cs": "6cf331e8096e3c2194ac370ac56afcea7815e252550b6612d789f5b9385eb163",
+    "Celitech.SDK/Json/ValueEnumJsonConverterFactory.cs": "95ed18571e2927f8bf2e7060c9e5639d4e170c74cb77476de6a6236da64963da",
+    "Celitech.SDK/Models/CreatePurchaseRequest.cs": "b51b45840781fa68edf7a11b4476b9c98b9f6227b47f2b3061345f0ef6c9e98a",
+    "Celitech.SDK/Models/CreatePurchaseV2Request.cs": "5280bf0f619c6a1decc21549e2e763e723d16410abf6b681a21fe7361f103582",
+    "Celitech.SDK/Models/EditPurchaseRequest.cs": "bac5b9a1a1536d8be8626746043ea83cb81e81e80a2454a250e751fb36a0a3ec",
+    "Celitech.SDK/Models/GrantType.cs": "20b6b756b684c3ea6b1e89523bc56cda9c657a0b33622586ad2286c2b7305480",
+    "Celitech.SDK/Models/OAuthTokenRequest.cs": "d6a655fae825a9773bfd74612d125a3b243bf02c3f69d7e47f725b9206e30242",
+    "Celitech.SDK/Models/OAuthTokenResponse.cs": "aaf5990b65a9676ec3a7e859f54f58de3c4ed1cacd19f1e1c46b04b1889747b1",
+    "Celitech.SDK/Models/TopUpESimRequest.cs": "5ed9c74e77452bd9a64fb23bc826e3bdb46478013eb5a6f3faf997ed6a471c23",
+    "Celitech.SDK/Models/ValueEnum.cs": "7bfd20f972017cc5e9e12e41527d2c835e2044ef53d456f4c75444d560292631",
+    "Celitech.SDK/Services/BaseService.cs": "e88d6412c4b3891cd5ef8d078e05182ec04c8096d409138a30350983f9a412d5",
+    "Celitech.SDK/Services/ConsumptionService.cs": "ccb921373e294e6a41e973c8a5805145dc31ae93877b3a1cd77c73a2f29519cb",
+    "Celitech.SDK/Services/DestinationsService.cs": "cbfd5987974f2488520aeb48598b5512c810c713ef3bd2e8b8561f5625bd2c80",
+    "Celitech.SDK/Services/DeviceService.cs": "88533c752afbbe76f6978cf109d686320f7c6e72a056e3b58b792f2cda3e9522",
+    "Celitech.SDK/Services/EditService.cs": "67ae86eee356270c59fa8fd4072ee61b9ae49e9a9fc4af1b9a0de08f783b1b71",
+    "Celitech.SDK/Services/EsimService.cs": "18e089aec3b33db6cef4e947193659435b95cb1aa76abfc3e60571836e0f1791",
+    "Celitech.SDK/Services/HistoryService.cs": "819c4de7dddf6b505d88c5753d354d928365caaea0874562bc3829cdda95b227",
+    "Celitech.SDK/Services/OAuthService.cs": "eb8cf5653740eaa34fb779761769f4d426aecfe8fe6daee7f83e8e87dc68652e",
+    "Celitech.SDK/Services/PackagesService.cs": "03553fd82aa598db9f5865b27d4ce58eaca64aa568a63fa95159a36b13c132f3",
+    "Celitech.SDK/Services/PurchasesService.cs": "11641cae6fe6b576a1366b1c658035ccbe7fe46183cb6b266aede5231c8d0440",
+    "Celitech.SDK/Services/TokenService.cs": "2ae84e83c9d261a9eba4e9bdb445738280afdf76f05e871fc23e82e2579fabeb",
+    "Celitech.SDK/Services/TopupService.cs": "95aba2d69942b94434eeacf76861f07b81c9c4f7cb7fc61dbdff6d8e283131c4",
+    "Celitech.SDK/Services/V2Service.cs": "cad5a06782a397433f1c28f33e2bfdf0ce065f291853ee7858fb381548ce52d5",
+    "Celitech.SDK/Validation/Collections/ListValidator.cs": "45ddcc0bb3adba86d35e8e4b2c6fbfcb7fc1a214aab639996cc66c2b7a13d787",
+    "Celitech.SDK/Validation/CreatePurchaseRequestValidator.cs": "500cbddc17abf65bc1a519e5bfae01d0cfb1643c4641f356284b94f51968bf30",
+    "Celitech.SDK/Validation/CreatePurchaseV2RequestValidator.cs": "ee98d1be204b79f3d8dc0c0fd9769146c4246fbe2e89002a3dd20b870ee3658b",
+    "Celitech.SDK/Validation/DeserializationValidation.cs": "78a0da23c00f737d47649e7227e4070d076783265b618dde3c7fd420d87b1e1b",
+    "Celitech.SDK/Validation/EditPurchaseRequestValidator.cs": "3fd9f3f741dbe114e88eef0fd042e386980137ea16be14372171b78902489665",
+    "Celitech.SDK/Validation/Extensions/ValidationExtensions.cs": "445adc5aefd9ff8856052225550f04c3131153d49ac688b38d659789901d3daa",
+    "Celitech.SDK/Validation/FloatValidator.cs": "46700a40e0f43509a537bbcd003a28be866a76a48245feffac1aacd2271d8c17",
+    "Celitech.SDK/Validation/GrantTypeValidator.cs": "453dda9031051823c00d40657824eec8e5a10e3e3b73676157b727afac9bc0e5",
+    "Celitech.SDK/Validation/NumberValidator.cs": "38b68a89124435bac888e702703fe3c30d58a7d9d1962a3f7d0672e7356ba95d",
+    "Celitech.SDK/Validation/OAuthTokenRequestValidator.cs": "b6f698008a4a4891e9bece8cbf419df7ef670d1e01b88011dce3e96c5f9a9364",
+    "Celitech.SDK/Validation/OAuthTokenResponseValidator.cs": "2403da714b34c2044e0328f74a37f51ca44a9dd06f8dd1a72a627939f79dec2b",
+    "Celitech.SDK/Validation/StringValidator.cs": "a832bb430ab40f3a01f4563639b66cdacb55550ec0f5ace6225a62f5503db983",
+    "Celitech.SDK/Validation/TopUpESimRequestValidator.cs": "ae3329587ab65427f7a69ed8b089c635b9e4f44caa5479c46dade688dd24476c",
+    "Example/.gitignore": "7e518f111757684ca534d62362313d696716ac2580812a6f6a824b966464fa47",
+    "Example/Example.csproj": "77003e6ac87da6ca326198a34d4d485b2175a215a0acb00c7ec25b978c1f7c9a",
+    "Example/Program.cs": "9e2cbeb19193921d92b1aeb0489829b9ffc7b8190bfd6e3cded09ea65ed19103",
+    "Example/README.md": "6ee66a126250a895b149e7bc6159b385b4f5b44fc6ec7b5d12f9b3fff6f74cb2",
+    "LICENSE": "3ec558dc6e9c9355ab4b28c942caa92bf90b0b82c12d7838d2ef92467ad135c1",
+    "README.md": "757ea02e4b0c451b0b886a3f1f5eaa694d4134e317e4e8bde7b8459f9cb74550",
+    "documentation/models/CreatePurchaseRequest.md": "92d607d2439d839accf00f0b247c507fb1b656d5a455358df9418ebaa44c17fd",
+    "documentation/models/CreatePurchaseV2Request.md": "596b559231cea6bc7fd400f342b76bf8346275eac579fda0a27513087e696ab8",
+    "documentation/models/EditPurchaseRequest.md": "6a6ef96b03fcc13a286bba9203dccb9e38c492fc63e78cbda08dec29d49dd1be",
+    "documentation/models/GrantType.md": "057ddddbd0509d7ddbb227fa4b74d51c491f48a227025d02a152de47d8a49955",
+    "documentation/models/TopUpESimRequest.md": "bf72060ab02515476ee5bf8e21c9ab0bc1ee27f1fb70e69a378d09c90bc26311",
+    "documentation/services/ConsumptionService.md": "0b08c444bc4ca984e673d302af8d903134251016f19ee9f35c91d4cb8e1eb6bf",
+    "documentation/services/DestinationsService.md": "2c68db2d22e139565f7b0f2352b8000f41da37e36348991229afe013b0cd4881",
+    "documentation/services/DeviceService.md": "e9ddddb6d763a62e32881d96505c94d74f1ba07bcf2a510e61f3006326ead295",
+    "documentation/services/EditService.md": "e77e37fda0684b765c6861d0eb59d8981bcf751d6d45898f4eb1d1ca0c7f73d7",
+    "documentation/services/EsimService.md": "b65b04a176b8dd4b9ecaa4b2864738bac42de779615825e5d2efda721fa8a108",
+    "documentation/services/HistoryService.md": "a1dd8378e731da7786b4f4ba74b2e6a8427fac26d90ef9b034e20ee876918e25",
+    "documentation/services/PackagesService.md": "9cbef5c5c94f941a4d4ecb825b13ca2bba8bb2c08399fe13695e5003fbd080d5",
+    "documentation/services/PurchasesService.md": "342eb94c31ef58be8a6dfdf0b3d29bb42fada3cf0fd1db46fb4f944555aea173",
+    "documentation/services/TokenService.md": "da6a6f3e8163fef5db42df3f900f0410ef08f671da7ba17c17f98b6ed9532f35",
+    "documentation/services/TopupService.md": "577d2c8d1d7856cb3659546a6797ec1cdba4e4bf0fca922a0534b84384a28484",
+    "documentation/services/V2Service.md": "fc769a56ac4a3a96cca0725038206d619ef830fe8425ab33084e28ef58a04afa",
+    "documentation/snippets/snippets.json": "922a1ca0d1d24cfae4d58df2a6e08bb1bad85d113b7a36114b9cc16958d42402",
+    "install.sh": "674b9422f362c20b5379f6ee212d1f211aedca82ff8598a6246e6cd24023cf7b",
+    "prettier.config.js": "2fe33fda52344779fcf235afa8152cfd356880dc3161da09403dc26231bc72d9"
+  }
 }
