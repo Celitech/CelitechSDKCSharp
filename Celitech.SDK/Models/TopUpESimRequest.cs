@@ -1,0 +1,16 @@
+using System.Text.Json.Serialization;
+
+namespace Celitech.SDK.Models;
+
+public record TopUpESimRequest(
+    [property: JsonPropertyName("iccid")] string? Iccid = null,
+    [property: JsonPropertyName("dataLimitInGB")] double? DataLimitInGb = null,
+    [property: JsonPropertyName("startDate")] string? StartDate = null,
+    [property: JsonPropertyName("endDate")] string? EndDate = null,
+    [property: JsonPropertyName("duration")] double? Duration = null,
+    [property: JsonPropertyName("email")] string? Email = null,
+    [property: JsonPropertyName("referenceId")] string? ReferenceId = null,
+    [property: JsonPropertyName("emailBrand")] string? EmailBrand = null,
+    [property: JsonPropertyName("startTime")] double? StartTime = null,
+    [property: JsonPropertyName("endTime")] double? EndTime = null
+);
