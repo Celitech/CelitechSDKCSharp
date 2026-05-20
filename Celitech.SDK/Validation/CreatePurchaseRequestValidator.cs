@@ -5,11 +5,12 @@ using FluentValidation;
 using FluentValidation.Results;
 
 /// <summary>
-/// FluentValidation validator for CreatePurchaseRequest model.
+/// FluentValidation validator for global::Celitech.SDK.Models.CreatePurchaseRequest model.
 /// Defines validation rules for required fields, formats, ranges, and constraints based on the API schema.
 /// Automatically validates instances during request serialization and response deserialization.
 /// </summary>
-public class CreatePurchaseRequestValidator : AbstractValidator<CreatePurchaseRequest>
+public class CreatePurchaseRequestValidator
+    : AbstractValidator<global::Celitech.SDK.Models.CreatePurchaseRequest>
 {
     public CreatePurchaseRequestValidator()
     {

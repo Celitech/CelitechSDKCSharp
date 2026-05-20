@@ -1,0 +1,76 @@
+{
+  "endpoints": {
+    "/destinations": {
+      "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Destinations.ListDestinationsAsync();\n\nConsole.WriteLine(response);\n"
+    },
+    "/packages": {
+      "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Packages.ListPackagesAsync();\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/v2": {
+      "post": "using Celitech.SDK;\nusing Celitech.SDK.Config;\nusing Celitech.SDK.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new CreatePurchaseV2Request(\"FRA\", 1, 1);\n\nvar response = await client.Purchases.CreatePurchaseV2Async(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases": {
+      "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Purchases.ListPurchasesAsync();\n\nConsole.WriteLine(response);\n",
+      "post": "using Celitech.SDK;\nusing Celitech.SDK.Config;\nusing Celitech.SDK.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new CreatePurchaseRequest(\"FRA\", 1, \"2023-11-01\", \"2023-11-20\");\n\nvar response = await client.Purchases.CreatePurchaseAsync(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/topup": {
+      "post": "using Celitech.SDK;\nusing Celitech.SDK.Config;\nusing Celitech.SDK.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new TopUpEsimRequest(\"1111222233334444555000\", 1);\n\nvar response = await client.Purchases.TopUpEsimAsync(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/edit": {
+      "post": "using Celitech.SDK;\nusing Celitech.SDK.Config;\nusing Celitech.SDK.Models;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar input = new EditPurchaseRequest(\"ae471106-c8b4-42cf-b83a-b061291f2922\", \"2023-11-01\", \"2023-11-20\");\n\nvar response = await client.Purchases.EditPurchaseAsync(input);\n\nConsole.WriteLine(response);\n"
+    },
+    "/purchases/{purchaseId}/consumption": {
+      "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Purchases.GetPurchaseConsumptionAsync(\"4973fa15-6979-4daa-9cf3-672620df819c\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/esim": {
+      "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.GetEsimAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/esim/{iccid}/device": {
+      "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.GetEsimDeviceAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/esim/{iccid}/history": {
+      "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.GetEsimHistoryAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
+    },
+    "/iframe/token": {
+      "post": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.IFrame.TokenAsync();\n\nConsole.WriteLine(response);\n"
+    }
+  },
+  "methodResponses": {
+    "/destinations": {
+      "get": "Console.WriteLine(response);"
+    },
+    "/packages": {
+      "get": "Console.WriteLine(response);"
+    },
+    "/purchases/v2": {
+      "post": "Console.WriteLine(response);"
+    },
+    "/purchases": {
+      "get": "Console.WriteLine(response);",
+      "post": "Console.WriteLine(response);"
+    },
+    "/purchases/topup": {
+      "post": "Console.WriteLine(response);"
+    },
+    "/purchases/edit": {
+      "post": "Console.WriteLine(response);"
+    },
+    "/purchases/{purchaseId}/consumption": {
+      "get": "Console.WriteLine(response);"
+    },
+    "/esim": {
+      "get": "Console.WriteLine(response);"
+    },
+    "/esim/{iccid}/device": {
+      "get": "Console.WriteLine(response);"
+    },
+    "/esim/{iccid}/history": {
+      "get": "Console.WriteLine(response);"
+    },
+    "/iframe/token": {
+      "post": "Console.WriteLine(response);"
+    }
+  },
+  "example": "using Celitech.SDK;\nusing Celitech.SDK.Config;\nusing Environment = Celitech.SDK.Http.Environment;\n\nvar config = new CelitechConfig\n{\n  ClientId = \"CLIENT_ID\",\n  ClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.Destinations.ListDestinationsAsync();\n\nConsole.WriteLine(response);\n",
+  "authentication": {}
+}
