@@ -19,10 +19,12 @@ public class ListValidator<T> : AbstractValidator<List<T>?>
     public ListValidator<T> WithMaximumCount(int maxCount)
     {
         When(
-            num => num != null,
+            lst => lst != null,
             () =>
             {
-                RuleFor(list => list).Must(list => list == null || list.Count <= maxCount);
+                RuleFor(list => list)
+                    .Must(list => list == null || list.Count <= maxCount)
+                    .WithMessage($"List must contain at most {maxCount} items.");
             }
         );
         return this;
@@ -36,10 +38,12 @@ public class ListValidator<T> : AbstractValidator<List<T>?>
     public ListValidator<T> WithMinimumCount(int minCount)
     {
         When(
-            num => num != null,
+            lst => lst != null,
             () =>
             {
-                RuleFor(list => list).Must(list => list == null || list.Count >= minCount);
+                RuleFor(list => list)
+                    .Must(list => list == null || list.Count >= minCount)
+                    .WithMessage($"List must contain at least {minCount} items.");
             }
         );
         return this;
@@ -52,11 +56,12 @@ public class ListValidator<T> : AbstractValidator<List<T>?>
     public ListValidator<T> WithUniqueItems()
     {
         When(
-            num => num != null,
+            lst => lst != null,
             () =>
             {
                 RuleFor(list => list)
-                    .Must(list => list == null || list.Distinct().Count() == list.Count);
+                    .Must(list => list == null || list.Distinct().Count() == list.Count)
+                    .WithMessage("List items must be unique.");
             }
         );
         return this;

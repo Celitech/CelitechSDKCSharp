@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Net;
 using System.Text.Json.Serialization;
 
 namespace Celitech.SDK.Http.Serialization;
@@ -37,7 +36,7 @@ public static class Serializer
         return value switch
             {
                 null => "null",
-                string s => shouldUrlEncode ? WebUtility.UrlEncode(s) : s,
+                string s => shouldUrlEncode ? Uri.EscapeDataString(s) : s,
                 bool b => b.ToString().ToLowerInvariant(),
                 int or long or double => value.ToString(),
                 IEnumerable e => SerializeEnumerable(
