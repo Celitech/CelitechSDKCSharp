@@ -25,7 +25,7 @@ public class PurchasesService : BaseService
     private RequestConfig? _editPurchaseAsyncConfig;
     private RequestConfig? _getPurchaseConsumptionAsyncConfig;
 
-    internal PurchasesService(Client httpClient)
+    internal PurchasesService(global::Celitech.SDK.Http.Client httpClient)
         : base(httpClient) { }
 
     /// <summary>
@@ -89,8 +89,10 @@ public class PurchasesService : BaseService
     }
 
     /// <summary>This endpoint is used to purchase a new eSIM by providing the package details.</summary>
-    public async Task<List<CreatePurchaseV2OkResponse>> CreatePurchaseV2Async(
-        CreatePurchaseV2Request input,
+    public async global::System.Threading.Tasks.Task<
+        List<global::Celitech.SDK.Models.CreatePurchaseV2OkResponse>
+    > CreatePurchaseV2Async(
+        global::Celitech.SDK.Models.CreatePurchaseV2Request input,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -125,11 +127,12 @@ public class PurchasesService : BaseService
             .ConfigureAwait(false);
 
         var result = DeserializationValidation.DeserializeWithRequiredFieldValidation<
-            List<CreatePurchaseV2OkResponse>
+            List<global::Celitech.SDK.Models.CreatePurchaseV2OkResponse>
         >(jsonContent, _jsonSerializerOptions);
 
         // Validate the response
-        var responseValidator = new ListValidator<CreatePurchaseV2OkResponse>();
+        var responseValidator =
+            new ListValidator<global::Celitech.SDK.Models.CreatePurchaseV2OkResponse>();
         var responseValidationResult = responseValidator.ValidateRequiredList(result);
         if (!responseValidationResult.IsValid)
         {
@@ -162,7 +165,7 @@ public class PurchasesService : BaseService
     /// <param name="limit">Maximum number of purchases to be returned in the response. The value must be greater than 0 and less than or equal to 100. If not provided, the default value is 20</param>
     /// <param name="after">Epoch value representing the start of the time interval for filtering purchases</param>
     /// <param name="before">Epoch value representing the end of the time interval for filtering purchases</param>
-    public async Task<ListPurchasesOkResponse> ListPurchasesAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.ListPurchasesOkResponse> ListPurchasesAsync(
         string? purchaseId = null,
         string? iccid = null,
         string? afterDate = null,
@@ -220,7 +223,7 @@ public class PurchasesService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<ListPurchasesOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.ListPurchasesOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
@@ -237,8 +240,8 @@ public class PurchasesService : BaseService
     }
 
     /// <summary>This endpoint is used to purchase a new eSIM by providing the package details.</summary>
-    public async Task<CreatePurchaseOkResponse> CreatePurchaseAsync(
-        CreatePurchaseRequest input,
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.CreatePurchaseOkResponse> CreatePurchaseAsync(
+        global::Celitech.SDK.Models.CreatePurchaseRequest input,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -273,7 +276,7 @@ public class PurchasesService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<CreatePurchaseOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.CreatePurchaseOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
@@ -290,8 +293,8 @@ public class PurchasesService : BaseService
     }
 
     /// <summary>This endpoint is used to top-up an existing eSIM with the previously associated destination by providing its ICCID and package details. To determine if an eSIM can be topped up, use the Get eSIM endpoint, which returns the `isTopUpAllowed` flag.</summary>
-    public async Task<TopUpEsimOkResponse> TopUpEsimAsync(
-        TopUpEsimRequest input,
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.TopUpEsimOkResponse> TopUpEsimAsync(
+        global::Celitech.SDK.Models.TopUpEsimRequest input,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -326,7 +329,7 @@ public class PurchasesService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<TopUpEsimOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.TopUpEsimOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
@@ -352,8 +355,8 @@ public class PurchasesService : BaseService
     ///
     /// The end date can be extended or shortened as long as it adheres to the same pricing category and does not exceed the allowed duration limits.
     /// </summary>
-    public async Task<EditPurchaseOkResponse> EditPurchaseAsync(
-        EditPurchaseRequest input,
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.EditPurchaseOkResponse> EditPurchaseAsync(
+        global::Celitech.SDK.Models.EditPurchaseRequest input,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -388,7 +391,7 @@ public class PurchasesService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<EditPurchaseOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.EditPurchaseOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
@@ -406,7 +409,7 @@ public class PurchasesService : BaseService
 
     /// <summary>This endpoint can be called for consumption notifications (e.g. every 1 hour or when the user clicks a button). It returns the data balance (consumption) of purchased packages.</summary>
     /// <param name="purchaseId">ID of the purchase</param>
-    public async Task<GetPurchaseConsumptionOkResponse> GetPurchaseConsumptionAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.GetPurchaseConsumptionOkResponse> GetPurchaseConsumptionAsync(
         string purchaseId,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
@@ -444,7 +447,7 @@ public class PurchasesService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetPurchaseConsumptionOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.GetPurchaseConsumptionOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
