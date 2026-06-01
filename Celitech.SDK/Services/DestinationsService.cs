@@ -20,7 +20,7 @@ public class DestinationsService : BaseService
 {
     private RequestConfig? _listDestinationsAsyncConfig;
 
-    internal DestinationsService(Client httpClient)
+    internal DestinationsService(global::Celitech.SDK.Http.Client httpClient)
         : base(httpClient) { }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class DestinationsService : BaseService
     }
 
     /// <summary>List Destinations</summary>
-    public async Task<ListDestinationsOkResponse> ListDestinationsAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.ListDestinationsOkResponse> ListDestinationsAsync(
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -56,7 +56,7 @@ public class DestinationsService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<ListDestinationsOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.ListDestinationsOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );

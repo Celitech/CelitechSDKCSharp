@@ -22,7 +22,7 @@ public class ESimService : BaseService
     private RequestConfig? _getEsimDeviceAsyncConfig;
     private RequestConfig? _getEsimHistoryAsyncConfig;
 
-    internal ESimService(Client httpClient)
+    internal ESimService(global::Celitech.SDK.Http.Client httpClient)
         : base(httpClient) { }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class ESimService : BaseService
 
     /// <summary>Get eSIM</summary>
     /// <param name="iccid">ID of the eSIM</param>
-    public async Task<GetEsimOkResponse> GetEsimAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.GetEsimOkResponse> GetEsimAsync(
         string iccid,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
@@ -98,7 +98,7 @@ public class ESimService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetEsimOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.GetEsimOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
@@ -116,7 +116,7 @@ public class ESimService : BaseService
 
     /// <summary>Get eSIM Device</summary>
     /// <param name="iccid">ID of the eSIM</param>
-    public async Task<GetEsimDeviceOkResponse> GetEsimDeviceAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.GetEsimDeviceOkResponse> GetEsimDeviceAsync(
         string iccid,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
@@ -157,7 +157,7 @@ public class ESimService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetEsimDeviceOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.GetEsimDeviceOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
@@ -175,7 +175,7 @@ public class ESimService : BaseService
 
     /// <summary>Get eSIM History</summary>
     /// <param name="iccid">ID of the eSIM</param>
-    public async Task<GetEsimHistoryOkResponse> GetEsimHistoryAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.GetEsimHistoryOkResponse> GetEsimHistoryAsync(
         string iccid,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
@@ -216,7 +216,7 @@ public class ESimService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<GetEsimHistoryOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.GetEsimHistoryOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
