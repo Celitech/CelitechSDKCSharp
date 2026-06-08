@@ -20,7 +20,7 @@ public class IFrameService : BaseService
 {
     private RequestConfig? _tokenAsyncConfig;
 
-    internal IFrameService(Client httpClient)
+    internal IFrameService(global::Celitech.SDK.Http.Client httpClient)
         : base(httpClient) { }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class IFrameService : BaseService
     }
 
     /// <summary>Generate a new token to be used in the iFrame</summary>
-    public async Task<TokenOkResponse> TokenAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.TokenOkResponse> TokenAsync(
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -56,7 +56,7 @@ public class IFrameService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<TokenOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.TokenOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );

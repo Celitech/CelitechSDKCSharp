@@ -24,12 +24,7 @@ public static class ValidatorExtensions
     {
         if (value == null)
         {
-            return new ValidationResult(
-                new[]
-                {
-                    new ValidationFailure(nameof(value), "Value is required and cannot be null."),
-                }
-            );
+            return new ValidationResult();
         }
         return validator.Validate(value);
     }
@@ -49,12 +44,7 @@ public static class ValidatorExtensions
     {
         if (value == null)
         {
-            return new ValidationResult(
-                new[]
-                {
-                    new ValidationFailure(nameof(value), "Value is required and cannot be null."),
-                }
-            );
+            return new ValidationResult();
         }
         return validator.Validate(value.Value);
     }
@@ -136,12 +126,7 @@ public static class ValidatorExtensions
     {
         if (value == null)
         {
-            return new ValidationResult(
-                new[]
-                {
-                    new ValidationFailure(nameof(value), "Value is required and cannot be null."),
-                }
-            );
+            return new ValidationResult();
         }
         return validator.Validate(value);
     }

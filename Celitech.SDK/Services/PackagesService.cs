@@ -20,7 +20,7 @@ public class PackagesService : BaseService
 {
     private RequestConfig? _listPackagesAsyncConfig;
 
-    internal PackagesService(Client httpClient)
+    internal PackagesService(global::Celitech.SDK.Http.Client httpClient)
         : base(httpClient) { }
 
     /// <summary>
@@ -41,7 +41,7 @@ public class PackagesService : BaseService
     /// <param name="limit">Maximum number of packages to be returned in the response. The value must be greater than 0 and less than or equal to 160. If not provided, the default value is 20</param>
     /// <param name="startTime">Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months</param>
     /// <param name="endTime">Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time</param>
-    public async Task<ListPackagesOkResponse> ListPackagesAsync(
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.ListPackagesOkResponse> ListPackagesAsync(
         string? destination = null,
         string? startDate = null,
         string? endDate = null,
@@ -77,7 +77,7 @@ public class PackagesService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<ListPackagesOkResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.ListPackagesOkResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
