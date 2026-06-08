@@ -22,6 +22,16 @@ public static class DeserializationValidation
         JsonSerializerOptions jsonSerializerOptions
     )
     {
+        // Empty/whitespace body is valid for success responses (204 No
+        // Content, or 200s where the API legitimately returns no payload).
+        // Return the type's default rather than throwing — JsonDocument.Parse
+        // on `""` raises JsonReaderException, which would otherwise take out
+        // every call site even when the HTTP layer reported success.
+        if (string.IsNullOrWhiteSpace(jsonContent))
+        {
+            return default!;
+        }
+
         // Parse JSON to check for missing required fields
         using var document = JsonDocument.Parse(jsonContent);
         var root = document.RootElement;
@@ -36,59 +46,116 @@ public static class DeserializationValidation
 
     private static readonly Dictionary<Type, Action<JsonElement>> ValidationMethods = new()
     {
-        { typeof(ListDestinationsOkResponse), ValidateRequiredFieldsForListDestinationsOkResponse },
-        { typeof(ListPackagesOkResponse), ValidateRequiredFieldsForListPackagesOkResponse },
-        { typeof(CreatePurchaseV2Request), ValidateRequiredFieldsForCreatePurchaseV2Request },
-        { typeof(CreatePurchaseV2OkResponse), ValidateRequiredFieldsForCreatePurchaseV2OkResponse },
-        { typeof(ListPurchasesOkResponse), ValidateRequiredFieldsForListPurchasesOkResponse },
-        { typeof(CreatePurchaseRequest), ValidateRequiredFieldsForCreatePurchaseRequest },
-        { typeof(CreatePurchaseOkResponse), ValidateRequiredFieldsForCreatePurchaseOkResponse },
-        { typeof(TopUpEsimRequest), ValidateRequiredFieldsForTopUpEsimRequest },
-        { typeof(TopUpEsimOkResponse), ValidateRequiredFieldsForTopUpEsimOkResponse },
-        { typeof(EditPurchaseRequest), ValidateRequiredFieldsForEditPurchaseRequest },
-        { typeof(EditPurchaseOkResponse), ValidateRequiredFieldsForEditPurchaseOkResponse },
         {
-            typeof(GetPurchaseConsumptionOkResponse),
+            typeof(global::Celitech.SDK.Models.ListDestinationsOkResponse),
+            ValidateRequiredFieldsForListDestinationsOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.ListPackagesOkResponse),
+            ValidateRequiredFieldsForListPackagesOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.CreatePurchaseV2Request),
+            ValidateRequiredFieldsForCreatePurchaseV2Request
+        },
+        {
+            typeof(global::Celitech.SDK.Models.CreatePurchaseV2OkResponse),
+            ValidateRequiredFieldsForCreatePurchaseV2OkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.ListPurchasesOkResponse),
+            ValidateRequiredFieldsForListPurchasesOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.CreatePurchaseRequest),
+            ValidateRequiredFieldsForCreatePurchaseRequest
+        },
+        {
+            typeof(global::Celitech.SDK.Models.CreatePurchaseOkResponse),
+            ValidateRequiredFieldsForCreatePurchaseOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.TopUpEsimRequest),
+            ValidateRequiredFieldsForTopUpEsimRequest
+        },
+        {
+            typeof(global::Celitech.SDK.Models.TopUpEsimOkResponse),
+            ValidateRequiredFieldsForTopUpEsimOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.EditPurchaseRequest),
+            ValidateRequiredFieldsForEditPurchaseRequest
+        },
+        {
+            typeof(global::Celitech.SDK.Models.EditPurchaseOkResponse),
+            ValidateRequiredFieldsForEditPurchaseOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.GetPurchaseConsumptionOkResponse),
             ValidateRequiredFieldsForGetPurchaseConsumptionOkResponse
         },
-        { typeof(GetEsimOkResponse), ValidateRequiredFieldsForGetEsimOkResponse },
-        { typeof(GetEsimDeviceOkResponse), ValidateRequiredFieldsForGetEsimDeviceOkResponse },
-        { typeof(GetEsimHistoryOkResponse), ValidateRequiredFieldsForGetEsimHistoryOkResponse },
-        { typeof(TokenOkResponse), ValidateRequiredFieldsForTokenOkResponse },
-        { typeof(OAuthTokenRequest), ValidateRequiredFieldsForOAuthTokenRequest },
-        { typeof(Destinations), ValidateRequiredFieldsForDestinations },
-        { typeof(Packages), ValidateRequiredFieldsForPackages },
         {
-            typeof(CreatePurchaseV2OkResponsePurchase),
+            typeof(global::Celitech.SDK.Models.GetEsimOkResponse),
+            ValidateRequiredFieldsForGetEsimOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.GetEsimDeviceOkResponse),
+            ValidateRequiredFieldsForGetEsimDeviceOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.GetEsimHistoryOkResponse),
+            ValidateRequiredFieldsForGetEsimHistoryOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.TokenOkResponse),
+            ValidateRequiredFieldsForTokenOkResponse
+        },
+        {
+            typeof(global::Celitech.SDK.Models.OAuthTokenRequest),
+            ValidateRequiredFieldsForOAuthTokenRequest
+        },
+        { typeof(global::Celitech.SDK.Models.Destinations), ValidateRequiredFieldsForDestinations },
+        { typeof(global::Celitech.SDK.Models.Packages), ValidateRequiredFieldsForPackages },
+        {
+            typeof(global::Celitech.SDK.Models.CreatePurchaseV2OkResponsePurchase),
             ValidateRequiredFieldsForCreatePurchaseV2OkResponsePurchase
         },
         {
-            typeof(CreatePurchaseV2OkResponseProfile),
+            typeof(global::Celitech.SDK.Models.CreatePurchaseV2OkResponseProfile),
             ValidateRequiredFieldsForCreatePurchaseV2OkResponseProfile
         },
-        { typeof(Purchases), ValidateRequiredFieldsForPurchases },
-        { typeof(Package), ValidateRequiredFieldsForPackage },
-        { typeof(PurchasesEsim), ValidateRequiredFieldsForPurchasesEsim },
+        { typeof(global::Celitech.SDK.Models.Purchases), ValidateRequiredFieldsForPurchases },
+        { typeof(global::Celitech.SDK.Models.Package), ValidateRequiredFieldsForPackage },
         {
-            typeof(CreatePurchaseOkResponsePurchase),
+            typeof(global::Celitech.SDK.Models.PurchasesEsim),
+            ValidateRequiredFieldsForPurchasesEsim
+        },
+        {
+            typeof(global::Celitech.SDK.Models.CreatePurchaseOkResponsePurchase),
             ValidateRequiredFieldsForCreatePurchaseOkResponsePurchase
         },
         {
-            typeof(CreatePurchaseOkResponseProfile),
+            typeof(global::Celitech.SDK.Models.CreatePurchaseOkResponseProfile),
             ValidateRequiredFieldsForCreatePurchaseOkResponseProfile
         },
         {
-            typeof(TopUpEsimOkResponsePurchase),
+            typeof(global::Celitech.SDK.Models.TopUpEsimOkResponsePurchase),
             ValidateRequiredFieldsForTopUpEsimOkResponsePurchase
         },
-        { typeof(TopUpEsimOkResponseProfile), ValidateRequiredFieldsForTopUpEsimOkResponseProfile },
-        { typeof(GetEsimOkResponseEsim), ValidateRequiredFieldsForGetEsimOkResponseEsim },
-        { typeof(Device), ValidateRequiredFieldsForDevice },
         {
-            typeof(GetEsimHistoryOkResponseEsim),
+            typeof(global::Celitech.SDK.Models.TopUpEsimOkResponseProfile),
+            ValidateRequiredFieldsForTopUpEsimOkResponseProfile
+        },
+        {
+            typeof(global::Celitech.SDK.Models.GetEsimOkResponseEsim),
+            ValidateRequiredFieldsForGetEsimOkResponseEsim
+        },
+        { typeof(global::Celitech.SDK.Models.Device), ValidateRequiredFieldsForDevice },
+        {
+            typeof(global::Celitech.SDK.Models.GetEsimHistoryOkResponseEsim),
             ValidateRequiredFieldsForGetEsimHistoryOkResponseEsim
         },
-        { typeof(History), ValidateRequiredFieldsForHistory },
+        { typeof(global::Celitech.SDK.Models.History), ValidateRequiredFieldsForHistory },
     };
 
     private static void ValidateRequiredFieldsForResponse<T>(JsonElement root)

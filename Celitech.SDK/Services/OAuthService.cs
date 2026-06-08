@@ -21,7 +21,7 @@ public class OAuthService : BaseService
 {
     private RequestConfig? _getAccessTokenAsyncConfig;
 
-    internal OAuthService(Client httpClient)
+    internal OAuthService(global::Celitech.SDK.Http.Client httpClient)
         : base(httpClient) { }
 
     /// <summary>
@@ -35,8 +35,8 @@ public class OAuthService : BaseService
     }
 
     /// <param name="input">OAuth token request parameters</param>
-    public async Task<OAuthTokenResponse> GetAccessTokenAsync(
-        OAuthTokenRequest input,
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.OAuthTokenResponse> GetAccessTokenAsync(
+        global::Celitech.SDK.Models.OAuthTokenRequest input,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -68,7 +68,7 @@ public class OAuthService : BaseService
             .ConfigureAwait(false);
 
         var result =
-            DeserializationValidation.DeserializeWithRequiredFieldValidation<OAuthTokenResponse>(
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.OAuthTokenResponse>(
                 jsonContent,
                 _jsonSerializerOptions
             );
