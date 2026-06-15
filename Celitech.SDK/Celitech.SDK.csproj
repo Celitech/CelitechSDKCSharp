@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Celitech.SDK</RootNamespace>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <PackageId>Celitech.SDK</PackageId>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Celitech/CelitechSDKCSharp</RepositoryUrl>
