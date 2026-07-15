@@ -5,7 +5,7 @@ namespace Celitech.SDK.Models;
 public record TopUpEsimRequest(
     /// <value>ID of the eSIM</value>
     [property: JsonPropertyName("iccid")] string Iccid,
-    /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB</value>
+    /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB. Use `-1` to top up with an unlimited (date-based) package — provide `startDate`/`endDate` spanning 3 to 30 days (`duration` is not supported for unlimited packages).</value>
     [property: JsonPropertyName("dataLimitInGB")] double DataLimitInGb,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.</value>
     [property:
@@ -17,7 +17,7 @@ public record TopUpEsimRequest(
         JsonPropertyName("endDate"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] string? EndDate = null,
-    /// <value>Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration.</value>
+    /// <value>Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration. Not supported for unlimited packages (`dataLimitInGB` = -1), which are date-based — provide startDate/endDate instead.</value>
     [property:
         JsonPropertyName("duration"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

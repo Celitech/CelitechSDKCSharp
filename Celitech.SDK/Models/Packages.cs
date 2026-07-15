@@ -9,9 +9,9 @@ public record Packages(
     [property: JsonPropertyName("destination")] string Destination,
     /// <value>ISO2 representation of the package's destination.</value>
     [property: JsonPropertyName("destinationISO2")] string DestinationIso2,
-    /// <value>Size of the package in Bytes</value>
+    /// <value>Size of the package in Bytes. A value of `-1` indicates an unlimited package.</value>
     [property: JsonPropertyName("dataLimitInBytes")] double DataLimitInBytes,
-    /// <value>Size of the package in GB</value>
+    /// <value>Size of the package in GB. A value of `-1` indicates an unlimited (date-based) package.</value>
     [property: JsonPropertyName("dataLimitInGB")] double DataLimitInGb,
     /// <value>Min number of days for the package</value>
     [property: JsonPropertyName("minDays")] double MinDays,
