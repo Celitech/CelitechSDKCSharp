@@ -21,4 +21,10 @@ public class ApiException : HttpRequestException
     {
         Response = responseMessage;
     }
+
+    public ApiException(string message, HttpResponseMessage responseMessage)
+        : base(message, null, responseMessage.StatusCode)
+    {
+        Response = responseMessage;
+    }
 }

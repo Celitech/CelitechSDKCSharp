@@ -35,20 +35,24 @@ public class PackagesService : BaseService
 
     /// <summary>List Packages</summary>
     /// <param name="destination">ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.</param>
+    /// <param name="dataLimitInGb">Filter packages by data limit in GB. When provided, only packages with this exact data limit are returned. Use `-1` together with `includeUnlimited=true` to return only unlimited packages. A value of `0` is ignored.</param>
     /// <param name="startDate">Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.</param>
     /// <param name="endDate">End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.</param>
     /// <param name="afterCursor">To get the next batch of results, use this parameter. It tells the API where to start fetching data after the last item you received. It helps you avoid repeats and efficiently browse through large sets of data.</param>
     /// <param name="limit">Maximum number of packages to be returned in the response. The value must be greater than 0 and less than or equal to 160. If not provided, the default value is 20</param>
     /// <param name="startTime">Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months</param>
     /// <param name="endTime">Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time</param>
+    /// <param name="includeUnlimited">Whether to include unlimited (date-based) packages in the results. Unlimited packages are excluded by default; set this to `true` to include them. An unlimited package has `dataLimitInGB` and `dataLimitInBytes` equal to `-1`, and is offered for 3 to 30 days with `minDays` equal to `maxDays`.</param>
     public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.ListPackagesOkResponse> ListPackagesAsync(
         string? destination = null,
+        double? dataLimitInGb = null,
         string? startDate = null,
         string? endDate = null,
         string? afterCursor = null,
         double? limit = null,
         long? startTime = null,
         long? endTime = null,
+        bool? includeUnlimited = null,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
@@ -57,12 +61,14 @@ public class PackagesService : BaseService
 
         var request = new RequestBuilder(HttpMethod.Get, "packages")
             .SetOptionalQueryParameter("destination", destination)
+            .SetOptionalQueryParameter("dataLimitInGB", dataLimitInGb)
             .SetOptionalQueryParameter("startDate", startDate)
             .SetOptionalQueryParameter("endDate", endDate)
             .SetOptionalQueryParameter("afterCursor", afterCursor)
             .SetOptionalQueryParameter("limit", limit)
             .SetOptionalQueryParameter("startTime", startTime)
             .SetOptionalQueryParameter("endTime", endTime)
+            .SetOptionalQueryParameter("includeUnlimited", includeUnlimited)
             .SetScopes(new HashSet<string> { })
             .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
             .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))

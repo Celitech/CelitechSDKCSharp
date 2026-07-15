@@ -17,7 +17,7 @@ public record Purchases(
     [property: JsonPropertyName("source")] string Source,
     /// <value>The `purchaseType` indicates whether this is the initial purchase that creates the eSIM (First Purchase) or a subsequent top-up on an existing eSIM (Top-up Purchase).</value>
     [property: JsonPropertyName("purchaseType")] string PurchaseType,
-    /// <value>Duration of the package in days. Possible values are 1, 2, 7, 14, 30, or 90.</value>
+    /// <value>Duration of the package in days. Possible values are 1, 2, 7, 14, 30, or 90. `null` for unlimited (date-based) packages.</value>
     [property: JsonPropertyName("duration")] double? Duration = null,
     /// <value>Epoch value representing the start time of the package's validity</value>
     [property: JsonPropertyName("startTime")] double? StartTime = null,

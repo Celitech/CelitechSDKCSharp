@@ -1,6 +1,6 @@
 {
-  "sdkGenVersion": "1.5.0",
-  "date": "2026-06-18T14:59:39.105Z",
+  "sdkGenVersion": "1.6.0",
+  "date": "2026-07-15T12:00:29.814Z",
   "config": {
     "languages": [
       "csharp"
@@ -10,7 +10,7 @@
     ],
     "languageOptions": {
       "java": {
-        "sdkVersion": "2.0.4",
+        "sdkVersion": "2.0.5",
         "githubRepoName": "CelitechSDKJava",
         "retry": {
           "enabled": true,
@@ -58,7 +58,7 @@
         ]
       },
       "typescript": {
-        "sdkVersion": "2.0.4",
+        "sdkVersion": "2.0.5",
         "githubRepoName": "CelitechSDKTypeScript",
         "retry": {
           "enabled": true,
@@ -96,7 +96,7 @@
         "npmName": "celitech-sdk"
       },
       "python": {
-        "sdkVersion": "2.0.4",
+        "sdkVersion": "2.0.5",
         "githubRepoName": "CelitechSDKPython",
         "retry": {
           "enabled": true,
@@ -134,7 +134,7 @@
         "pypiPackageName": "celitech-sdk"
       },
       "go": {
-        "sdkVersion": "2.0.4",
+        "sdkVersion": "2.0.5",
         "githubRepoName": "CelitechSDKGo",
         "retry": {
           "enabled": true,
@@ -172,7 +172,7 @@
         "goModuleName": "github.com/Celitech/CelitechSDKGo/v2"
       },
       "csharp": {
-        "sdkVersion": "2.0.4",
+        "sdkVersion": "2.0.5",
         "githubRepoName": "CelitechSDKCSharp",
         "retry": {
           "enabled": true,
@@ -211,7 +211,7 @@
         "useOptionalWrapper": false
       },
       "php": {
-        "sdkVersion": "2.0.4",
+        "sdkVersion": "2.0.5",
         "githubRepoName": "CelitechSDKPHP",
         "retry": {
           "enabled": true,
@@ -252,11 +252,11 @@
     "includeWatermark": false,
     "responseHeaders": false,
     "sdkName": "Celitech",
-    "sdkVersion": "2.0.4",
+    "sdkVersion": "2.0.5",
     "auth": [
       "oauth"
     ],
-    "apiVersion": "2.0.4",
+    "apiVersion": "2.0.5",
     "publishing": {
       "githubOrg": "Celitech"
     },
@@ -344,6 +344,7 @@
   "files": [
     "Celitech.SDK/Celitech.SDK.csproj",
     "install.sh",
+    ".github/workflows/release.yml",
     "Celitech.SDK/Services/BaseService.cs",
     "Celitech.SDK/Validation/DeserializationValidation.cs",
     "Celitech.SDK/Services/DestinationsService.cs",
@@ -498,15 +499,16 @@
   "fileHashes": {
     ".devcontainer/devcontainer.json": "8821cdaef6209767cfbba6effcb3ace221b6cb67c8379da1804cb20327332952",
     ".env.example": "69a3ee82f15d8bcc221e9c34c99e5a851d8b318ac2ac7e78f97ef32b743b303e",
-    "CSharpier/.formattingCache": "bbcb56ed90c54eed48fe15263f16fd76eb1f2d06ad5c3a05164a00df7083bc6e",
+    ".github/workflows/release.yml": "c8454ec7102b6a4435f6df65cc3909898fe98613e7965c628284e547c417348f",
+    "CSharpier/.formattingCache": "a894608bc144e3b4b61acfff5f033ba0ef61e6d8813b72681afbf0f67381c995",
     "Celitech.SDK/.gitignore": "7e518f111757684ca534d62362313d696716ac2580812a6f6a824b966464fa47",
-    "Celitech.SDK/Celitech.SDK.csproj": "832bd3972bcfe3d6fa8f64f429e64b4102f42acbadc0dd89c71cca996aec7173",
+    "Celitech.SDK/Celitech.SDK.csproj": "f100069530dd7450d28a692cd4c6c2fc19efe9a9bbff4a60ffb7bb08c523cfbc",
     "Celitech.SDK/CelitechClient.cs": "35cf828c76a19c25a63421ab975904a9d76155b798baa7cf3047cfea25c344de",
     "Celitech.SDK/Config/CelitechConfig.cs": "59ff74b9429060e477432b05e82baf41298dbbc2d3c40c5cba68f71adaafea09",
     "Celitech.SDK/Config/RequestConfig.cs": "1ac5037414569a9c68633506329d97a17c43ac9b6115d18bc5dc4f9e0930db28",
     "Celitech.SDK/Config/RetryConfig.cs": "0b33e7d778db48ebbac64c00b15dc37164e7cad5f1745f0444e74a6dc579955b",
-    "Celitech.SDK/Http/ApiException.cs": "bf5f7367c44dc60c056ebb385a9209f57727589ed57894519c40313a80eba25f",
-    "Celitech.SDK/Http/Client.cs": "f230a8b5680728e115ea28ed89212ac8a6c7d86ad88338b679f76994bf757a90",
+    "Celitech.SDK/Http/ApiException.cs": "9f550371556d4ae7ce46bf94fcde38700827cf3621583d6a054d53e96f3915a9",
+    "Celitech.SDK/Http/Client.cs": "7e71e7e639027a8eb2be3775ce53fadf8e1595fab3cc07b6d77e7ffa0f27766a",
     "Celitech.SDK/Http/ContentTypes.cs": "5171c2321353d8c199f1b3da088efe6908b4e1f182ea8daf77c907b10f05e822",
     "Celitech.SDK/Http/Environment.cs": "3cad07fff470bb4de053ddffcb7aae3443b397b3daa882651e0315fda73a72e8",
     "Celitech.SDK/Http/Exceptions/BadRequestException.cs": "3e24b6cf8dd4a360de07dff24455fe2202114733b2d8545af9d6a5b0827ce957",
@@ -533,12 +535,12 @@
     "Celitech.SDK/Models/CreatePurchaseOkResponse.cs": "8d2cf96beb073d5eda8e41751478225e2ea8f20308a7c9aee019c4fa609fe3b3",
     "Celitech.SDK/Models/CreatePurchaseOkResponseProfile.cs": "339f6da9d9bde5accccc0ef10135f7f539f13774e524754cc2d19f59a679d55d",
     "Celitech.SDK/Models/CreatePurchaseOkResponsePurchase.cs": "b8a8bbfc948b13c268640ba3fa750207706da50ce77518e3e045680ad47a38b6",
-    "Celitech.SDK/Models/CreatePurchaseRequest.cs": "419b591243627f382add4626185c9906f74a24e370f6b3ca5100d3f70f94bb95",
+    "Celitech.SDK/Models/CreatePurchaseRequest.cs": "e98f40a728eb26e7c8be78c7205e52d770d6037a23687c7bd134683084f4ad54",
     "Celitech.SDK/Models/CreatePurchaseRequestLanguage.cs": "e490a1fb05d77b635975f827ca3ead0f561ce527946e7a72a5851d3f39e0e68a",
     "Celitech.SDK/Models/CreatePurchaseV2OkResponse.cs": "546193de048074f65cad2b09db5aaedb65190c0ab35c4e3b9952d56415fb943a",
     "Celitech.SDK/Models/CreatePurchaseV2OkResponseProfile.cs": "d65d54c9662af0ed7a69cc7633c96a5c26cee56c41e03cb7d8cad3c1b48b4416",
     "Celitech.SDK/Models/CreatePurchaseV2OkResponsePurchase.cs": "d8c68265a60e52126e5ccadd4b354a992e327e62cc4cd9dcca7f4e0daa1e6206",
-    "Celitech.SDK/Models/CreatePurchaseV2Request.cs": "f73fdf193392e837d28960635b7e716f68fee9531c5e52eb1d6a347a2c856839",
+    "Celitech.SDK/Models/CreatePurchaseV2Request.cs": "5f9ba2b45f88ce802119e9800a40fd296226a78c7e86a1bf895f26ac53936e2f",
     "Celitech.SDK/Models/CreatePurchaseV2RequestLanguage.cs": "ba4edf9c0840f16c39dbf79d74f7d4669c542396107b845927aad631d042927e",
     "Celitech.SDK/Models/Destinations.cs": "7f3258db42bb780ebd2bf6f1e8f12a2f8f386d005dc48922f5bbb7790edf0ae5",
     "Celitech.SDK/Models/Device.cs": "7903bfbd3d07234aef0ff84c62f150dbfcac3cfad2e7f611f749a10ded793cab",
@@ -549,7 +551,7 @@
     "Celitech.SDK/Models/GetEsimHistoryOkResponseEsim.cs": "bbd252b05cf55d9187a2672fe039c6d47bb771d7099c2aaf75167e20da399979",
     "Celitech.SDK/Models/GetEsimOkResponse.cs": "79c631c7dfb2b9d49f2e8e35261e0a095930647dca6fd74f1717c8e9a483ac66",
     "Celitech.SDK/Models/GetEsimOkResponseEsim.cs": "4c75ee0b33c1444ae46f06d15901f05f0289cd2ba8dffb35ad9cde41ec1823f5",
-    "Celitech.SDK/Models/GetPurchaseConsumptionOkResponse.cs": "ab2d36556b7e00161c05b507189f8b03393b11cc7771c31ebf1951ae8cc1104e",
+    "Celitech.SDK/Models/GetPurchaseConsumptionOkResponse.cs": "0e38668962575b9c5312da09e223a17ae83f7762425ae1f83dbba2caf7f45d1b",
     "Celitech.SDK/Models/GrantType.cs": "20b6b756b684c3ea6b1e89523bc56cda9c657a0b33622586ad2286c2b7305480",
     "Celitech.SDK/Models/History.cs": "c8db74ab4551cf9f0288b5f8773248507db5a8c241a15e3e85fd4ad49d32b9ff",
     "Celitech.SDK/Models/ListDestinationsOkResponse.cs": "4a226f03c85d79c84556f5bf72caf5c82b1227b7acc1a5032b952816c5ac9d83",
@@ -557,15 +559,15 @@
     "Celitech.SDK/Models/ListPurchasesOkResponse.cs": "1dab0a014bcb83bcc33644986dbda5973df693b8ce89d7bfc76d690cffdcf0aa",
     "Celitech.SDK/Models/OAuthTokenRequest.cs": "d6a655fae825a9773bfd74612d125a3b243bf02c3f69d7e47f725b9206e30242",
     "Celitech.SDK/Models/OAuthTokenResponse.cs": "aaf5990b65a9676ec3a7e859f54f58de3c4ed1cacd19f1e1c46b04b1889747b1",
-    "Celitech.SDK/Models/Package.cs": "014c39089b23b50c9767b6e67045098cb235a3bae2171c4b791b2fc6998a23fc",
-    "Celitech.SDK/Models/Packages.cs": "df7bf3336373e6e6cb140a139f104349fc07e45aee61a94e29921071e37d9137",
-    "Celitech.SDK/Models/Purchases.cs": "98ef5fb5341a97d216080e2fc9f5e03919415c2b42d932d7e32ace30b5c071bf",
+    "Celitech.SDK/Models/Package.cs": "e94ffe88ea066987c1fcca3f6169f672be998ffb6be694b0246dca0b12c2aa0f",
+    "Celitech.SDK/Models/Packages.cs": "7a042302d5ac1e2c04745ea1b57c66a01a441acfc1a66faf45c1808cf189010c",
+    "Celitech.SDK/Models/Purchases.cs": "437e9332ffd6933b722e87948a5a2c13ad01195e040ab36c97633f2df4aea339",
     "Celitech.SDK/Models/PurchasesEsim.cs": "9ec6d0370e134fb431f640d4bdf64fd57518df6f6cf67e64e6c6582c4337a449",
     "Celitech.SDK/Models/TokenOkResponse.cs": "039403f78e565d0af245dd1d0dd302d4a8b21dd226be9d7588273b92e13669dc",
     "Celitech.SDK/Models/TopUpEsimOkResponse.cs": "9987287b41b76720905d3a72e07e3964750ea27cb85b3b860977256adb3c9a67",
     "Celitech.SDK/Models/TopUpEsimOkResponseProfile.cs": "bcf95defa13158eaadf68a0dddea3ebd79740bbe691ccf109e0c6e58ea1ba2f0",
     "Celitech.SDK/Models/TopUpEsimOkResponsePurchase.cs": "9c0c8daaca5f741a6d732edbf57fe49a62a927306800fcb92f8feb3ce5dfb6b2",
-    "Celitech.SDK/Models/TopUpEsimRequest.cs": "2bdbddbed71e0f7ed2aba82d992728fd8a3c9e3829a9251dae15486ca12e9608",
+    "Celitech.SDK/Models/TopUpEsimRequest.cs": "1cd7946e58534709f961b539629175a81a22b1ce09b5cf738a5d24801952aa06",
     "Celitech.SDK/Models/Unauthorized.cs": "568507e15be9ab33bd4dbaa3b2d53453697c3336a1bc842157b70faf9fb92bca",
     "Celitech.SDK/Models/ValueEnum.cs": "7bfd20f972017cc5e9e12e41527d2c835e2044ef53d456f4c75444d560292631",
     "Celitech.SDK/Services/BaseService.cs": "e88d6412c4b3891cd5ef8d078e05182ec04c8096d409138a30350983f9a412d5",
@@ -573,7 +575,7 @@
     "Celitech.SDK/Services/ESimService.cs": "c0532c9e7cda6b3104dbcd7a840563cb08dfb1b0fa82d9a742004c1bbd629d9a",
     "Celitech.SDK/Services/IFrameService.cs": "16537b892347b2d6bac096a04d438e457d40c793699c3c32b412621234088d74",
     "Celitech.SDK/Services/OAuthService.cs": "44e44fca99002b369d245f95fe5bb49b1adb52e456c77b04ae458fa14ee62342",
-    "Celitech.SDK/Services/PackagesService.cs": "3bc9be7de238d2fd05b2ab90d66cd1af073f75e1d270554d7d9d4f986a42dc93",
+    "Celitech.SDK/Services/PackagesService.cs": "f9d7321ae20d5fefcc937f8e7425f045a1d5da45be563f5eb37318b7a7880f4e",
     "Celitech.SDK/Services/PurchasesService.cs": "df748c8431012ad0b37f667873fd1b7a2a6d0d6463f4abca6e43bb6a2e196992",
     "Celitech.SDK/Validation/Collections/ListValidator.cs": "45ddcc0bb3adba86d35e8e4b2c6fbfcb7fc1a214aab639996cc66c2b7a13d787",
     "Celitech.SDK/Validation/CreatePurchaseOkResponseProfileValidator.cs": "3de223e0f44be1b0fd3a7389d52b729c190753a1effb615aed7a44397374cdea",
@@ -622,30 +624,30 @@
     "Example/Program.cs": "7fe93ff6d95d0c6eda9afc68dce99cbc3c1b42c103e9e3001a0d206e38af0173",
     "Example/README.md": "6ee66a126250a895b149e7bc6159b385b4f5b44fc6ec7b5d12f9b3fff6f74cb2",
     "LICENSE": "3ec558dc6e9c9355ab4b28c942caa92bf90b0b82c12d7838d2ef92467ad135c1",
-    "README.md": "5fe485c4f4ff6cb174c48cd84fcbfb2651f4817144e300ab5a551c1744ddfd3d",
+    "README.md": "cb704d758a6c5cb05dc7726eb53258ab3858e01ac7ee962a0abdc05ff76018dd",
     "documentation/models/BadRequest.md": "db29b4fcd737978de247f5b922f3b722084e5b94b6f60a29ec912848ddecb4c2",
     "documentation/models/CreatePurchaseOkResponse.md": "8afe9bceda911120a66a34242a7f88b61671e38897f19a105112d91f9e941da9",
-    "documentation/models/CreatePurchaseRequest.md": "3b96920688acd13ec8f8636ff11c387026fd8aed91723d252133480369fc7171",
+    "documentation/models/CreatePurchaseRequest.md": "77f2276e9c4fd971b4ef0ef6b4dd351ae2d4fc59c97e42e343d702eab6194d6e",
     "documentation/models/CreatePurchaseV2OkResponse.md": "944a9429b60f8db38a6156d3b8bb7d950be055cbde9e0cf728e817dfd19abf82",
-    "documentation/models/CreatePurchaseV2Request.md": "5d86f9fa67bb35e9a435c5284b2a7de1023ea3a095d90996565f2e837f1f6741",
+    "documentation/models/CreatePurchaseV2Request.md": "6408609fedc6ec91f18396619199e087c95c294417ecf11882a9eeecb0a027df",
     "documentation/models/EditPurchaseOkResponse.md": "78173e4892b034d7bdbc8d3e41af9c503574742a4403aea4672d5c77bec7d9c5",
     "documentation/models/EditPurchaseRequest.md": "b183d0cec177f0901a8fa60592e1e851fda8d9f9227318380311dbf492e7dcdd",
     "documentation/models/GetEsimDeviceOkResponse.md": "d59494a97229ce389317d7bf9430408969d7b19ee98d93892bbac92c1bc12174",
     "documentation/models/GetEsimHistoryOkResponse.md": "c129e691bf5a9697ad81e4cc0fc3665b22d3c8d2249a063a43a4113804dd135c",
     "documentation/models/GetEsimOkResponse.md": "d28273f9f095fbd629e30cbff0712a1c4b4c7a3233f616b99c74a547112cc478",
-    "documentation/models/GetPurchaseConsumptionOkResponse.md": "0cb502ff1e4c0f4e2ade1901f2f9e7c577ee349365e786429c07224afa18fbc0",
+    "documentation/models/GetPurchaseConsumptionOkResponse.md": "d0540ff8df53a91bd367d034037f05091e7f4f50702e34679c73e493169eed1b",
     "documentation/models/GrantType.md": "057ddddbd0509d7ddbb227fa4b74d51c491f48a227025d02a152de47d8a49955",
     "documentation/models/ListDestinationsOkResponse.md": "cf3bd6d9511d7dcc053a3fd7a1fec3d0496221e42feba4c81bba848adc862fa8",
     "documentation/models/ListPackagesOkResponse.md": "eb7ee46f5b84f2ea9b4486cc3a13b45c5d1e1ff572b80be24f8503ffba64e43f",
     "documentation/models/ListPurchasesOkResponse.md": "e2fc00a804d553a83e0d8090fa4f0e49104afba6454a152c7613c890c2ca7532",
     "documentation/models/TokenOkResponse.md": "5411f079cbdd6f4599a4259ef712259d7619a6c7f6fdaf06e2b623147bf5fd2c",
     "documentation/models/TopUpEsimOkResponse.md": "a8e60cbe145720606b27af732ff60251c0a7714aff5ee2ac3243bbfa63d3db5c",
-    "documentation/models/TopUpEsimRequest.md": "5cedfa741345f66b70a4f9016bc290a34f2ed6919ebed46f8a29c4361c181e5c",
+    "documentation/models/TopUpEsimRequest.md": "bf27f4fffc8ee7e5af63cb6653ca5e489f5e34629332a41559828570e54c28dc",
     "documentation/models/Unauthorized.md": "c13d0dd904325959068f8e92b0f61e60f033d3217e244e241ee10f62af488ad4",
     "documentation/services/DestinationsService.md": "df8f50e6890b7fb3009ad665c7686537e07c9e9baf987624f13c0bb942f94cc9",
     "documentation/services/ESimService.md": "510689a418dc9c989c51d670a7ec1f3d867d33c429110ec5d638c6a4f479d9c1",
     "documentation/services/IFrameService.md": "9c7f6aa3ff146eeadf26a2f4688c89043f6d009daa3614b7c8fca53b4803f627",
-    "documentation/services/PackagesService.md": "f7ff63fc58bae1121ce965de5d3f9e86fc00fab47585d43ef68332c3e222872a",
+    "documentation/services/PackagesService.md": "c0f4117aad36078917432c90f5b251454bec1bea5ce465a4e56c08b141462967",
     "documentation/services/PurchasesService.md": "566a7444e2b848d1caadfb1b9f110cdae71b77081fd793c8c914013debbdc78b",
     "documentation/snippets/snippets.json": "740c5fa3fa53c31635be4fbb97f53da0de3205f341e049d9b9a08276aeda1cf1",
     "install.sh": "674b9422f362c20b5379f6ee212d1f211aedca82ff8598a6246e6cd24023cf7b",

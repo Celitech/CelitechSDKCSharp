@@ -6,7 +6,7 @@ namespace Celitech.SDK.Models;
 public record CreatePurchaseV2Request(
     /// <value>ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.</value>
     [property: JsonPropertyName("destination")] string Destination,
-    /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB</value>
+    /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB. Use `-1` to purchase an unlimited (date-based) package — provide `startDate`/`endDate` spanning 3 to 30 days (`duration` is not supported for unlimited packages).</value>
     [property: JsonPropertyName("dataLimitInGB")] double DataLimitInGb,
     /// <value>Number of eSIMs to purchase.</value>
     [property: JsonPropertyName("quantity")] double Quantity,
@@ -20,7 +20,7 @@ public record CreatePurchaseV2Request(
         JsonPropertyName("endDate"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] string? EndDate = null,
-    /// <value>Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration.</value>
+    /// <value>Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration. Not supported for unlimited packages (`dataLimitInGB` = -1), which are date-based — provide startDate/endDate instead.</value>
     [property:
         JsonPropertyName("duration"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

@@ -1,11 +1,11 @@
-# Celitech C# SDK 2.0.4
+# Celitech C# SDK 2.0.5
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
 ## Versions
 
-- API version: `2.0.4`
-- SDK version: `2.0.4`
+- API version: `2.0.5`
+- SDK version: `2.0.5`
 
 ## About the API
 

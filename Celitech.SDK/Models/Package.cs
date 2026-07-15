@@ -5,9 +5,9 @@ namespace Celitech.SDK.Models;
 public record Package(
     /// <value>ID of the package</value>
     [property: JsonPropertyName("id")] string Id,
-    /// <value>Size of the package in Bytes</value>
+    /// <value>Size of the package in Bytes. A value of `-1` indicates an unlimited package.</value>
     [property: JsonPropertyName("dataLimitInBytes")] double DataLimitInBytes,
-    /// <value>Size of the package in GB</value>
+    /// <value>Size of the package in GB. A value of `-1` indicates an unlimited (date-based) package.</value>
     [property: JsonPropertyName("dataLimitInGB")] double DataLimitInGb,
     /// <value>ISO3 representation of the package's destination.</value>
     [property: JsonPropertyName("destination")] string Destination,
