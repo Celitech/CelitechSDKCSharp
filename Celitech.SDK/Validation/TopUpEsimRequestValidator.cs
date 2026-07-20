@@ -18,7 +18,7 @@ public class TopUpEsimRequestValidator
             .MinimumLength(18)
             .WithMessage("Minimum length for iccid is 18.")
             .MaximumLength(22)
-            .WithMessage("Minimum length for iccid is 18.")
+            .WithMessage("Maximum length for iccid is 22.")
             .NotNull()
             .WithMessage("Field iccid is required and cannot be null.");
         RuleFor(TopUpEsimRequest => TopUpEsimRequest.DataLimitInGb)
