@@ -24,7 +24,7 @@ public class CreatePurchaseV2RequestValidator
             .GreaterThanOrEqualTo(1)
             .WithMessage("Minimum for quantity is 1.")
             .LessThanOrEqualTo(5)
-            .WithMessage("Minimum for quantity is 5.")
+            .WithMessage("Maximum for quantity is 5.")
             .NotNull()
             .WithMessage("Field quantity is required and cannot be null.");
     }
