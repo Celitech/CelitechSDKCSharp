@@ -9,4 +9,8 @@ public record GetPurchaseConsumptionOkResponse(
     [property: JsonPropertyName("dataUsageRemainingInGB")] double DataUsageRemainingInGb,
     /// <value>Status of the connectivity, possible values are 'ACTIVE' or 'NOT_ACTIVE'</value>
     [property: JsonPropertyName("status")] string Status
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

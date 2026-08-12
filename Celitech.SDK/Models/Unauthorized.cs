@@ -8,4 +8,8 @@ public record Unauthorized(
         JsonPropertyName("message"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] string? Message = null
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

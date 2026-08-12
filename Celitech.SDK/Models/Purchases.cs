@@ -6,11 +6,11 @@ public record Purchases(
     /// <value>ID of the purchase</value>
     [property: JsonPropertyName("id")] string Id,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("startDate")] string? StartDate,
+    [property: JsonPropertyName("startDate")] DateTime? StartDate,
     /// <value>End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("endDate")] string? EndDate,
+    [property: JsonPropertyName("endDate")] DateTime? EndDate,
     /// <value>Creation date of the purchase in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("createdDate")] string CreatedDate,
+    [property: JsonPropertyName("createdDate")] DateTime CreatedDate,
     [property: JsonPropertyName("package")] Package Package,
     [property: JsonPropertyName("esim")] PurchasesEsim Esim,
     /// <value>The `source` indicates whether the purchase was made from the API, dashboard, landing-page, promo-page or iframe. For purchases made before September 8, 2023, the value will be displayed as 'Not available'.</value>
@@ -30,4 +30,8 @@ public record Purchases(
     ] double? CreatedAt = null,
     /// <value>The `referenceId` that was provided by the partner during the purchase or top-up flow. This identifier can be used for analytics and debugging purposes.</value>
     [property: JsonPropertyName("referenceId")] string? ReferenceId = null
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

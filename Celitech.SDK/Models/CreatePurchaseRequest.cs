@@ -9,9 +9,9 @@ public record CreatePurchaseRequest(
     /// <value>Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB. Use `-1` to purchase an unlimited (date-based) package — provide `startDate`/`endDate` spanning 3 to 30 days.</value>
     [property: JsonPropertyName("dataLimitInGB")] double DataLimitInGb,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.</value>
-    [property: JsonPropertyName("startDate")] string StartDate,
+    [property: JsonPropertyName("startDate")] DateOnly StartDate,
     /// <value>End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.</value>
-    [property: JsonPropertyName("endDate")] string EndDate,
+    [property: JsonPropertyName("endDate")] DateOnly EndDate,
     /// <value>Email address where the purchase confirmation email will be sent (including QR Code & activation steps)</value>
     [property:
         JsonPropertyName("email"),
@@ -47,4 +47,8 @@ public record CreatePurchaseRequest(
         JsonPropertyName("endTime"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] double? EndTime = null
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

@@ -8,13 +8,34 @@ public class Client
 {
     private HttpClient _httpClient;
 
-    public Client(CelitechConfig config, HttpMessageHandler? handler = null)
+    /// <summary>
+    /// Builds the default transport handler. A <see cref="SocketsHttpHandler"/> is used so pooled
+    /// connections are recycled (picking up DNS changes on long-lived clients) and gzip/deflate/brotli
+    /// responses are transparently decompressed.
+    /// </summary>
+    internal static SocketsHttpHandler CreateDefaultTransport()
     {
-        _httpClient = handler == null ? new HttpClient() : new HttpClient(handler);
+        return new SocketsHttpHandler
+        {
+            PooledConnectionLifetime = TimeSpan.FromMinutes(2),
+            AutomaticDecompression = System.Net.DecompressionMethods.All,
+        };
+    }
+
+    public Client(
+        CelitechConfig config,
+        HttpMessageHandler? handler = null,
+        bool disposeHandler = true
+    )
+    {
+        _httpClient =
+            handler == null
+                ? new HttpClient(CreateDefaultTransport())
+                : new HttpClient(handler, disposeHandler);
         _httpClient.BaseAddress = config?.Environment?.Uri ?? Environment.Default.Uri;
         _httpClient.DefaultRequestHeaders.Add(
             "user-agent",
-            "postman-codegen/1.7.0 Celitech.SDK/2.0.6 (csharp)"
+            "postman-codegen/2.1.0 Celitech.SDK/2.0.6 (csharp)"
         );
     }
 
@@ -36,7 +57,7 @@ public class Client
         var response = await _httpClient
             .SendAsync(request.HttpRequestMessage, cancellationToken)
             .ConfigureAwait(false);
-        await HandleError(request, response);
+        await HandleError(request, response).ConfigureAwait(false);
         return response;
     }
 
@@ -49,7 +70,7 @@ public class Client
         var response = await _httpClient
             .SendAsync(request.HttpRequestMessage, httpCompletionOptions, cancellationToken)
             .ConfigureAwait(false);
-        await HandleError(request, response);
+        await HandleError(request, response).ConfigureAwait(false);
         return response;
     }
 
@@ -75,15 +96,16 @@ public class Client
 
         if (mapping != null)
         {
-            await DeserializeAndThrowException(response, mapping);
+            await DeserializeAndThrowException(response, mapping).ConfigureAwait(false);
         }
 
         if (request.DefaultErrorMapping != null)
         {
-            await DeserializeAndThrowException(response, request.DefaultErrorMapping);
+            await DeserializeAndThrowException(response, request.DefaultErrorMapping)
+                .ConfigureAwait(false);
         }
 
-        throw new ApiException(response);
+        throw await ApiException.FromResponseAsync(response).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -98,25 +120,26 @@ public class Client
     )
     {
         // TODO USE DESERIALIZATION LOGIC which will catch the case where we have non-json responses
-        var contentString = await response.Content.ReadAsStringAsync();
+        var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        var (statusCode, headers) = ApiException.CaptureAndDispose(response);
         try
         {
             var deserializedError = JsonSerializer.Deserialize(contentString, mapping.TargetType);
 
             if (deserializedError == null)
             {
-                throw new ApiException(response);
+                throw new ApiException(statusCode, contentString, headers);
             }
             var exception = (Exception)
                 Activator.CreateInstance(
                     mapping.ExceptionType,
-                    new object[] { deserializedError, response }
+                    new object[] { deserializedError, statusCode, contentString, headers }
                 )!;
             throw exception;
         }
         catch (JsonException)
         {
-            throw new ApiException(response);
+            throw new ApiException(statusCode, contentString, headers);
         }
     }
 

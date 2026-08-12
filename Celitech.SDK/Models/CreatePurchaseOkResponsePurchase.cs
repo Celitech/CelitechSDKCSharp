@@ -8,13 +8,17 @@ public record CreatePurchaseOkResponsePurchase(
     /// <value>ID of the package</value>
     [property: JsonPropertyName("packageId")] string PackageId,
     /// <value>Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("startDate")] string? StartDate,
+    [property: JsonPropertyName("startDate")] DateTime? StartDate,
     /// <value>End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("endDate")] string? EndDate,
+    [property: JsonPropertyName("endDate")] DateTime? EndDate,
     /// <value>Creation date of the purchase in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
-    [property: JsonPropertyName("createdDate")] string CreatedDate,
+    [property: JsonPropertyName("createdDate")] DateTime CreatedDate,
     /// <value>Epoch value representing the start time of the package's validity</value>
     [property: JsonPropertyName("startTime")] double? StartTime = null,
     /// <value>Epoch value representing the end time of the package's validity</value>
     [property: JsonPropertyName("endTime")] double? EndTime = null
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

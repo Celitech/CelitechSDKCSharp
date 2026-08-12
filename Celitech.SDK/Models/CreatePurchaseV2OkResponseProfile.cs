@@ -13,4 +13,8 @@ public record CreatePurchaseV2OkResponseProfile(
     [property: JsonPropertyName("iosActivationLink")] string IosActivationLink,
     /// <value>Android Activation Link of the eSIM</value>
     [property: JsonPropertyName("androidActivationLink")] string AndroidActivationLink
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

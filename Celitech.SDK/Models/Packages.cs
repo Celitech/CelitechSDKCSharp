@@ -19,4 +19,8 @@ public record Packages(
     [property: JsonPropertyName("maxDays")] double MaxDays,
     /// <value>Price of the package in cents</value>
     [property: JsonPropertyName("priceInCents")] double PriceInCents
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

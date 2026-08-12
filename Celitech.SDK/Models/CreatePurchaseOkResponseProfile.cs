@@ -9,4 +9,8 @@ public record CreatePurchaseOkResponseProfile(
     [property: JsonPropertyName("activationCode")] string ActivationCode,
     /// <value>Manual Activation Code of the eSIM</value>
     [property: JsonPropertyName("manualActivationCode")] string ManualActivationCode
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}
