@@ -168,8 +168,8 @@ public class PurchasesService : BaseService
     public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.ListPurchasesOkResponse> ListPurchasesAsync(
         string? purchaseId = null,
         string? iccid = null,
-        string? afterDate = null,
-        string? beforeDate = null,
+        DateOnly? afterDate = null,
+        DateOnly? beforeDate = null,
         string? email = null,
         string? referenceId = null,
         string? afterCursor = null,

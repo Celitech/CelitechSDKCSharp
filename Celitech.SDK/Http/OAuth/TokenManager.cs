@@ -9,10 +9,12 @@ namespace Celitech.SDK.Http.OAuth;
 /// Manages OAuth access tokens with automatic caching, scope tracking, and refresh logic.
 /// Ensures tokens are valid and contain required scopes before making API requests.
 /// Automatically refreshes tokens when they expire or when additional scopes are needed.
+/// Token acquisition is synchronized so that concurrent requests share a single fetch.
 /// </summary>
-public class TokenManager
+public class TokenManager : IDisposable
 {
     private OauthToken? _token;
+    private readonly SemaphoreSlim _lock = new(1, 1);
     private readonly Client httpClient;
     public Uri BaseOAuthUrl { get; set; }
     public string? ClientId { get; set; }
@@ -34,44 +36,69 @@ public class TokenManager
     /// Otherwise, requests a new token that includes all previously cached scopes plus the new ones.
     /// </summary>
     /// <param name="scopes">The OAuth scopes required for the operation.</param>
+    /// <param name="cancellationToken">Token used to cancel the queued wait and the token fetch.</param>
     /// <returns>A valid OAuth token containing all required scopes.</returns>
-    public async Task<OauthToken> GetTokenAsync(HashSet<string> scopes)
+    public async Task<OauthToken> GetTokenAsync(
+        HashSet<string> scopes,
+        CancellationToken cancellationToken = default
+    )
     {
-        var hasAllScopes = _token != null && _token.Scopes.IsSupersetOf(scopes);
+        var cached = Volatile.Read(ref _token);
+        if (cached != null && cached.Scopes.IsSupersetOf(scopes) && IsTokenValid(cached))
+        {
+            return cached;
+        }
 
-        var validToken =
-            _token != null
-            && (
-                _token.ExpiresAt == null
-                || (_token.ExpiresAt.Value - DateTimeOffset.UtcNow.ToUnixTimeSeconds()) > 5
+        await _lock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            // Re-check under the lock: a caller released here may find that another
+            // request already fetched a token that satisfies this one (no re-fetch needed).
+            cached = _token;
+            if (cached != null && cached.Scopes.IsSupersetOf(scopes) && IsTokenValid(cached))
+            {
+                return cached;
+            }
+
+            // The fetch below runs while holding the lock, so a request for a different scope set
+            // waits for the in-flight fetch and then fetches a superset. This intentionally trades
+            // concurrency of unrelated-scope requests for far fewer token-endpoint calls.
+            // Accumulate previously granted scopes onto a private copy so the caller's set is never mutated.
+            var required = new HashSet<string>(scopes);
+            if (cached != null)
+            {
+                required.UnionWith(cached.Scopes);
+            }
+
+            var response = await GetAccessTokenAsync(required, cancellationToken)
+                .ConfigureAwait(false);
+
+            if (response.AccessToken == null)
+            {
+                throw new InvalidOperationException("AccessToken cannot be null");
+            }
+
+            var newToken = new OauthToken(
+                response.AccessToken,
+                required,
+                response.ExpiresIn.HasValue
+                    ? (long?)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + response.ExpiresIn.Value)
+                    : null
             );
 
-        if (_token != null && hasAllScopes && validToken)
-        {
-            return _token;
+            Volatile.Write(ref _token, newToken);
+            return newToken;
         }
-
-        if (_token != null)
+        finally
         {
-            scopes.UnionWith(_token.Scopes);
+            _lock.Release();
         }
+    }
 
-        var response = await GetAccessTokenAsync(scopes);
-
-        if (response.AccessToken == null)
-        {
-            throw new InvalidOperationException("AccessToken cannot be null");
-        }
-
-        _token = new OauthToken(
-            response.AccessToken,
-            scopes,
-            response.ExpiresIn.HasValue
-                ? (long?)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + response.ExpiresIn.Value)
-                : null
-        );
-
-        return _token;
+    private bool IsTokenValid(OauthToken token)
+    {
+        return token.ExpiresAt == null
+            || (token.ExpiresAt.Value - DateTimeOffset.UtcNow.ToUnixTimeSeconds()) > 5;
     }
 
     /// <summary>
@@ -80,10 +107,17 @@ public class TokenManager
     /// </summary>
     public void Clean()
     {
-        _token = null;
+        // Lock-free on purpose: nulling a reference is atomic, and racing an in-flight fetch's
+        // assignment is benign (either the token is cleared or the freshly fetched token wins).
+        // Taking the lock here would instead block the caller for a full token round-trip when
+        // Clean() runs while a fetch is in progress.
+        Volatile.Write(ref _token, null);
     }
 
-    private async Task<OAuthTokenResponse> GetAccessTokenAsync(HashSet<string> scopes)
+    private async Task<OAuthTokenResponse> GetAccessTokenAsync(
+        HashSet<string> scopes,
+        CancellationToken cancellationToken
+    )
     {
         if (this.ClientId == null)
         {
@@ -95,15 +129,23 @@ public class TokenManager
         }
         var service = new OAuthService(httpClient);
 
-        var response = await service.GetAccessTokenAsync(
-            input: new OAuthTokenRequest(
-                GrantType: GrantType.ClientCredentials,
-                ClientId: this.ClientId,
-                ClientSecret: this.ClientSecret,
-                Scope: string.Join(" ", scopes)
+        var response = await service
+            .GetAccessTokenAsync(
+                input: new OAuthTokenRequest(
+                    GrantType: GrantType.ClientCredentials,
+                    ClientId: this.ClientId,
+                    ClientSecret: this.ClientSecret,
+                    Scope: string.Join(" ", scopes)
+                ),
+                cancellationToken: cancellationToken
             )
-        );
+            .ConfigureAwait(false);
 
         return response;
+    }
+
+    public void Dispose()
+    {
+        _lock.Dispose();
     }
 }

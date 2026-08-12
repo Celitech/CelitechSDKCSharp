@@ -17,5 +17,7 @@ public record RetryConfig(
     /// <summary>Specific HTTP status codes to retry. When null, retries all 5xx, 408, and 429 responses.</summary>
     IReadOnlyList<int>? RetryableStatusCodes = null,
     /// <summary>HTTP methods eligible for retry.</summary>
-    IReadOnlyList<string>? RetryableHttpMethods = null
+    IReadOnlyList<string>? RetryableHttpMethods = null,
+    /// <summary>The maximum delay to honor from a server Retry-After / X-RateLimit-Reset header.</summary>
+    TimeSpan? MaxRetryAfterDelay = null
 );

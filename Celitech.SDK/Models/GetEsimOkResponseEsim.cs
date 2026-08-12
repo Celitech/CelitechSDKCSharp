@@ -17,4 +17,8 @@ public record GetEsimOkResponseEsim(
     [property: JsonPropertyName("connectivityStatus")] string ConnectivityStatus,
     /// <value>Indicates whether the eSIM is currently eligible for a top-up. This flag should be checked before attempting a top-up request.</value>
     [property: JsonPropertyName("isTopUpAllowed")] bool IsTopUpAllowed
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}
