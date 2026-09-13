@@ -46,8 +46,8 @@ public class PackagesService : BaseService
     public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.ListPackagesOkResponse> ListPackagesAsync(
         string? destination = null,
         double? dataLimitInGb = null,
-        string? startDate = null,
-        string? endDate = null,
+        DateOnly? startDate = null,
+        DateOnly? endDate = null,
         string? afterCursor = null,
         double? limit = null,
         long? startTime = null,
