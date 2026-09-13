@@ -9,4 +9,8 @@ public record OAuthTokenResponse(
     ]
         string? AccessToken = null,
     [property: JsonPropertyName("expires_in")] long? ExpiresIn = null
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}
