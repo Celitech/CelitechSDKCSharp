@@ -1,7 +1,11 @@
 using System.Collections;
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace Celitech.SDK.Http.Serialization;
+
+// Wire formats for date primitives in path/query/header strings; kept in sync
+// with the JSON DateTimeSerializer / DateOnlyConverter.
 
 public static class Serializer
 {
@@ -20,12 +24,16 @@ public static class Serializer
     {
         return value switch
         {
-            null or string or bool or int or long or double => SerializePrimitive(
-                key,
-                value,
-                style,
-                shouldUrlEncode
-            ),
+            null
+            or string
+            or bool
+            or int
+            or long
+            or double
+            or uint
+            or ulong
+            or DateTime
+            or DateOnly => SerializePrimitive(key, value, style, shouldUrlEncode),
             IEnumerable e => SerializeEnumerable(key, e, style, explode, shouldUrlEncode),
             object o => SerializeObject(key, o, style, explode, shouldUrlEncode),
         };
@@ -38,7 +46,12 @@ public static class Serializer
                 null => "null",
                 string s => shouldUrlEncode ? Uri.EscapeDataString(s) : s,
                 bool b => b.ToString().ToLowerInvariant(),
-                int or long or double => value.ToString(),
+                int or long or double or uint or ulong => value.ToString(),
+                DateTime dt => dt.ToString(
+                    "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffK",
+                    CultureInfo.InvariantCulture
+                ),
+                DateOnly d => d.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                 IEnumerable e => SerializeEnumerable(
                     string.Empty,
                     e,
@@ -117,6 +130,8 @@ public static class Serializer
     {
         var properties = o.GetType()
             .GetProperties()
+            // Skip the [JsonExtensionData] bag so unknown fields never leak into query/path strings.
+            .Where(p => !p.IsDefined(typeof(JsonExtensionDataAttribute), false))
             .Select(p =>
             {
                 // Use JsonPropertyNameAttribute for property name if available

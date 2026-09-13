@@ -14,12 +14,12 @@ public record CreatePurchaseV2Request(
     [property:
         JsonPropertyName("startDate"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ] string? StartDate = null,
+    ] DateOnly? StartDate = null,
     /// <value>End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.</value>
     [property:
         JsonPropertyName("endDate"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
-    ] string? EndDate = null,
+    ] DateOnly? EndDate = null,
     /// <value>Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration. Not supported for unlimited packages (`dataLimitInGB` = -1), which are date-based — provide startDate/endDate instead.</value>
     [property:
         JsonPropertyName("duration"),
@@ -50,4 +50,8 @@ public record CreatePurchaseV2Request(
         JsonPropertyName("language"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] CreatePurchaseV2RequestLanguage? Language = null
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}

@@ -11,4 +11,8 @@ public record Device(
     [property: JsonPropertyName("hardwareModel")] string HardwareModel,
     /// <value>Serial Number of the eSIM</value>
     [property: JsonPropertyName("eid")] string Eid
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}
