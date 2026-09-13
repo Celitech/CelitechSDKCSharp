@@ -5,4 +5,8 @@ namespace Celitech.SDK.Models;
 public record CreatePurchaseOkResponse(
     [property: JsonPropertyName("purchase")] CreatePurchaseOkResponsePurchase Purchase,
     [property: JsonPropertyName("profile")] CreatePurchaseOkResponseProfile Profile
-);
+)
+{
+    [JsonExtensionData]
+    public Dictionary<string, object?> AdditionalProperties { get; set; } = new();
+}
