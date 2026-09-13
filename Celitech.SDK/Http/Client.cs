@@ -35,7 +35,7 @@ public class Client
         _httpClient.BaseAddress = config?.Environment?.Uri ?? Environment.Default.Uri;
         _httpClient.DefaultRequestHeaders.Add(
             "user-agent",
-            "postman-codegen/2.6.0 Celitech.SDK/2.0.6 (csharp)"
+            "postman-codegen/2.6.0 Celitech.SDK/2.0.7 (csharp)"
         );
     }
 
