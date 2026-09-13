@@ -28,13 +28,14 @@ public class CelitechClient : IDisposable
 
     /// <summary>Initializes a new instance of the CelitechClient client.</summary>
     /// <param name="config">SDK configuration options.</param>
-    public CelitechClient(CelitechConfig? config = null)
+    /// <param name="handler">Optional HttpMessageHandler used as the underlying transport (e.g. a custom or mocked handler). The SDK does not dispose a caller-supplied handler; the caller owns its lifetime.</param>
+    public CelitechClient(CelitechConfig? config = null, HttpMessageHandler? handler = null)
     {
-        var retryHandler = new RetryHandler();
-        _tokenHttpClient = new Client(config);
+        var retryHandler = new RetryHandler(handler);
+        _tokenHttpClient = new Client(config, handler, disposeHandler: handler is null);
         _tokenManager = new TokenManager(_tokenHttpClient, config);
         var oauthHandler = new OAuthHandler(_tokenManager, retryHandler);
-        _httpClient = new Client(config, oauthHandler);
+        _httpClient = new Client(config, oauthHandler, disposeHandler: handler is null);
 
         Destinations = new DestinationsService(_httpClient);
         Packages = new PackagesService(_httpClient);
@@ -125,6 +126,8 @@ public class CelitechClient : IDisposable
     public void Dispose()
     {
         _httpClient.Dispose();
+        _tokenManager.Dispose();
+        _tokenHttpClient.Dispose();
     }
 }
 
