@@ -9,16 +9,19 @@ public static class HttpResponseMessageExtensions
 {
     /// <summary>
     /// Ensures the HTTP response has a successful status code (2xx), throwing ApiException if not.
-    /// Provides more control than the built-in EnsureSuccessStatusCode by throwing a custom exception type.
+    /// On failure the response body and headers are captured and the response is disposed, so no
+    /// live HttpResponseMessage is leaked or exposed on the exception.
     /// </summary>
     /// <param name="response">The HTTP response to validate.</param>
     /// <returns>The same response if successful, for method chaining.</returns>
     /// <exception cref="ApiException">Thrown when the response status code indicates failure.</exception>
-    public static HttpResponseMessage EnsureSuccessfulResponse(this HttpResponseMessage response)
+    public static async Task<HttpResponseMessage> EnsureSuccessfulResponseAsync(
+        this HttpResponseMessage response
+    )
     {
         if (!response.IsSuccessStatusCode)
         {
-            throw new ApiException(response);
+            throw await ApiException.FromResponseAsync(response).ConfigureAwait(false);
         }
         return response;
     }
