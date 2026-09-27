@@ -12,7 +12,7 @@ public record CreatePurchaseRequest(
     [property: JsonPropertyName("startDate")] DateOnly StartDate,
     /// <value>End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.</value>
     [property: JsonPropertyName("endDate")] DateOnly EndDate,
-    /// <value>Email address where the purchase confirmation email will be sent (including QR Code & activation steps)</value>
+    /// <value>Email address where the purchase confirmation email will be sent (including QR Code &amp; activation steps)</value>
     [property:
         JsonPropertyName("email"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
@@ -22,7 +22,7 @@ public record CreatePurchaseRequest(
         JsonPropertyName("referenceId"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] string? ReferenceId = null,
-    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.</value>
+    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&amp;), and spaces. This feature is available to platforms with Diamond tier only.</value>
     [property:
         JsonPropertyName("networkBrand"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

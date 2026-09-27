@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Celitech.SDK.Http.Extensions;
 using Celitech.SDK.Http.Serialization;
 
@@ -192,18 +193,76 @@ public class RequestBuilder
     )
     {
         var jsonContent = JsonSerializer.Serialize(content, options);
-        var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(
-            jsonContent,
-            options
-        );
 
-        if (dictionary is null)
+        // Deserializing into Dictionary<string, string> asked System.Text.Json to read every
+        // member as a string, so an array, an object — even a plain number or bool — threw
+        // before the request was built. Walking the JSON tree instead lets each kind decide
+        // how it renders.
+        if (JsonNode.Parse(jsonContent) is not JsonObject root)
         {
             throw new ArgumentException("Invalid content for form-urlencoded content type.");
         }
 
-        _content = new FormUrlEncodedContent(dictionary);
+        // A sequence of pairs rather than a dictionary: an array field has to repeat its key
+        // (`tags=a&tags=b`), which a dictionary cannot represent.
+        var fields = new List<KeyValuePair<string, string>>();
+        foreach (var property in root)
+        {
+            AddUrlEncodedField(fields, property.Key, property.Value);
+        }
+
+        _content = new FormUrlEncodedContent(fields);
         return this;
+    }
+
+    /// <summary>
+    /// Expands one JSON member into the form fields it contributes, following the OpenAPI
+    /// default encoding for application/x-www-form-urlencoded (style: form, explode: true).
+    /// </summary>
+    private static void AddUrlEncodedField(
+        List<KeyValuePair<string, string>> fields,
+        string key,
+        JsonNode? node
+    )
+    {
+        switch (node)
+        {
+            // An absent member is not a field. Emitting `key=` would tell the server the caller
+            // sent an empty string, which is a different statement from "unset".
+            case null:
+                return;
+            case JsonArray array:
+                foreach (var element in array)
+                {
+                    AddUrlEncodedField(fields, key, element);
+                }
+                return;
+            // Brackets keep the parent name, matching how this SDK's own deepObject query
+            // serialization expresses nesting in a key/value context.
+            case JsonObject nested:
+                foreach (var property in nested)
+                {
+                    AddUrlEncodedField(fields, $"{key}[{property.Key}]", property.Value);
+                }
+                return;
+            default:
+                fields.Add(new KeyValuePair<string, string>(key, ToUrlEncodedValue(node)));
+                return;
+        }
+    }
+
+    private static string ToUrlEncodedValue(JsonNode node)
+    {
+        // A string has to be unwrapped rather than rendered through ToJsonString(), which would
+        // keep the surrounding quotes; every other scalar renders as its JSON text. Matched with
+        // TryGetValue rather than GetValueKind() so this still compiles on net6.0/netstandard2.0,
+        // where JsonNode.GetValueKind() does not exist.
+        if (node is JsonValue value && value.TryGetValue<string>(out var text) && text != null)
+        {
+            return text;
+        }
+
+        return node.ToJsonString();
     }
 
     /// <summary>

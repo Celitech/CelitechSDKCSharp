@@ -70,7 +70,10 @@ public class BaseService
                 ?? _serviceConfig?.AccessToken,
             RetryConfig: requestConfig?.RetryConfig
                 ?? methodConfig?.RetryConfig
-                ?? _serviceConfig?.RetryConfig
+                ?? _serviceConfig?.RetryConfig,
+            IdempotencyKey: requestConfig?.IdempotencyKey
+                ?? methodConfig?.IdempotencyKey
+                ?? _serviceConfig?.IdempotencyKey
         );
     }
 
@@ -88,11 +91,17 @@ public class BaseService
     )
     {
         CancellationTokenSource? timeoutCts = null;
+        TimeSpan? appliedTimeout = null;
+        // Kept before `cancellationToken` is replaced by the linked timeout token below: the linked
+        // source cancels for either reason and records neither, so this is the only thing that keeps
+        // a timeout distinguishable from the caller cancelling (FSDK-1585).
+        var callerToken = cancellationToken;
 
         try
         {
             if (resolvedConfig?.Timeout != null)
             {
+                appliedTimeout = resolvedConfig.Timeout.Value;
                 timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 timeoutCts.CancelAfter(resolvedConfig.Timeout.Value);
                 cancellationToken = timeoutCts.Token;
@@ -105,6 +114,10 @@ public class BaseService
                 .ConfigureAwait(false);
             return response;
         }
+        catch (OperationCanceledException ex) when (IsRequestTimeout(timeoutCts, callerToken))
+        {
+            throw new ApiTimeoutException($"The request timed out after {appliedTimeout}.", ex);
+        }
         finally
         {
             // Safe to dispose here: SendAsync has completed and the response body
@@ -112,6 +125,23 @@ public class BaseService
             // ExecuteStreamAsync path and are not affected.
             timeoutCts?.Dispose();
         }
+    }
+
+    /// <summary>
+    /// Whether an <see cref="OperationCanceledException"/> came from the per-request timeout rather
+    /// than from the caller. The BCL raises <see cref="TaskCanceledException"/> for both and the
+    /// linked <see cref="CancellationTokenSource"/> records neither cause, so the test is: the
+    /// timeout source fired AND the caller's own token did not. When both fire the caller wins and
+    /// the original cancellation propagates untouched (FSDK-1585).
+    /// </summary>
+    private static bool IsRequestTimeout(
+        CancellationTokenSource? timeoutCts,
+        CancellationToken callerToken
+    )
+    {
+        return timeoutCts is not null
+            && timeoutCts.IsCancellationRequested
+            && !callerToken.IsCancellationRequested;
     }
 
     /// <summary>
@@ -142,6 +172,18 @@ public class BaseService
             request.HttpRequestMessage.Options.Set(
                 new HttpRequestOptionsKey<RetryConfig>("_RequestConfig_RetryConfig"),
                 resolvedConfig.RetryConfig
+            );
+        }
+
+        // Carried as a request option rather than written straight onto the headers here, because
+        // the header NAME comes from the spec's declared idempotency header and RetryHandler is
+        // where that list lives. RetryHandler stamps it onto the request before the retry gate
+        // reads it, which is still upstream of the transport, so the server sees it (FSDK-1712).
+        if (!string.IsNullOrWhiteSpace(resolvedConfig.IdempotencyKey))
+        {
+            request.HttpRequestMessage.Options.Set(
+                new HttpRequestOptionsKey<string>("_RequestConfig_IdempotencyKey"),
+                resolvedConfig.IdempotencyKey
             );
         }
     }
