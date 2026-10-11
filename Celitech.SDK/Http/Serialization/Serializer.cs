@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Globalization;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace Celitech.SDK.Http.Serialization;
@@ -72,7 +73,10 @@ public static class Serializer
         return style switch
         {
             SerializationStyle.Label => $".{SerializeValue(value, shouldUrlEncode)}",
-            SerializationStyle.Matrix => $";{SerializeValue(value, shouldUrlEncode)}",
+            // Matrix ("path-style") expansion is `;name=value` (RFC-6570 §3.2.7). Dropping the
+            // `{key}=` half produced `;42` instead of `;matrix=42`, so the server saw an unnamed
+            // segment. Kept in sync with the enumerable/object Matrix branches below.
+            SerializationStyle.Matrix => $";{key}={SerializeValue(value, shouldUrlEncode)}",
             SerializationStyle.Form => $"{key}={SerializeValue(value, shouldUrlEncode)}",
             _ => SerializeValue(value, shouldUrlEncode),
         };
@@ -103,6 +107,22 @@ public static class Serializer
                     : $";{key}={string.Join(",", serializedValues)}";
         }
 
+        // An EMPTY collection is an absent parameter, not a present-but-empty one. Every
+        // non-exploded style below used to fall through to `$"{key}={...}"` and emit `key=`, which a
+        // server reads as a single empty element (`?formJoined=&spaceDelimited=&pipeDelimited=`).
+        // Callers (SetQueryParameter/SetHeader/SetCookieParameter) skip an empty string, so
+        // returning one here omits the parameter entirely — matching the already-correct
+        // explode: true behaviour.
+        //
+        // Deliberately placed AFTER the switch above: Simple/Label/Matrix are the PATH styles, and
+        // SetPathParameter substitutes into the URL template without skipping an empty string, so
+        // short-circuiting them would change the URL shape (`/p/.` -> `/p/`, `/p/;key=` -> `/p/`)
+        // rather than omit anything. Path styles keep their previous rendering.
+        if (array.Length == 0)
+        {
+            return string.Empty;
+        }
+
         if (explode)
             return string.Join(
                 $"&",
@@ -119,6 +139,25 @@ public static class Serializer
         return $"{key}={string.Join(separator, serializedValues)}";
     }
 
+    /// <summary>
+    /// Whether a property is unconditionally excluded from the wire by [JsonIgnore].
+    /// </summary>
+    /// <remarks>
+    /// The condition matters. A bare [JsonIgnore] means "never serialize" — that is how the
+    /// public AdditionalProperties bag is declared, and reflecting over it emitted an undeclared
+    /// `AdditionalProperties=` pair on every request carrying an object parameter. But
+    /// [JsonIgnore(Condition = WhenWritingDefault)] is what every optional property carries, and
+    /// those ARE wire fields, so a blanket check on the attribute would drop them all.
+    /// </remarks>
+    private static bool IsIgnoredAlways(PropertyInfo property)
+    {
+        var ignore =
+            property.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).FirstOrDefault()
+            as JsonIgnoreAttribute;
+
+        return ignore != null && ignore.Condition == JsonIgnoreCondition.Always;
+    }
+
     private static string SerializeObject<T>(
         string key,
         T o,
@@ -132,6 +171,7 @@ public static class Serializer
             .GetProperties()
             // Skip the [JsonExtensionData] bag so unknown fields never leak into query/path strings.
             .Where(p => !p.IsDefined(typeof(JsonExtensionDataAttribute), false))
+            .Where(p => !IsIgnoredAlways(p))
             .Select(p =>
             {
                 // Use JsonPropertyNameAttribute for property name if available

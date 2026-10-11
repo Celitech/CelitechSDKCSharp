@@ -92,7 +92,16 @@ public class CelitechClient : IDisposable
     /// </summary>
     public void SetOAuthBaseUrl(string baseUrl)
     {
-        SetOAuthBaseUrl(new Uri(baseUrl));
+        if (
+            global::System.Uri.TryCreate(
+                baseUrl,
+                global::System.UriKind.Absolute,
+                out var resolvedOAuthBaseUrl
+            )
+        )
+        {
+            SetOAuthBaseUrl(resolvedOAuthBaseUrl);
+        }
     }
 
     /// <summary>

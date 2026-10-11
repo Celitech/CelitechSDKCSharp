@@ -26,7 +26,10 @@ public class CreatePurchaseV2OkResponseValidator
                         {
                             foreach (var failure in result.Errors)
                             {
-                                context.AddFailure(failure.PropertyName, failure.ErrorMessage);
+                                var propertyPath = string.IsNullOrEmpty(failure.PropertyName)
+                                    ? "Purchase"
+                                    : $"Purchase.{failure.PropertyName}";
+                                context.AddFailure(propertyPath, failure.ErrorMessage);
                             }
                         }
                     }
@@ -46,7 +49,10 @@ public class CreatePurchaseV2OkResponseValidator
                         {
                             foreach (var failure in result.Errors)
                             {
-                                context.AddFailure(failure.PropertyName, failure.ErrorMessage);
+                                var propertyPath = string.IsNullOrEmpty(failure.PropertyName)
+                                    ? "Profile"
+                                    : $"Profile.{failure.PropertyName}";
+                                context.AddFailure(propertyPath, failure.ErrorMessage);
                             }
                         }
                     }

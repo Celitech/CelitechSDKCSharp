@@ -26,7 +26,10 @@ public class GetEsimHistoryOkResponseValidator
                         {
                             foreach (var failure in result.Errors)
                             {
-                                context.AddFailure(failure.PropertyName, failure.ErrorMessage);
+                                var propertyPath = string.IsNullOrEmpty(failure.PropertyName)
+                                    ? "Esim"
+                                    : $"Esim.{failure.PropertyName}";
+                                context.AddFailure(propertyPath, failure.ErrorMessage);
                             }
                         }
                     }
