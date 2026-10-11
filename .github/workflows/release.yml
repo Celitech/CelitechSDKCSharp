@@ -10,9 +10,9 @@ on:
 env:
   # SDK identity baked in at generation time from the in-memory build context,
   # so the workflow never reads the .csproj at runtime.
-  SDK_VERSION: '2.0.7'
+  SDK_VERSION: '2.0.9'
   SDK_PACKAGE_NAME: 'Celitech.SDK'
-  RELEASE_TAG: 'v2.0.7'
+  RELEASE_TAG: 'v2.0.9'
 
 jobs:
   release:
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/setup-dotnet@v4
         if: steps.secrets.outputs.ok == 'true'
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
       - name: Publish to NuGet
         if: steps.secrets.outputs.ok == 'true'
         run: |
