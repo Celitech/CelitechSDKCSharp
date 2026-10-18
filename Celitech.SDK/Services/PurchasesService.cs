@@ -89,16 +89,27 @@ public class PurchasesService : BaseService
     }
 
     /// <summary>This endpoint is used to purchase a new eSIM by providing the package details.</summary>
+    /// <param name="idempotencyKey">Optional. A unique value (for example a UUID) that makes this request safe to retry. If a request with the same `Idempotency-Key` and the same body succeeds, repeating it returns the original response instead of performing the action again, and the response includes the header `Idempotent-Replayed: true`. Keys are scoped to your credentials and remembered for 3 days. Only successful (2xx) responses are remembered, so a request that failed can be retried with the same key. Reusing a key with a different request returns `422`; sending it while the original request is still being processed returns `409`. If the idempotency store is temporarily unavailable, the request is not processed and returns `503`; retry it. Must be 1 to 255 printable ASCII characters, without spaces.</param>
     public async global::System.Threading.Tasks.Task<
         List<global::Celitech.SDK.Models.CreatePurchaseV2OkResponse>
     > CreatePurchaseV2Async(
         global::Celitech.SDK.Models.CreatePurchaseV2Request input,
+        string? idempotencyKey = null,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
         var validationResults = new List<FluentValidation.Results.ValidationResult> { };
+        var idempotencyKeyValidationResult = new StringValidator()
+            .WithMaximumLength(255)
+            .WithMinimumLength(1)
+            .ValidateOptional<string?>((string?)idempotencyKey);
+        if (idempotencyKeyValidationResult != null)
+        {
+            validationResults.Add(idempotencyKeyValidationResult);
+        }
+        ;
         var validator = new CreatePurchaseV2RequestValidator();
         var validationResult = validator.Validate(input);
         validationResults.Add(validationResult);
@@ -112,10 +123,39 @@ public class PurchasesService : BaseService
         var resolvedConfig = GetResolvedConfig(_createPurchaseV2AsyncConfig, requestConfig);
 
         var request = new RequestBuilder(HttpMethod.Post, "purchases/v2")
+            .SetOptionalHeader("Idempotency-Key", idempotencyKey)
             .SetContentAsJson(input, _jsonSerializerOptions)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -210,8 +250,36 @@ public class PurchasesService : BaseService
             .SetOptionalQueryParameter("after", after)
             .SetOptionalQueryParameter("before", before)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -240,14 +308,25 @@ public class PurchasesService : BaseService
     }
 
     /// <summary>This endpoint is used to purchase a new eSIM by providing the package details.</summary>
+    /// <param name="idempotencyKey">Optional. A unique value (for example a UUID) that makes this request safe to retry. If a request with the same `Idempotency-Key` and the same body succeeds, repeating it returns the original response instead of performing the action again, and the response includes the header `Idempotent-Replayed: true`. Keys are scoped to your credentials and remembered for 3 days. Only successful (2xx) responses are remembered, so a request that failed can be retried with the same key. Reusing a key with a different request returns `422`; sending it while the original request is still being processed returns `409`. If the idempotency store is temporarily unavailable, the request is not processed and returns `503`; retry it. Must be 1 to 255 printable ASCII characters, without spaces.</param>
     public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.CreatePurchaseOkResponse> CreatePurchaseAsync(
         global::Celitech.SDK.Models.CreatePurchaseRequest input,
+        string? idempotencyKey = null,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
         var validationResults = new List<FluentValidation.Results.ValidationResult> { };
+        var idempotencyKeyValidationResult = new StringValidator()
+            .WithMaximumLength(255)
+            .WithMinimumLength(1)
+            .ValidateOptional<string?>((string?)idempotencyKey);
+        if (idempotencyKeyValidationResult != null)
+        {
+            validationResults.Add(idempotencyKeyValidationResult);
+        }
+        ;
         var validator = new CreatePurchaseRequestValidator();
         var validationResult = validator.Validate(input);
         validationResults.Add(validationResult);
@@ -261,10 +340,39 @@ public class PurchasesService : BaseService
         var resolvedConfig = GetResolvedConfig(_createPurchaseAsyncConfig, requestConfig);
 
         var request = new RequestBuilder(HttpMethod.Post, "purchases")
+            .SetOptionalHeader("Idempotency-Key", idempotencyKey)
             .SetContentAsJson(input, _jsonSerializerOptions)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -293,14 +401,25 @@ public class PurchasesService : BaseService
     }
 
     /// <summary>This endpoint is used to top-up an existing eSIM with the previously associated destination by providing its ICCID and package details. To determine if an eSIM can be topped up, use the Get eSIM endpoint, which returns the `isTopUpAllowed` flag.</summary>
+    /// <param name="idempotencyKey">Optional. A unique value (for example a UUID) that makes this request safe to retry. If a request with the same `Idempotency-Key` and the same body succeeds, repeating it returns the original response instead of performing the action again, and the response includes the header `Idempotent-Replayed: true`. Keys are scoped to your credentials and remembered for 3 days. Only successful (2xx) responses are remembered, so a request that failed can be retried with the same key. Reusing a key with a different request returns `422`; sending it while the original request is still being processed returns `409`. If the idempotency store is temporarily unavailable, the request is not processed and returns `503`; retry it. Must be 1 to 255 printable ASCII characters, without spaces.</param>
     public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.TopUpEsimOkResponse> TopUpEsimAsync(
         global::Celitech.SDK.Models.TopUpEsimRequest input,
+        string? idempotencyKey = null,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
         var validationResults = new List<FluentValidation.Results.ValidationResult> { };
+        var idempotencyKeyValidationResult = new StringValidator()
+            .WithMaximumLength(255)
+            .WithMinimumLength(1)
+            .ValidateOptional<string?>((string?)idempotencyKey);
+        if (idempotencyKeyValidationResult != null)
+        {
+            validationResults.Add(idempotencyKeyValidationResult);
+        }
+        ;
         var validator = new TopUpEsimRequestValidator();
         var validationResult = validator.Validate(input);
         validationResults.Add(validationResult);
@@ -314,10 +433,39 @@ public class PurchasesService : BaseService
         var resolvedConfig = GetResolvedConfig(_topUpEsimAsyncConfig, requestConfig);
 
         var request = new RequestBuilder(HttpMethod.Post, "purchases/topup")
+            .SetOptionalHeader("Idempotency-Key", idempotencyKey)
             .SetContentAsJson(input, _jsonSerializerOptions)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -355,14 +503,25 @@ public class PurchasesService : BaseService
     ///
     /// The end date can be extended or shortened as long as it adheres to the same pricing category and does not exceed the allowed duration limits.
     /// </summary>
+    /// <param name="idempotencyKey">Optional. A unique value (for example a UUID) that makes this request safe to retry. If a request with the same `Idempotency-Key` and the same body succeeds, repeating it returns the original response instead of performing the action again, and the response includes the header `Idempotent-Replayed: true`. Keys are scoped to your credentials and remembered for 3 days. Only successful (2xx) responses are remembered, so a request that failed can be retried with the same key. Reusing a key with a different request returns `422`; sending it while the original request is still being processed returns `409`. If the idempotency store is temporarily unavailable, the request is not processed and returns `503`; retry it. Must be 1 to 255 printable ASCII characters, without spaces.</param>
     public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.EditPurchaseOkResponse> EditPurchaseAsync(
         global::Celitech.SDK.Models.EditPurchaseRequest input,
+        string? idempotencyKey = null,
         RequestConfig? requestConfig = null,
         CancellationToken cancellationToken = default
     )
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
         var validationResults = new List<FluentValidation.Results.ValidationResult> { };
+        var idempotencyKeyValidationResult = new StringValidator()
+            .WithMaximumLength(255)
+            .WithMinimumLength(1)
+            .ValidateOptional<string?>((string?)idempotencyKey);
+        if (idempotencyKeyValidationResult != null)
+        {
+            validationResults.Add(idempotencyKeyValidationResult);
+        }
+        ;
         var validator = new EditPurchaseRequestValidator();
         var validationResult = validator.Validate(input);
         validationResults.Add(validationResult);
@@ -376,10 +535,39 @@ public class PurchasesService : BaseService
         var resolvedConfig = GetResolvedConfig(_editPurchaseAsyncConfig, requestConfig);
 
         var request = new RequestBuilder(HttpMethod.Post, "purchases/edit")
+            .SetOptionalHeader("Idempotency-Key", idempotencyKey)
             .SetContentAsJson(input, _jsonSerializerOptions)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -434,8 +622,36 @@ public class PurchasesService : BaseService
         var request = new RequestBuilder(HttpMethod.Get, "purchases/{purchaseId}/consumption")
             .SetPathParameter("purchaseId", purchaseId)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)

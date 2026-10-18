@@ -26,5 +26,11 @@ public class CreatePurchaseRequestValidator
         RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.EndDate)
             .NotNull()
             .WithMessage("Field endDate is required and cannot be null.");
+
+        RuleFor(CreatePurchaseRequest => CreatePurchaseRequest.ReferenceId)
+            .MaximumLength(255)
+            .WithMessage("Maximum length for referenceId is 255.")
+            .Matches(@"^[a-zA-Z0-9\-_.@+]+$")
+            .WithMessage(@"Pattern for referenceId must match ^[a-zA-Z0-9\-_.@+]+$.");
     }
 }

@@ -24,10 +24,31 @@ public class TokenManager : IDisposable
     {
         this.httpClient = httpClient;
         config ??= new CelitechConfig();
-        this.BaseOAuthUrl = new Uri(config.BaseOAuthUrl);
+        this.BaseOAuthUrl = ParseOAuthUrl(config.BaseOAuthUrl);
         this.ClientId = config.ClientId;
         this.ClientSecret = config.ClientSecret;
         httpClient.SetBaseAddress(this.BaseOAuthUrl);
+    }
+
+    /// <summary>
+    /// Parses the OAuth base URL, falling back to an unreachable sentinel when it is not a valid
+    /// absolute URI.
+    /// </summary>
+    /// <remarks>
+    /// This constructor runs before the root client has resolved the caller's server variables, so
+    /// a templated server URL still carries its placeholder here (and a spec's declared default can
+    /// itself be a placeholder, e.g. <c>{TENANT}.auth0.com</c>). A bare <c>new Uri(...)</c> throws
+    /// on that and takes the whole client constructor with it, leaving no way to instantiate the
+    /// SDK at all. Degrade to a sentinel instead: the root client overwrites
+    /// <see cref="BaseOAuthUrl"/> with the resolved URL immediately after, and a caller who really
+    /// has no usable OAuth URL gets an unreachable-host error at token-fetch time rather than a
+    /// crash at construction. Mirrors the guard in <c>Http/Environment.cs</c>.
+    /// </remarks>
+    private static Uri ParseOAuthUrl(string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var parsed)
+            ? parsed
+            : new Uri("https://invalid.example/");
     }
 
     /// <summary>

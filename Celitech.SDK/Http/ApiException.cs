@@ -57,6 +57,23 @@ public class ApiException : HttpRequestException
 #pragma warning restore CS0618
     }
 
+    /// <summary>
+    /// Transport-failure constructor. Used by the transport-failure subclasses, which are
+    /// <c>ApiException</c>s so an existing <c>catch (ApiException)</c> still fires, but which never
+    /// saw a response: <see cref="StatusCode"/> stays null and the obsolete <see cref="Response"/> is
+    /// null rather than a made-up 200, because a fabricated status would be indistinguishable from a
+    /// real one (FSDK-1585).
+    /// </summary>
+    protected ApiException(string message, Exception? innerException)
+        : base(message, innerException)
+    {
+        Body = null;
+        Headers = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+#pragma warning disable CS0618 // No response was received, so there is nothing to buffer.
+        Response = null!;
+#pragma warning restore CS0618
+    }
+
     private static HttpResponseMessage BuildBufferedResponse(
         HttpStatusCode statusCode,
         string? body,
