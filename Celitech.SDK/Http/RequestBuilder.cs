@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Celitech.SDK.Http.Extensions;
 using Celitech.SDK.Http.Serialization;
 
@@ -192,18 +193,76 @@ public class RequestBuilder
     )
     {
         var jsonContent = JsonSerializer.Serialize(content, options);
-        var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(
-            jsonContent,
-            options
-        );
 
-        if (dictionary is null)
+        // Deserializing into Dictionary<string, string> asked System.Text.Json to read every
+        // member as a string, so an array, an object — even a plain number or bool — threw
+        // before the request was built. Walking the JSON tree instead lets each kind decide
+        // how it renders.
+        if (JsonNode.Parse(jsonContent) is not JsonObject root)
         {
             throw new ArgumentException("Invalid content for form-urlencoded content type.");
         }
 
-        _content = new FormUrlEncodedContent(dictionary);
+        // A sequence of pairs rather than a dictionary: an array field has to repeat its key
+        // (`tags=a&tags=b`), which a dictionary cannot represent.
+        var fields = new List<KeyValuePair<string, string>>();
+        foreach (var property in root)
+        {
+            AddUrlEncodedField(fields, property.Key, property.Value);
+        }
+
+        _content = new FormUrlEncodedContent(fields);
         return this;
+    }
+
+    /// <summary>
+    /// Expands one JSON member into the form fields it contributes, following the OpenAPI
+    /// default encoding for application/x-www-form-urlencoded (style: form, explode: true).
+    /// </summary>
+    private static void AddUrlEncodedField(
+        List<KeyValuePair<string, string>> fields,
+        string key,
+        JsonNode? node
+    )
+    {
+        switch (node)
+        {
+            // An absent member is not a field. Emitting `key=` would tell the server the caller
+            // sent an empty string, which is a different statement from "unset".
+            case null:
+                return;
+            case JsonArray array:
+                foreach (var element in array)
+                {
+                    AddUrlEncodedField(fields, key, element);
+                }
+                return;
+            // Brackets keep the parent name, matching how this SDK's own deepObject query
+            // serialization expresses nesting in a key/value context.
+            case JsonObject nested:
+                foreach (var property in nested)
+                {
+                    AddUrlEncodedField(fields, $"{key}[{property.Key}]", property.Value);
+                }
+                return;
+            default:
+                fields.Add(new KeyValuePair<string, string>(key, ToUrlEncodedValue(node)));
+                return;
+        }
+    }
+
+    private static string ToUrlEncodedValue(JsonNode node)
+    {
+        // A string has to be unwrapped rather than rendered through ToJsonString(), which would
+        // keep the surrounding quotes; every other scalar renders as its JSON text. Matched with
+        // TryGetValue rather than GetValueKind() so this still compiles on net6.0/netstandard2.0,
+        // where JsonNode.GetValueKind() does not exist.
+        if (node is JsonValue value && value.TryGetValue<string>(out var text) && text != null)
+        {
+            return text;
+        }
+
+        return node.ToJsonString();
     }
 
     /// <summary>
@@ -286,6 +345,52 @@ public class RequestBuilder
     }
 
     /// <summary>
+    /// Adds a header to the request, or to its content when the header belongs there.
+    /// </summary>
+    /// <remarks>
+    /// `HttpRequestMessage.Headers.Add` throws for a CONTENT header -- `Content-Encoding`,
+    /// `Content-Type`, `Content-Disposition` and friends live on `HttpContent`, and .NET rejects
+    /// them with `InvalidOperationException: Misused header name`. It also throws
+    /// `FormatException` for a value its parser rejects for that header, which a caller-supplied
+    /// value can be. Both took out a generated SDK at runtime, so try the request collection
+    /// without validation and fall through to the content one.
+    ///
+    /// The content collection is REPLACED, not appended to. `HttpContent` sets its own
+    /// `Content-Type` on construction, so appending produced
+    /// `text/plain; charset=utf-8, application/vnd.custom+json` -- not a valid media type, and sent
+    /// silently where `.Add` used to throw. A caller who names a content header explicitly means to
+    /// override it.
+    ///
+    /// One residual gap: a request with no body has no `Content`, so a content header on such a
+    /// request is DROPPED rather than sent. That is deliberate -- there is nowhere valid to put it
+    /// -- but it is silent, so a caller setting `Content-Type` on a bodyless GET will not see it on
+    /// the wire and gets no error either.
+    ///
+    /// CR and LF are rejected up front. `TryAddWithoutValidation` skips the newline check as well
+    /// as the format one, and a newline in a header value SPLITS the request -- everything after it
+    /// is read by the server as further headers (CWE-113). `.Add` refused such a value outright
+    /// ("New-line characters are not allowed in header values"), so this keeps that guarantee while
+    /// still letting through the values whose only problem is the header-specific parser.
+    /// </remarks>
+    private static void AddHeader(HttpRequestMessage requestMessage, string name, string? value)
+    {
+        // IndexOf(char), not Contains(char): the latter does not exist on net462/netstandard2.0.
+        if (value != null && (value.IndexOf('\r') >= 0 || value.IndexOf('\n') >= 0))
+        {
+            throw new ArgumentException(
+                $"Header '{name}' has a value containing a CR or LF character, which would split the request.",
+                nameof(value)
+            );
+        }
+        if (requestMessage.Headers.TryAddWithoutValidation(name, value))
+        {
+            return;
+        }
+        requestMessage.Content?.Headers.Remove(name);
+        requestMessage.Content?.Headers.TryAddWithoutValidation(name, value);
+    }
+
+    /// <summary>
     /// Builds the <see cref="HttpRequestMessage"/> instance.
     /// </summary>
     public HttpRequestMessage BuildHttpRequestMessage()
@@ -294,7 +399,7 @@ public class RequestBuilder
 
         foreach (var (key, value) in _headers)
         {
-            requestMessage.Headers.Add(key, value);
+            AddHeader(requestMessage, key, value);
         }
 
         if (_cookieParameters.Count > 0)

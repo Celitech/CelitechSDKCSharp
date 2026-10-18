@@ -22,7 +22,7 @@ public record TopUpEsimRequest(
         JsonPropertyName("duration"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] double? Duration = null,
-    /// <value>Email address where the purchase confirmation email will be sent (excluding QR Code & activation steps).</value>
+    /// <value>Email address where the purchase confirmation email will be sent (excluding QR Code &amp; activation steps).</value>
     [property:
         JsonPropertyName("email"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
