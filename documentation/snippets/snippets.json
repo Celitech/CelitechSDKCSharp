@@ -31,6 +31,9 @@
     "/esim/{iccid}/history": {
       "get": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.GetEsimHistoryAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
     },
+    "/esim/{iccid}/suspend": {
+      "post": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.ESim.SuspendEsimAsync(\"1111222233334444555000\");\n\nConsole.WriteLine(response);\n"
+    },
     "/iframe/token": {
       "post": "using Celitech.SDK;\nusing Celitech.SDK.Config;\n\nvar config = new CelitechConfig{\n    ClientId = \"CLIENT_ID\",\n\tClientSecret = \"CLIENT_SECRET\"\n};\n\nvar client = new CelitechClient(config);\n\nvar response = await client.IFrame.TokenAsync();\n\nConsole.WriteLine(response);\n"
     }
@@ -66,6 +69,9 @@
     },
     "/esim/{iccid}/history": {
       "get": "Console.WriteLine(response);"
+    },
+    "/esim/{iccid}/suspend": {
+      "post": "Console.WriteLine(response);"
     },
     "/iframe/token": {
       "post": "Console.WriteLine(response);"

@@ -27,5 +27,11 @@ public class CreatePurchaseV2RequestValidator
             .WithMessage("Maximum for quantity is 5.")
             .NotNull()
             .WithMessage("Field quantity is required and cannot be null.");
+
+        RuleFor(CreatePurchaseV2Request => CreatePurchaseV2Request.ReferenceId)
+            .MaximumLength(255)
+            .WithMessage("Maximum length for referenceId is 255.")
+            .Matches(@"^[a-zA-Z0-9\-_.@+]+$")
+            .WithMessage(@"Pattern for referenceId must match ^[a-zA-Z0-9\-_.@+]+$.");
     }
 }

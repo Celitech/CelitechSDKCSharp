@@ -43,8 +43,36 @@ public class IFrameService : BaseService
 
         var request = new RequestBuilder(HttpMethod.Post, "iframe/token")
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)

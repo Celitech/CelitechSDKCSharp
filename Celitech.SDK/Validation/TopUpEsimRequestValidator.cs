@@ -24,5 +24,11 @@ public class TopUpEsimRequestValidator
         RuleFor(TopUpEsimRequest => TopUpEsimRequest.DataLimitInGb)
             .NotNull()
             .WithMessage("Field dataLimitInGB is required and cannot be null.");
+
+        RuleFor(TopUpEsimRequest => TopUpEsimRequest.ReferenceId)
+            .MaximumLength(255)
+            .WithMessage("Maximum length for referenceId is 255.")
+            .Matches(@"^[a-zA-Z0-9\-_.@+]+$")
+            .WithMessage(@"Pattern for referenceId must match ^[a-zA-Z0-9\-_.@+]+$.");
     }
 }
