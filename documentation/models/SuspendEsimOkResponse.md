@@ -1,7 +1,7 @@
-# BadRequest
+# SuspendEsimOkResponse
 
 **Properties**
 
 | Name    | Type   | Required | Description          |
 | :------ | :----- | :------- | :------------------- |
-| Message | string | ❌       | Message of the error |
+| Message | string | ✅       | Confirmation message |

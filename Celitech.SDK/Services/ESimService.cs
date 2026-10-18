@@ -21,6 +21,7 @@ public class ESimService : BaseService
     private RequestConfig? _getEsimAsyncConfig;
     private RequestConfig? _getEsimDeviceAsyncConfig;
     private RequestConfig? _getEsimHistoryAsyncConfig;
+    private RequestConfig? _suspendEsimAsyncConfig;
 
     internal ESimService(global::Celitech.SDK.Http.Client httpClient)
         : base(httpClient) { }
@@ -55,6 +56,16 @@ public class ESimService : BaseService
         return this;
     }
 
+    /// <summary>
+    /// Sets method-level configuration for <c>SuspendEsimAsync</c>.
+    /// Method-level config overrides service-level config but is overridden by per-request config.
+    /// </summary>
+    public ESimService SetSuspendEsimAsyncConfig(RequestConfig config)
+    {
+        _suspendEsimAsyncConfig = config;
+        return this;
+    }
+
     /// <summary>Get eSIM</summary>
     /// <param name="iccid">ID of the eSIM</param>
     public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.GetEsimOkResponse> GetEsimAsync(
@@ -85,8 +96,36 @@ public class ESimService : BaseService
         var request = new RequestBuilder(HttpMethod.Get, "esim")
             .SetQueryParameter("iccid", iccid)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -144,8 +183,36 @@ public class ESimService : BaseService
         var request = new RequestBuilder(HttpMethod.Get, "esim/{iccid}/device")
             .SetPathParameter("iccid", iccid)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -203,8 +270,36 @@ public class ESimService : BaseService
         var request = new RequestBuilder(HttpMethod.Get, "esim/{iccid}/history")
             .SetPathParameter("iccid", iccid)
             .SetScopes(new HashSet<string> { })
-            .AddError(400, "application/json", typeof(BadRequest), typeof(BadRequestException))
-            .AddError(401, "application/json", typeof(Unauthorized), typeof(UnauthorizedException))
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
             .Build();
 
         var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
@@ -223,6 +318,105 @@ public class ESimService : BaseService
 
         // Validate the response
         var responseValidator = new GetEsimHistoryOkResponseValidator();
+        var responseValidationResult = responseValidator.ValidateRequired(result);
+        if (!responseValidationResult.IsValid)
+        {
+            throw new Http.Exceptions.ValidationException(responseValidationResult.Errors);
+        }
+
+        return result;
+    }
+
+    /// <summary>Suspends an eSIM to prevent abuse. All of the eSIM's packages are terminated and its connectivity is switched off. The eSIM is not refunded: the charge stays.</summary>
+    /// <param name="iccid">ID of the eSIM</param>
+    /// <param name="idempotencyKey">Optional. A unique value (for example a UUID) that makes this request safe to retry. If a request with the same `Idempotency-Key` and the same body succeeds, repeating it returns the original response instead of performing the action again, and the response includes the header `Idempotent-Replayed: true`. Keys are scoped to your credentials and remembered for 3 days. Only successful (2xx) responses are remembered, so a request that failed can be retried with the same key. Reusing a key with a different request returns `422`; sending it while the original request is still being processed returns `409`. If the idempotency store is temporarily unavailable, the request is not processed and returns `503`; retry it. Must be 1 to 255 printable ASCII characters, without spaces.</param>
+    public async global::System.Threading.Tasks.Task<global::Celitech.SDK.Models.SuspendEsimOkResponse> SuspendEsimAsync(
+        string iccid,
+        string? idempotencyKey = null,
+        RequestConfig? requestConfig = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        ArgumentNullException.ThrowIfNull(iccid, nameof(iccid));
+        var validationResults = new List<FluentValidation.Results.ValidationResult> { };
+        var iccidValidationResult = new StringValidator()
+            .WithMaximumLength(22)
+            .WithMinimumLength(18)
+            .ValidateRequired<string>(iccid);
+        if (iccidValidationResult != null)
+        {
+            validationResults.Add(iccidValidationResult);
+        }
+        ;
+        var idempotencyKeyValidationResult = new StringValidator()
+            .WithMaximumLength(255)
+            .WithMinimumLength(1)
+            .ValidateOptional<string?>((string?)idempotencyKey);
+        if (idempotencyKeyValidationResult != null)
+        {
+            validationResults.Add(idempotencyKeyValidationResult);
+        }
+
+        var combinedFailures = validationResults.SelectMany(result => result.Errors).ToList();
+        if (combinedFailures.Any())
+        {
+            throw new Http.Exceptions.ValidationException(combinedFailures);
+        }
+
+        var resolvedConfig = GetResolvedConfig(_suspendEsimAsyncConfig, requestConfig);
+
+        var request = new RequestBuilder(HttpMethod.Post, "esim/{iccid}/suspend")
+            .SetPathParameter("iccid", iccid)
+            .SetOptionalHeader("Idempotency-Key", idempotencyKey)
+            .SetScopes(new HashSet<string> { })
+            .AddError(
+                400,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                401,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                409,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                422,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .AddError(
+                503,
+                "application/json",
+                typeof(ErrorResponse),
+                typeof(ErrorResponseException)
+            )
+            .Build();
+
+        var response = await ExecuteAsync(request, resolvedConfig, cancellationToken)
+            .ConfigureAwait(false);
+
+        // Custom deserialization with required field validation for JSON responses
+        var jsonContent = await response
+            .Content.ReadAsStringAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        var result =
+            DeserializationValidation.DeserializeWithRequiredFieldValidation<global::Celitech.SDK.Models.SuspendEsimOkResponse>(
+                jsonContent,
+                _jsonSerializerOptions
+            );
+
+        // Validate the response
+        var responseValidator = new SuspendEsimOkResponseValidator();
         var responseValidationResult = responseValidator.ValidateRequired(result);
         if (!responseValidationResult.IsValid)
         {

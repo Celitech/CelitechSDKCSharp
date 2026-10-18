@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Celitech.SDK.Models;
 
-public record BadRequest(
+public record ErrorResponse(
     /// <value>Message of the error</value>
     [property:
         JsonPropertyName("message"),

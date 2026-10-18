@@ -16,5 +16,12 @@ public record RequestConfig(
     /// <summary>Overrides the access token for this request.</summary>
     string? AccessToken = null,
     /// <summary>Overrides the retry configuration for this request.</summary>
-    RetryConfig? RetryConfig = null
+    RetryConfig? RetryConfig = null,
+    /// <summary>
+    /// Sets an idempotency key for this request, sent under the spec's declared idempotency
+    /// header (default <c>Idempotency-Key</c>). Supplying one re-enables retrying a POST or
+    /// PATCH, which the retry pipeline otherwise refuses to replay. Only the retry pipeline
+    /// consults it, and a spec-declared idempotency header on the operation takes precedence.
+    /// </summary>
+    string? IdempotencyKey = null
 );

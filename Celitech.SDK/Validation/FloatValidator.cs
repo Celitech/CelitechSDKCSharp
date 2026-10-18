@@ -27,7 +27,7 @@ public class FloatValidator : AbstractValidator<double?>
             num => num != null,
             () =>
             {
-                RuleFor(num => num).Must(num => num > min);
+                RuleFor(num => num).Must(num => num > min).WithName(_name);
             }
         );
         return this;
@@ -44,7 +44,7 @@ public class FloatValidator : AbstractValidator<double?>
             num => num != null,
             () =>
             {
-                RuleFor(num => num).GreaterThanOrEqualTo(min);
+                RuleFor(num => num).GreaterThanOrEqualTo(min).WithName(_name);
             }
         );
         return this;
@@ -61,7 +61,7 @@ public class FloatValidator : AbstractValidator<double?>
             num => num != null,
             () =>
             {
-                RuleFor(num => num).Must(num => num < max);
+                RuleFor(num => num).Must(num => num < max).WithName(_name);
             }
         );
         return this;
@@ -78,7 +78,7 @@ public class FloatValidator : AbstractValidator<double?>
             num => num != null,
             () =>
             {
-                RuleFor(num => num).LessThanOrEqualTo(max);
+                RuleFor(num => num).LessThanOrEqualTo(max).WithName(_name);
             }
         );
         return this;
@@ -87,6 +87,13 @@ public class FloatValidator : AbstractValidator<double?>
     /// <summary>
     /// Adds a multipleOf constraint (value must be evenly divisible by multipleOf). Null values are not validated.
     /// </summary>
+    /// <remarks>
+    /// `%` on a double is not the arithmetic remainder: 0.3 % 0.1 is 0.09999999999999998 in IEEE-754,
+    /// so an equality test against 0 rejects 0.3, 0.7, 1.0 and 2.4 against multipleOf 0.1. The
+    /// quotient is compared to its nearest integer instead, with a tolerance loose enough for the
+    /// ~7 significant digits a float-width value carries and far tighter than the gap to the next
+    /// multiple.
+    /// </remarks>
     /// <param name="multipleOf">The divisor that the value must be a multiple of.</param>
     /// <returns>This validator instance for method chaining.</returns>
     public FloatValidator WithMultipleOf(double multipleOf)
@@ -95,7 +102,14 @@ public class FloatValidator : AbstractValidator<double?>
             num => num != null,
             () =>
             {
-                RuleFor(num => num).Must(value => value % multipleOf == 0);
+                RuleFor(num => num)
+                    .Must(value =>
+                        value == null
+                        || Math.Abs(value.Value / multipleOf - Math.Round(value.Value / multipleOf))
+                            < 1e-6
+                    )
+                    .WithName(_name)
+                    .WithMessage($"'{_name}' must be a multiple of {multipleOf}.");
             }
         );
         return this;

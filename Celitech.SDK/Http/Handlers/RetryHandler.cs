@@ -17,12 +17,18 @@ public class RetryHandler : DelegatingHandler
     private static readonly HttpRequestOptionsKey<RetryConfig> RetryConfigKey =
         new HttpRequestOptionsKey<RetryConfig>("_RequestConfig_RetryConfig");
 
+    private static readonly HttpRequestOptionsKey<string> IdempotencyKeyConfigKey =
+        new HttpRequestOptionsKey<string>("_RequestConfig_IdempotencyKey");
+
     private readonly int _defaultMaxRetryAttempts = 3;
     private readonly TimeSpan _defaultDelay = TimeSpan.FromMilliseconds(150);
     private readonly TimeSpan _defaultMaxDelay = TimeSpan.FromMilliseconds(5000);
     private readonly TimeSpan _defaultMaxRetryAfterDelay = TimeSpan.FromMilliseconds(60000);
     private readonly double _defaultBackoffMultiplier = 2;
     private readonly bool _defaultUseJitter = true;
+
+    // HTTP methods allowed to retry at all. A method absent here is never retried; a method present
+    // here is retried only if replaying it is safe (see IsRetryableRequest).
     private readonly HashSet<string> _defaultRetryableHttpMethods = new HashSet<string>(
         StringComparer.OrdinalIgnoreCase
     )
@@ -35,6 +41,24 @@ public class RetryHandler : DelegatingHandler
         "HEAD",
         "OPTIONS",
     };
+
+    // Methods RFC 9110 defines as idempotent: replaying one cannot cause a second effect, so a
+    // retry is safe. POST and PATCH are absent deliberately — see IsRetryableRequest.
+    private static readonly HashSet<string> _idempotentHttpMethods = new HashSet<string>(
+        StringComparer.OrdinalIgnoreCase
+    )
+    {
+        "GET",
+        "HEAD",
+        "PUT",
+        "DELETE",
+        "OPTIONS",
+        "TRACE",
+    };
+
+    // Request headers that carry a caller-supplied idempotency key. A server that honours one
+    // deduplicates a replay, which is what makes retrying a non-idempotent method safe.
+    private static readonly string[] _idempotencyKeyHeaders = new[] { "Idempotency-Key" };
 
     private readonly ResiliencePipeline<HttpResponseMessage> _defaultPipeline;
     private readonly ConcurrentDictionary<
@@ -56,6 +80,94 @@ public class RetryHandler : DelegatingHandler
         return (int)statusCode >= 500
             || statusCode == HttpStatusCode.RequestTimeout
             || statusCode == HttpStatusCode.TooManyRequests;
+    }
+
+    /// <summary>
+    /// Whether this request may be replayed.
+    /// </summary>
+    /// <remarks>
+    /// Two gates. The configured method list decides whether the method is eligible at all.
+    /// Eligibility alone is not enough for a non-idempotent method, though: replaying a POST or a
+    /// PATCH can duplicate its effect, so one is retried only when the caller supplied an
+    /// idempotency key for the server to deduplicate on.
+    /// </remarks>
+    private static bool IsRetryableRequest(
+        HttpRequestMessage request,
+        HashSet<string> retryableHttpMethods
+    )
+    {
+        var method = request.Method.Method;
+        if (!retryableHttpMethods.Contains(method))
+            return false;
+        if (_idempotentHttpMethods.Contains(method))
+            return true;
+
+        return HasIdempotencyKey(request);
+    }
+
+    /// <summary>
+    /// Whether the request carries a non-empty idempotency key header.
+    /// </summary>
+    /// <remarks>
+    /// TryGetValues rather than Contains: HttpHeaders.Contains throws InvalidOperationException for
+    /// a name the collection does not accept, so it cannot be used as a probe.
+    /// </remarks>
+    private static bool HasIdempotencyKey(HttpRequestMessage request)
+    {
+        foreach (var name in _idempotencyKeyHeaders)
+        {
+            if (
+                request.Headers.TryGetValues(name, out var values)
+                && values.Any(value => !string.IsNullOrWhiteSpace(value))
+            )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Applies a <c>RequestConfig.IdempotencyKey</c> to the outgoing request as a header, so that
+    /// the gate below sees it and the server receives it.
+    /// </summary>
+    /// <remarks>
+    /// The key arrives as a request option because <c>RequestConfig</c> cannot know the header
+    /// name -- that comes from the spec's declared idempotency header, which only this handler
+    /// has. Stamping it here still reaches the wire: this runs before <c>base.SendAsync</c>, so
+    /// the server can deduplicate the replay, which is the whole reason a key makes retrying a
+    /// non-idempotent method safe. A key that never reached the server would make this an
+    /// unsafe-retry switch rather than an idempotency lever (FSDK-1712).
+    ///
+    /// A header the request already carries wins: a spec-declared idempotency parameter is the
+    /// more specific source, and adding a second value would send both.
+    /// </remarks>
+    private static void ApplyConfiguredIdempotencyKey(HttpRequestMessage request)
+    {
+        if (HasIdempotencyKey(request))
+            return;
+
+        if (!request.Options.TryGetValue(IdempotencyKeyConfigKey, out var configuredKey))
+            return;
+
+        if (string.IsNullOrWhiteSpace(configuredKey))
+            return;
+
+        // CR/LF would split the request: everything after the newline is read by the server as
+        // further headers (CWE-113). `TryAddWithoutValidation` skips .NET's newline check, so each
+        // caller-supplied header path guards it; see caller-header-crlf-guard.spec.ts for the
+        // full set.
+        if (
+            configuredKey != null
+            && (configuredKey.IndexOf('\r') >= 0 || configuredKey.IndexOf('\n') >= 0)
+        )
+        {
+            throw new ArgumentException(
+                $"Header '{_idempotencyKeyHeaders[0]}' has a value containing a CR or LF character, which would split the request."
+            );
+        }
+        request.Headers.TryAddWithoutValidation(_idempotencyKeyHeaders[0], configuredKey);
     }
 
     private static readonly Regex DeltaSecondsRegex = new(@"^\d+(\.\d+)?$", RegexOptions.Compiled);
@@ -223,7 +335,9 @@ public class RetryHandler : DelegatingHandler
                 )
                 : _defaultRetryableHttpMethods;
 
-        if (!retryableHttpMethods.Contains(request.Method.Method))
+        ApplyConfiguredIdempotencyKey(request);
+
+        if (!IsRetryableRequest(request, retryableHttpMethods))
         {
             return await base.SendAsync(request, cancellationToken);
         }
