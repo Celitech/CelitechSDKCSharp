@@ -35,7 +35,7 @@ public class Client
         _httpClient.BaseAddress = config?.Environment?.Uri ?? Environment.Default.Uri;
         _httpClient.DefaultRequestHeaders.Add(
             "user-agent",
-            "postman-codegen/2.6.0 Celitech.SDK/2.0.7 (csharp)"
+            "postman-codegen/3.7.0 Celitech.SDK/2.0.9 (csharp)"
         );
     }
 
@@ -54,9 +54,21 @@ public class Client
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _httpClient
-            .SendAsync(request.HttpRequestMessage, cancellationToken)
-            .ConfigureAwait(false);
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient
+                .SendAsync(request.HttpRequestMessage, cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            throw new ApiTimeoutException(TimeoutMessage(), ex);
+        }
+        catch (HttpRequestException ex) when (ex is not Celitech.SDK.Http.Exceptions.ApiException)
+        {
+            throw new ApiConnectionException(ConnectionMessage(request), ex);
+        }
         await HandleError(request, response).ConfigureAwait(false);
         return response;
     }
@@ -67,12 +79,45 @@ public class Client
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _httpClient
-            .SendAsync(request.HttpRequestMessage, httpCompletionOptions, cancellationToken)
-            .ConfigureAwait(false);
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient
+                .SendAsync(request.HttpRequestMessage, httpCompletionOptions, cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            throw new ApiTimeoutException(TimeoutMessage(), ex);
+        }
+        catch (HttpRequestException ex) when (ex is not Celitech.SDK.Http.Exceptions.ApiException)
+        {
+            throw new ApiConnectionException(ConnectionMessage(request), ex);
+        }
         await HandleError(request, response).ConfigureAwait(false);
         return response;
     }
+
+    /// <summary>
+    /// The message for a client-level (<see cref="HttpClient.Timeout"/>) timeout. HttpClient cancels
+    /// a token of its own when that elapses, so the token handed to <c>SendAsync</c> is still
+    /// un-cancelled — the only way an <see cref="OperationCanceledException"/> reaches that catch
+    /// without the caller (or a per-request timeout) having asked for it. A per-request timeout
+    /// cancels through a linked source and is disambiguated one layer up, in
+    /// <c>BaseService.ExecuteAsync</c>, the only place that still holds the caller's own token
+    /// (FSDK-1585).
+    /// </summary>
+    private string TimeoutMessage() => $"The request timed out after {_httpClient.Timeout}.";
+
+    /// <summary>
+    /// The message for a connection-level failure — a refused connection, an unresolvable host, a
+    /// TLS failure, a reset. The transport raises <see cref="HttpRequestException"/> for all of
+    /// these, so a caller had to reference <c>System.Net.Http</c>'s own exception types to handle
+    /// one (FSDK-1573). <see cref="ApiException"/> derives from <c>HttpRequestException</c> and is
+    /// excluded from that catch: a real API error is not a connection failure.
+    /// </summary>
+    private static string ConnectionMessage(Request request) =>
+        $"Could not connect to the server for {request.HttpRequestMessage.Method} {request.HttpRequestMessage.RequestUri}.";
 
     /// <summary>
     /// Handles error responses by checking configured error mappings and throwing appropriate exceptions.
@@ -121,14 +166,20 @@ public class Client
     {
         // TODO USE DESERIALIZATION LOGIC which will catch the case where we have non-json responses
         var contentString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var (statusCode, headers) = ApiException.CaptureAndDispose(response);
+        var (statusCode, headers) = Celitech.SDK.Http.Exceptions.ApiException.CaptureAndDispose(
+            response
+        );
         try
         {
             var deserializedError = JsonSerializer.Deserialize(contentString, mapping.TargetType);
 
             if (deserializedError == null)
             {
-                throw new ApiException(statusCode, contentString, headers);
+                throw new Celitech.SDK.Http.Exceptions.ApiException(
+                    statusCode,
+                    contentString,
+                    headers
+                );
             }
             var exception = (Exception)
                 Activator.CreateInstance(
@@ -139,7 +190,7 @@ public class Client
         }
         catch (JsonException)
         {
-            throw new ApiException(statusCode, contentString, headers);
+            throw new Celitech.SDK.Http.Exceptions.ApiException(statusCode, contentString, headers);
         }
     }
 
