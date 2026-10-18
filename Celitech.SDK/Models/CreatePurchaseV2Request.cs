@@ -25,17 +25,17 @@ public record CreatePurchaseV2Request(
         JsonPropertyName("duration"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] double? Duration = null,
-    /// <value>Email address where the purchase confirmation email will be sent (including QR Code & activation steps)</value>
+    /// <value>Email address where the purchase confirmation email will be sent (including QR Code &amp; activation steps)</value>
     [property:
         JsonPropertyName("email"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] string? Email = null,
-    /// <value>An identifier provided by the partner to link this purchase to their booking or transaction for analytics and debugging purposes.</value>
+    /// <value>An identifier provided by the partner to link this purchase to their booking or transaction for analytics and debugging purposes. Letters, digits, `-`, `_`, `.`, `@` and `+` are allowed (so an email address works), up to 255 characters.</value>
     [property:
         JsonPropertyName("referenceId"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)
     ] string? ReferenceId = null,
-    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.</value>
+    /// <value>Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&amp;), and spaces. This feature is available to platforms with Diamond tier only.</value>
     [property:
         JsonPropertyName("networkBrand"),
         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)

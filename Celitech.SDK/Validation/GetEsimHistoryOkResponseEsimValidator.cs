@@ -22,6 +22,36 @@ public class GetEsimHistoryOkResponseEsimValidator
             .NotNull()
             .WithMessage("Field iccid is required and cannot be null.");
         RuleFor(GetEsimHistoryOkResponseEsim => GetEsimHistoryOkResponseEsim.History)
+            .Custom(
+                (history, context) =>
+                {
+                    if (history != null)
+                    {
+                        var itemValidator = new HistoryValidator();
+                        var index = 0;
+                        foreach (var item in history)
+                        {
+                            if (item != null)
+                            {
+                                var result = itemValidator.Validate(item);
+                                if (!result.IsValid)
+                                {
+                                    foreach (var failure in result.Errors)
+                                    {
+                                        var propertyPath = string.IsNullOrEmpty(
+                                            failure.PropertyName
+                                        )
+                                            ? $"History[{index}]"
+                                            : $"History[{index}].{failure.PropertyName}";
+                                        context.AddFailure(propertyPath, failure.ErrorMessage);
+                                    }
+                                }
+                            }
+                            index++;
+                        }
+                    }
+                }
+            )
             .NotNull()
             .WithMessage("Field history is required and cannot be null.");
     }

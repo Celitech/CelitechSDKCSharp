@@ -107,6 +107,10 @@ public static class DeserializationValidation
             ValidateRequiredFieldsForGetEsimHistoryOkResponse
         },
         {
+            typeof(global::Celitech.SDK.Models.SuspendEsimOkResponse),
+            ValidateRequiredFieldsForSuspendEsimOkResponse
+        },
+        {
             typeof(global::Celitech.SDK.Models.TokenOkResponse),
             ValidateRequiredFieldsForTokenOkResponse
         },
@@ -595,6 +599,33 @@ public static class DeserializationValidation
     {
         // Non-nullable required fields - must be present and not null
         var nonNullableRequiredFields = new[] { "esim" };
+
+        var missingFields = new List<string>();
+
+        // Check non-nullable required fields
+        foreach (var field in nonNullableRequiredFields)
+        {
+            if (
+                !root.TryGetProperty(field, out var property)
+                || property.ValueKind == JsonValueKind.Null
+            )
+            {
+                missingFields.Add(field);
+            }
+        }
+
+        if (missingFields.Any())
+        {
+            throw new JsonException(
+                $"Required fields are missing from JSON response: {string.Join(", ", missingFields)}"
+            );
+        }
+    }
+
+    private static void ValidateRequiredFieldsForSuspendEsimOkResponse(JsonElement root)
+    {
+        // Non-nullable required fields - must be present and not null
+        var nonNullableRequiredFields = new[] { "message" };
 
         var missingFields = new List<string>();
 
