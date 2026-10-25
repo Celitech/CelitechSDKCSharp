@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Celitech.SDK.Test/Celitech.SDK.Test.csproj" />
+  <Project Path="src/Celitech.SDK/Celitech.SDK.csproj" />
+</Solution>

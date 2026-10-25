@@ -1,0 +1,89 @@
+using Celitech.SDK.Core;
+using Celitech.SDK.Purchases;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+
+namespace Celitech.SDK;
+
+[Serializable]
+public record GetEsimHistoryResponseEsimHistoryItem : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    /// <value>The status of the eSIM at a given time, possible values are 'RELEASED', 'DOWNLOADED', 'INSTALLED', 'ENABLED', 'DELETED', or 'ERROR'</value>
+    [JsonPropertyName("status")]
+    public required string Status { get; set; }
+
+    /// <value>The date when the eSIM status changed in the format 'yyyy-MM-ddThh:mm:ssZZ'</value>
+    [JsonPropertyName("statusDate")]
+    public required DateTime StatusDate { get; set; }
+
+    /// <value>Epoch value representing the date when the eSIM status changed</value>
+    [JsonPropertyName("date")]
+    public double? Date { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// Written out rather than synthesized. A record's generated Equals compares every instance
+    /// field, and `_extensionData` is a fresh Dictionary per instance compared by REFERENCE, so two
+    /// identical models were never equal — silently defeating ==, Distinct(), HashSet membership,
+    /// dictionary keys and test assertions for every model in the SDK. Excluding it loses nothing:
+    /// it is a transient deserialization sink whose contents are copied into
+    /// AdditionalProperties, which IS compared here.
+    /// </remarks>
+    public virtual bool Equals(GetEsimHistoryResponseEsimHistoryItem? other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+        // The synthesized record Equals compares EqualityContract, so a base instance never equals a
+        // derived one. Hand-writing Equals drops that unless it is restated.
+        if (EqualityContract != other.EqualityContract)
+        {
+            return false;
+        }
+        // Declared properties first: the additional-properties comparison walks a dictionary and
+        // allocates a string per entry, and is the least likely of the three to differ, so letting
+        // the cheap scalar comparisons short-circuit ahead of it matters for Distinct/HashSet over
+        // large collections. Anchored on `true` so a model with no declared properties still emits
+        // a valid expression.
+        return true
+            && ValueEquality.AreEqual(Status, other.Status)
+            && ValueEquality.AreEqual(StatusDate, other.StatusDate)
+            && ValueEquality.AreEqual(Date, other.Date)
+            && AdditionalProperties.Equals(other.AdditionalProperties);
+    }
+
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            var hash = 17;
+            hash = (hash * 31) + ValueEquality.GetHashCodeOf(Status);
+            hash = (hash * 31) + ValueEquality.GetHashCodeOf(StatusDate);
+            hash = (hash * 31) + ValueEquality.GetHashCodeOf(Date);
+            hash = (hash * 31) + AdditionalProperties.GetHashCode();
+            return hash;
+        }
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

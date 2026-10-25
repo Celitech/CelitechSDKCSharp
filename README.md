@@ -1,186 +1,188 @@
-# Celitech C# SDK 2.0.10
+# Celitech C# Library
 
-Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Celitech%2FC%23)
+[![nuget shield](https://img.shields.io/nuget/v/Celitech.SDK)](https://nuget.org/packages/Celitech.SDK)
 
-## Versions
-
-- API version: `2.0.10`
-- SDK version: `2.0.10`
-
-## About the API
-
-Welcome to the CELITECH API documentation!
-
-Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:devops@celitech.com) | [Blog](https://www.celitech.com/blog/)
-
-# Introduction
-
-This is the reference documentation and schemas for the CELITECH API and webhooks. For tutorials and other documentation please refer to the [CELITECH Documentation](https://docs.celitech.com).
-
-"Partners" refers to online service providers that use our eSIM API. Access levels include Gold, Platinum, and Diamond.
-
-## API
-
-The CELITECH API is designed for use by partner platforms, including both web and mobile applications. It's assumed all endpoint calls are initiated from the backend of an integrated platform.
-
-API URL: `https://api.celitech.net/v1`
-
-## Authentication & Authorization
-
-CELITECH API uses the OAuth 2.0 protocol for authentication and authorization.
-The endpoints are protected using client credentials flow which is based on a token exchange. The token has a defined life span (typically 1 hour), after which a new token must be obtained.
-
-To begin, obtain OAuth 2.0 client credentials ( **CLIENT_ID** & **CLIENT_SECRET** ) from the [CELITECH Dashboard](https://www.dashboard.celitech.com/). Then your client application requests an access token from the CELITECH Authorization Server, extracts a token from the response, and sends the token to the CELITECH API that you want to access.
-
-Security Scheme Type: `OAuth2`
-
-Flow type: `clientCredentials`
-
-Token URL: `https://auth.celitech.net/oauth2/token`
+The Celitech C# library provides convenient access to the Celitech APIs from C#.
 
 ## Table of Contents
 
-- [Setup & Configuration](#setup--configuration)
-  - [Supported Language Versions](#supported-language-versions)
-  - [Installation](#installation)
-- [Authentication](#authentication)
-  - [OAuth Authentication](#oauth-authentication)
-  - [Environment Variables](#environment-variables)
-- [Setting a Custom Timeout](#setting-a-custom-timeout)
-- [Sample Usage](#sample-usage)
-- [Services](#services)
-- [Models](#models)
-- [License](#license)
+- [Documentation](#documentation)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Exception Handling](#exception-handling)
+- [Advanced](#advanced)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Raw Response](#raw-response)
+  - [Additional Headers](#additional-headers)
+  - [Additional Query Parameters](#additional-query-parameters)
+  - [Forward Compatible Enums](#forward-compatible-enums)
+- [Contributing](#contributing)
 
-# Setup & Configuration
+## Documentation
 
-## Supported Language Versions
-
-This SDK is compatible with the following versions: `C# >= .NET 6`
+API reference documentation is available [here](https://docs.celitech.com/).
 
 ## Installation
 
-To get started with the SDK, we recommend installing using `nuget`:
-
-```bash
+```sh
 dotnet add package Celitech.SDK
 ```
 
-## Authentication
+## Usage
 
-### OAuth Authentication
+Instantiate and use the client with the following:
 
-The Celitech API uses OAuth 2.0 for authentication.
-
-You need to provide your OAuth credentials when initializing the SDK. Tokens are automatically fetched, cached, and refreshed — you do not need to manage them yourself.
-
-```cs
+```csharp
 using Celitech.SDK;
-using Celitech.SDK.Config;
 
-var config = new Celitech.SDKConfig()
-{
-	ClientId = "CLIENT_ID",
-	ClientSecret = "CLIENT_SECRET"
-};
-
-var client = new CelitechClient(config);
+var client = new CelitechClient("<client id>", "<client secret>");
+await client.Destinations.ListDestinationsAsync();
 ```
 
-If you need to set or update the OAuth credentials after the SDK initialization, you can use:
+## Exception Handling
 
-```cs
-sdk.SetClientId("CLIENT_ID")
-sdk.SetClientSecret("CLIENT_SECRET")
-```
+When the API returns a non-success status code (4xx or 5xx response), a subclass of the following error
+will be thrown.
 
-## Environment Variables
-
-These are the environment variables for the SDK:
-
-| Name          | Description             |
-| :------------ | :---------------------- |
-| CLIENT_ID     | Client ID parameter     |
-| CLIENT_SECRET | Client Secret parameter |
-
-Environment variables are a way to configure your application outside the code. You can set these environment variables on the command line or use your project's existing tooling for managing environment variables.
-
-If you are using a `.env` file, a template with the variable names is provided in the `.env.example` file located in the same directory as this README.
-
-## Setting a Custom Timeout
-
-You can set a custom timeout for the SDK's HTTP requests as follows:
-
-```cs
-client.SetTimeout(TimeSpan.FromSeconds(10))
-```
-
-# Sample Usage
-
-Below is a comprehensive example demonstrating how to authenticate and call a simple endpoint:
-
-```cs
+```csharp
 using Celitech.SDK;
-using Celitech.SDK.Config;
-using Environment = Celitech.SDK.Http.Environment;
 
-var config = new CelitechConfig
-{
-  ClientId = "CLIENT_ID",
-  ClientSecret = "CLIENT_SECRET"
-};
-
-var client = new CelitechClient(config);
-
-var response = await client.Destinations.ListDestinationsAsync();
-
-Console.WriteLine(response);
-
+try {
+    var response = await client.Destinations.ListDestinationsAsync();
+} catch (CelitechClientApiException e) {
+    System.Console.WriteLine(e.Body);
+    System.Console.WriteLine(e.StatusCode);
+}
 ```
 
-## Services
+## Advanced
 
-The SDK provides various services to interact with the API.
+### Retries
 
-Below is a list of all available services:
+The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
+as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
+retry limit (default: 2).
 
-| Name                                                                 |
-| :------------------------------------------------------------------- |
-| [DestinationsService](documentation/services/DestinationsService.md) |
-| [PackagesService](documentation/services/PackagesService.md)         |
-| [PurchasesService](documentation/services/PurchasesService.md)       |
-| [ESimService](documentation/services/ESimService.md)                 |
-| [IFrameService](documentation/services/IFrameService.md)             |
+A request is deemed retryable when any of the following HTTP status codes is returned:
 
-## Models
+- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500) (Internal Server Errors)
 
-The SDK includes several models that represent the data structures used in API requests and responses. These models help in organizing and managing the data efficiently.
+Use the `MaxRetries` request option to configure this behavior.
 
-Below is a list of all available models:
+```csharp
+var response = await client.Destinations.ListDestinationsAsync(
+    new RequestOptions {
+        MaxRetries = 0 // Override MaxRetries at the request level
+    }
+);
+```
 
-| Name                                                                                         | Description |
-| :------------------------------------------------------------------------------------------- | :---------- |
-| [ListDestinationsOkResponse](documentation/models/ListDestinationsOkResponse.md)             |             |
-| [ListPackagesOkResponse](documentation/models/ListPackagesOkResponse.md)                     |             |
-| [CreatePurchaseV2Request](documentation/models/CreatePurchaseV2Request.md)                   |             |
-| [CreatePurchaseV2OkResponse](documentation/models/CreatePurchaseV2OkResponse.md)             |             |
-| [ListPurchasesOkResponse](documentation/models/ListPurchasesOkResponse.md)                   |             |
-| [CreatePurchaseRequest](documentation/models/CreatePurchaseRequest.md)                       |             |
-| [CreatePurchaseOkResponse](documentation/models/CreatePurchaseOkResponse.md)                 |             |
-| [TopUpEsimRequest](documentation/models/TopUpEsimRequest.md)                                 |             |
-| [TopUpEsimOkResponse](documentation/models/TopUpEsimOkResponse.md)                           |             |
-| [EditPurchaseRequest](documentation/models/EditPurchaseRequest.md)                           |             |
-| [EditPurchaseOkResponse](documentation/models/EditPurchaseOkResponse.md)                     |             |
-| [GetPurchaseConsumptionOkResponse](documentation/models/GetPurchaseConsumptionOkResponse.md) |             |
-| [GetEsimOkResponse](documentation/models/GetEsimOkResponse.md)                               |             |
-| [GetEsimDeviceOkResponse](documentation/models/GetEsimDeviceOkResponse.md)                   |             |
-| [GetEsimHistoryOkResponse](documentation/models/GetEsimHistoryOkResponse.md)                 |             |
-| [SuspendEsimOkResponse](documentation/models/SuspendEsimOkResponse.md)                       |             |
-| [TokenOkResponse](documentation/models/TokenOkResponse.md)                                   |             |
-| [GrantType](documentation/models/GrantType.md)                                               |             |
+### Timeouts
 
-## License
+The SDK defaults to a 30 second timeout. Use the `Timeout` option to configure this behavior.
 
-This SDK is licensed under the MIT License.
+```csharp
+var response = await client.Destinations.ListDestinationsAsync(
+    new RequestOptions {
+        Timeout = TimeSpan.FromSeconds(3) // Override timeout to 3s
+    }
+);
+```
 
-See the [LICENSE](LICENSE) file for more details.
+### Raw Response
+
+Access raw HTTP response data (status code, headers, URL) alongside parsed response data using the `.WithRawResponse()` method.
+
+```csharp
+using Celitech.SDK;
+
+// Access raw response data (status code, headers, etc.) alongside the parsed response
+var result = await client.Destinations.ListDestinationsAsync().WithRawResponse();
+
+// Access the parsed data
+var data = result.Data;
+
+// Access raw response metadata
+var statusCode = result.RawResponse.StatusCode;
+var headers = result.RawResponse.Headers;
+var url = result.RawResponse.Url;
+
+// Access specific headers (case-insensitive)
+if (headers.TryGetValue("X-Request-Id", out var requestId))
+{
+    System.Console.WriteLine($"Request ID: {requestId}");
+}
+```
+
+### Additional Headers
+
+If you would like to send additional headers as part of the request, use the `AdditionalHeaders` request option.
+
+```csharp
+var response = await client.Destinations.ListDestinationsAsync(
+    new RequestOptions {
+        AdditionalHeaders = new Dictionary<string, string?>
+        {
+            { "X-Custom-Header", "custom-value" }
+        }
+    }
+);
+```
+
+### Additional Query Parameters
+
+If you would like to send additional query parameters as part of the request, use the `AdditionalQueryParameters` request option.
+
+```csharp
+var response = await client.Destinations.ListDestinationsAsync(
+    new RequestOptions {
+        AdditionalQueryParameters = new Dictionary<string, string>
+        {
+            { "custom_param", "custom-value" }
+        }
+    }
+);
+```
+
+### Forward Compatible Enums
+
+This SDK uses forward-compatible enums that can handle unknown values gracefully.
+
+```csharp
+using Celitech.SDK;
+
+// Using a built-in value
+var createPurchaseV2RequestLanguage = CreatePurchaseV2RequestLanguage.En;
+
+// Using a custom value
+var customCreatePurchaseV2RequestLanguage = CreatePurchaseV2RequestLanguage.FromCustom("custom-value");
+
+// Using in a switch statement
+switch (createPurchaseV2RequestLanguage.Value)
+{
+    case CreatePurchaseV2RequestLanguage.Values.En:
+        Console.WriteLine("En");
+        break;
+    default:
+        Console.WriteLine($"Unknown value: {createPurchaseV2RequestLanguage.Value}");
+        break;
+}
+
+// Explicit casting
+string createPurchaseV2RequestLanguageString = (string)CreatePurchaseV2RequestLanguage.En;
+CreatePurchaseV2RequestLanguage createPurchaseV2RequestLanguageFromString = (CreatePurchaseV2RequestLanguage)"en";
+```
+
+## Contributing
+
+While we value open-source contributions to this SDK, this library is generated programmatically.
+Additions made directly to this library would have to be moved over to our generation code,
+otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
+a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
+an issue first to discuss with us!
+
+On the other hand, contributions to the README are always very welcome!
