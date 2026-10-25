@@ -1,6 +1,6 @@
-# Celitech
+# Celitech.SDK
 
-A basic example of how to use the Celitech package.
+A basic example of how to use the Celitech.SDK package.
 
 ## Build and Run
 
